@@ -1,23 +1,9 @@
 {
   "name": "azure-iot-edge",
   "displayName": "Azure IoT Edge",
-  "description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
   "version": "0.0.1",
-  "publisher": "vsciot-vscode",
-  "aiKey": "95b20d64-f54f-4de3-8ad5-165a75a6c6fe",
-  "icon": "logo.png",
-  "engines": {
-    "vscode": "1.40.0"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
-  },
-  "bugs": {
-    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
-  },
-  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "private": "false",
+  "description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
   "categories": [
     "Azure",
     "Debuggers",
@@ -31,91 +17,33 @@
     "cloud",
     "multi-root ready"
   ],
-  "activationEvents": [
-    "onCommand:azure-iot-edge.buildSolution",
-    "onCommand:azure-iot-edge.buildAndPushSolution",
-    "onCommand:azure-iot-edge.buildAndRunSolution",
-    "onCommand:azure-iot-edge.runSolution",
-    "onCommand:azure-iot-edge.buildModuleImage",
-    "onCommand:azure-iot-edge.buildAndPushModuleImage",
-    "onCommand:azure-iot-edge.newSolution",
-    "onCommand:azure-iot-edge.generateDeployment",
-    "onCommand:azure-iot-edge.addModule",
-    "onCommand:azure-iot-edge.stopSolution",
-    "onCommand:azure-iot-edge.setupIotedgehubdev",
-    "onCommand:azure-iot-edge.setDefaultEdgeRuntimeVersion",
-    "onCommand:azure-iot-edge.startEdgeHubSingle",
-    "onCommand:azure-iot-edge.setModuleCred",
-    "onCommand:azure-iot-edge.setDefaultPlatform",
-    "onCommand:azure-iot-edge.showGallery",
-    "onCommand:azure-iot-edge.addDevContainer",
-    "workspaceContains:**/deployment.template.json"
-  ],
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "bugs": {
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Nikola Hristov",
+    "email": "nikola@nikolahristov.tech",
+    "url": "https://nikolahristov.tech"
+  },
+  "publisher": "vsciot-vscode",
+  "type": "module",
   "main": "./dist/extension",
+  "scripts": {
+    "compile": "tsc -p ./",
+    "prepublishOnly": "TypeScriptESBuild Source/**/*.ts",
+    "test": "tsc -p ./ && node ./out/test/runTests.js",
+    "tslint": "tslint -t verbose src/**/*.ts",
+    "vscode:prepublish": "webpack --mode production",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch"
+  },
   "contributes": {
-    "menus": {
-      "explorer/context": [
-        {
-          "when": "resourceFilename == module.json",
-          "command": "azure-iot-edge.buildModuleImage",
-          "group": "edge@0"
-        },
-        {
-          "when": "resourceFilename == module.json",
-          "command": "azure-iot-edge.buildAndPushModuleImage",
-          "group": "edge@1"
-        },
-        {
-          "when": "explorerResourceIsFolder == true",
-          "command": "azure-iot-edge.newSolution"
-        },
-        {
-          "when": "resourceFilename == deployment.template.json",
-          "command": "azure-iot-edge.addModule",
-          "group": "edge@0"
-        },
-        {
-          "when": "resourceFilename =~ /^deployment(\\..+)?\\.template\\.json$/",
-          "command": "azure-iot-edge.buildSolution",
-          "group": "edge@1"
-        },
-        {
-          "when": "resourceFilename =~ /^deployment(\\..+)?\\.template\\.json$/",
-          "command": "azure-iot-edge.buildAndPushSolution",
-          "group": "edge@2"
-        },
-        {
-          "when": "resourceFilename =~ /^deployment(\\..+)?\\.template\\.json$/",
-          "command": "azure-iot-edge.buildAndRunSolution",
-          "group": "edge@3"
-        },
-        {
-          "when": "resourceFilename =~ /^deployment(\\..+)?\\.template\\.json$/",
-          "command": "azure-iot-edge.generateDeployment",
-          "group": "edge@4"
-        },
-        {
-          "when": "resourceFilename =~ /^deployment(?!.*\\.template\\.json)(\\.debug)?(\\..+)*\\.json$/",
-          "command": "azure-iot-edge.runSolution",
-          "group": "edge@0"
-        },
-        {
-          "when": "explorerResourceIsFolder && resourceFilename == modules",
-          "command": "azure-iot-edge.addModule"
-        },
-        {
-          "when": "explorerResourceIsFolder",
-          "command": "azure-iot-edge.addDevContainer"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "azure-iot-edge.setupIotedgehubdev",
-          "when": "view == iotHubDevices && viewItem == edge",
-          "group": "azure-iot-toolkit-edge@2"
-        }
-      ]
-    },
     "commands": [
       {
         "command": "azure-iot-edge.buildModuleImage",
@@ -313,16 +241,6 @@
         }
       }
     },
-    "jsonValidation": [
-      {
-        "fileMatch": "deployment.template.json",
-        "url": "http://json.schemastore.org/azure-iot-edge-deployment-template-4.0"
-      },
-      {
-        "fileMatch": "deployment.*.template.json",
-        "url": "http://json.schemastore.org/azure-iot-edge-deployment-template-4.0"
-      }
-    ],
     "debuggers": [
       {
         "type": "edge-coreclr",
@@ -528,16 +446,120 @@
           }
         ]
       }
-    ]
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "deployment.template.json",
+        "url": "http://json.schemastore.org/azure-iot-edge-deployment-template-4.0"
+      },
+      {
+        "fileMatch": "deployment.*.template.json",
+        "url": "http://json.schemastore.org/azure-iot-edge-deployment-template-4.0"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "resourceFilename == module.json",
+          "command": "azure-iot-edge.buildModuleImage",
+          "group": "edge@0"
+        },
+        {
+          "when": "resourceFilename == module.json",
+          "command": "azure-iot-edge.buildAndPushModuleImage",
+          "group": "edge@1"
+        },
+        {
+          "when": "explorerResourceIsFolder == true",
+          "command": "azure-iot-edge.newSolution"
+        },
+        {
+          "when": "resourceFilename == deployment.template.json",
+          "command": "azure-iot-edge.addModule",
+          "group": "edge@0"
+        },
+        {
+          "when": "resourceFilename =~ /^deployment(\\..+)?\\.template\\.json$/",
+          "command": "azure-iot-edge.buildSolution",
+          "group": "edge@1"
+        },
+        {
+          "when": "resourceFilename =~ /^deployment(\\..+)?\\.template\\.json$/",
+          "command": "azure-iot-edge.buildAndPushSolution",
+          "group": "edge@2"
+        },
+        {
+          "when": "resourceFilename =~ /^deployment(\\..+)?\\.template\\.json$/",
+          "command": "azure-iot-edge.buildAndRunSolution",
+          "group": "edge@3"
+        },
+        {
+          "when": "resourceFilename =~ /^deployment(\\..+)?\\.template\\.json$/",
+          "command": "azure-iot-edge.generateDeployment",
+          "group": "edge@4"
+        },
+        {
+          "when": "resourceFilename =~ /^deployment(?!.*\\.template\\.json)(\\.debug)?(\\..+)*\\.json$/",
+          "command": "azure-iot-edge.runSolution",
+          "group": "edge@0"
+        },
+        {
+          "when": "explorerResourceIsFolder && resourceFilename == modules",
+          "command": "azure-iot-edge.addModule"
+        },
+        {
+          "when": "explorerResourceIsFolder",
+          "command": "azure-iot-edge.addDevContainer"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "azure-iot-edge.setupIotedgehubdev",
+          "when": "view == iotHubDevices && viewItem == edge",
+          "group": "azure-iot-toolkit-edge@2"
+        }
+      ]
+    }
   },
-  "scripts": {
-    "vscode:prepublish": "webpack --mode production",
-    "compile": "tsc -p ./",
-    "tslint": "tslint -t verbose src/**/*.ts",
-    "test": "tsc -p ./ && node ./out/test/runTests.js",
-    "webpack": "webpack --mode development",
-    "webpack-dev": "webpack --mode development --watch",
-    "prepublishOnly": "TypeScriptESBuild Source/**/*.ts"
+  "activationEvents": [
+    "onCommand:azure-iot-edge.buildSolution",
+    "onCommand:azure-iot-edge.buildAndPushSolution",
+    "onCommand:azure-iot-edge.buildAndRunSolution",
+    "onCommand:azure-iot-edge.runSolution",
+    "onCommand:azure-iot-edge.buildModuleImage",
+    "onCommand:azure-iot-edge.buildAndPushModuleImage",
+    "onCommand:azure-iot-edge.newSolution",
+    "onCommand:azure-iot-edge.generateDeployment",
+    "onCommand:azure-iot-edge.addModule",
+    "onCommand:azure-iot-edge.stopSolution",
+    "onCommand:azure-iot-edge.setupIotedgehubdev",
+    "onCommand:azure-iot-edge.setDefaultEdgeRuntimeVersion",
+    "onCommand:azure-iot-edge.startEdgeHubSingle",
+    "onCommand:azure-iot-edge.setModuleCred",
+    "onCommand:azure-iot-edge.setDefaultPlatform",
+    "onCommand:azure-iot-edge.showGallery",
+    "onCommand:azure-iot-edge.addDevContainer",
+    "workspaceContains:**/deployment.template.json"
+  ],
+  "dependencies": {
+    "@azure/arm-containerregistry": "10.1.0",
+    "@azure/arm-machinelearningservices": "4.1.1",
+    "@azure/arm-streamanalytics": "4.1.0",
+    "@vscode/extension-telemetry": "0.8.5",
+    "axios": "1.6.0",
+    "body-parser": "1.20.2",
+    "dotenv": "16.3.1",
+    "download-git-repo": "3.0.2",
+    "express": "4.18.2",
+    "fs-extra": "11.1.1",
+    "is-port-reachable": "4.0.0",
+    "json-source-map": "0.6.1",
+    "jsonc-parser": "3.2.0",
+    "qs": "6.11.2",
+    "semver": "7.5.4",
+    "strip-json-comments": "5.0.1",
+    "tmp": "0.2.1",
+    "unzipper": "0.10.14"
   },
   "devDependencies": {
     "@azure/arm-resources": "5.2.0",
@@ -556,49 +578,27 @@
     "@types/vscode": "1.83.1",
     "fail-on-errors-webpack-plugin": "3.0.0",
     "glob": "10.3.10",
+    "minimist": "1.2.8",
     "mocha": "10.2.0",
     "sinon": "17.0.0",
     "ts-loader": "9.5.0",
     "tslint": "5.20.1",
     "typescript": "5.2.2",
+    "typescript-esbuild": "0.3.1",
     "vscode-test": "1.6.1",
     "webpack": "5.89.0",
-    "webpack-cli": "5.1.4",
-    "minimist": "1.2.8",
-    "typescript-esbuild": "0.3.1"
-  },
-  "dependencies": {
-    "@azure/arm-containerregistry": "10.1.0",
-    "@azure/arm-machinelearningservices": "4.1.1",
-    "@azure/arm-streamanalytics": "4.1.0",
-    "axios": "1.6.0",
-    "qs": "6.11.2",
-    "body-parser": "1.20.2",
-    "dotenv": "16.3.1",
-    "download-git-repo": "3.0.2",
-    "express": "4.18.2",
-    "fs-extra": "11.1.1",
-    "is-port-reachable": "4.0.0",
-    "json-source-map": "0.6.1",
-    "jsonc-parser": "3.2.0",
-    "semver": "7.5.4",
-    "strip-json-comments": "5.0.1",
-    "tmp": "0.2.1",
-    "unzipper": "0.10.14",
-    "@vscode/extension-telemetry": "0.8.5"
+    "webpack-cli": "5.1.4"
   },
   "extensionDependencies": [
     "ms-vscode.azure-account",
     "vsciot-vscode.azure-iot-toolkit"
   ],
-  "type": "module",
-  "private": "false",
+  "engines": {
+    "vscode": "1.40.0"
+  },
   "publishConfig": {
     "access": "public"
   },
-  "author": {
-    "name": "Nikola Hristov",
-    "email": "nikola@nikolahristov.tech",
-    "url": "https://nikolahristov.tech"
-  }
+  "icon": "logo.png",
+  "aiKey": "95b20d64-f54f-4de3-8ad5-165a75a6c6fe"
 }
