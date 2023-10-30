@@ -4,12 +4,16 @@
  *--------------------------------------------------------------------------------------------*/
 
 /* tslint:disable */
-import { Event, Terminal, Progress, CancellationToken } from 'vscode';
-import { ServiceClientCredentials } from '@azure/ms-rest-js';
+import { Event, Terminal, Progress, CancellationToken } from "vscode";
+import { ServiceClientCredentials } from "@azure/ms-rest-js";
 import { Subscription } from "@azure/arm-resources-subscriptions";
-import { ReadStream } from 'fs';
+import { ReadStream } from "fs";
 
-export type AzureLoginStatus = 'Initializing' | 'LoggingIn' | 'LoggedIn' | 'LoggedOut';
+export type AzureLoginStatus =
+	| "Initializing"
+	| "LoggingIn"
+	| "LoggedIn"
+	| "LoggedOut";
 
 export type AzureEnvironmentParameters = {
 	/**
@@ -208,7 +212,7 @@ export class AzureEnvironment {
 	 * @param {string} [parameters.keyVaultDnsSuffix] - The keyvault service dns suffix
 	 * @param {string} [parameters.azureDataLakeStoreFileSystemEndpointSuffix] - The data lake store filesystem service dns suffix
 	 * @param {string} [parameters.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix] - The data lake analytics job and catalog service dns suffix
-	 * @param {bool} [parameters.validateAuthority] - Determines whether the authentication endpoint should 
+	 * @param {bool} [parameters.validateAuthority] - Determines whether the authentication endpoint should
 	 * be validated with Azure AD. Default value is true.
 	 */
 	constructor(parameters: AzureEnvironmentParameters);
@@ -226,7 +230,7 @@ export interface AzureAccount {
 	readonly filters: AzureResourceFilter[];
 	readonly onFiltersChanged: Event<void>;
 	readonly waitForFilters: () => Promise<boolean>;
-	createCloudShell(os: 'Linux' | 'Windows'): CloudShell;
+	createCloudShell(os: "Linux" | "Windows"): CloudShell;
 }
 
 export interface AzureSession {
@@ -243,7 +247,7 @@ export interface AzureSubscription {
 
 export type AzureResourceFilter = AzureSubscription;
 
-export type CloudShellStatus = 'Connecting' | 'Connected' | 'Disconnected';
+export type CloudShellStatus = "Connecting" | "Connected" | "Disconnected";
 
 export interface UploadOptions {
 	contentLength?: number;
@@ -257,5 +261,9 @@ export interface CloudShell {
 	readonly waitForConnection: () => Promise<boolean>;
 	readonly terminal: Promise<Terminal>;
 	readonly session: Promise<AzureSession>;
-	readonly uploadFile: (filename: string, stream: ReadStream, options?: UploadOptions) => Promise<void>;
+	readonly uploadFile: (
+		filename: string,
+		stream: ReadStream,
+		options?: UploadOptions
+	) => Promise<void>;
 }
