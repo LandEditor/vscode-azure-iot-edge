@@ -2,19 +2,19 @@
   "name": "azure-iot-edge",
   "displayName": "Azure IoT Edge",
   "description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
-  "version": "1.25.11",
-  "publisher": "vsciot-vscode",
+  "version": "0.0.1",
+  "publisher": "playform",
   "aiKey": "95b20d64-f54f-4de3-8ad5-165a75a6c6fe",
   "icon": "logo.png",
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/vscode-azure-iot-edge.git"
+    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
   },
   "bugs": {
-    "url": "https://github.com/Microsoft/vscode-azure-iot-edge/issues"
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
   },
-  "homepage": "https://github.com/Microsoft/vscode-azure-iot-edge/blob/master/README.md",
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
   "activationEvents": [
     "onCommand:azure-iot-edge.buildSolution",
     "onCommand:azure-iot-edge.buildAndPushSolution",
@@ -520,7 +520,8 @@
     "tslint": "tslint -t verbose src/**/*.ts",
     "test": "tsc -p ./ && node ./out/test/runTests.js",
     "webpack": "webpack --mode development",
-    "webpack-dev": "webpack --mode development --watch"
+    "webpack-dev": "webpack --mode development --watch",
+    "prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'"
   },
   "devDependencies": {
     "@azure/arm-resources": "5.2.0",
@@ -547,7 +548,8 @@
     "vscode-test": "1.6.1",
     "webpack": "5.89.0",
     "webpack-cli": "5.1.4",
-    "minimist": "1.2.8"
+    "minimist": "1.2.8",
+    "typescript-esbuild": "0.3.1"
   },
   "dependencies": {
     "@azure/arm-containerregistry": "10.1.0",
@@ -572,5 +574,15 @@
   "extensionDependencies": [
     "ms-vscode.azure-account",
     "vsciot-vscode.azure-iot-toolkit"
-  ]
+  ],
+  "type": "module",
+  "private": "false",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "Nikola Hristov",
+    "email": "nikola@nikolahristov.tech",
+    "url": "https://nikolahristov.tech"
+  }
 }
