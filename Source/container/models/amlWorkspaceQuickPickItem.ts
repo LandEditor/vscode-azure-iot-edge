@@ -7,14 +7,14 @@ import * as vscode from "vscode";
 import { AzureSubscription } from "../../typings/azure-account.api";
 
 export class AmlWorkspaceQuickPickItem implements vscode.QuickPickItem {
-    public readonly description: string;
-    public readonly detail?: string;
+	public readonly description: string;
+	public readonly detail?: string;
 
-    constructor(
-        public readonly label: string,
-        public readonly workspace: Workspace,
-        public readonly azureSubscription: AzureSubscription,
-    ) {
-        this.description = azureSubscription.subscription.displayName;
-    }
+	constructor(
+		public readonly label: string,
+		public readonly workspace: Workspace,
+		public readonly azureSubscription: AzureSubscription
+	) {
+		this.description = azureSubscription.subscription.displayName;
+	}
 }
