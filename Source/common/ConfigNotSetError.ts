@@ -4,7 +4,7 @@
 "use strict";
 
 export class ConfigNotSetError extends Error {
-	constructor(msg: string) {
-		super(msg);
-	}
+    constructor(msg: string) {
+        super(msg);
+    }
 }

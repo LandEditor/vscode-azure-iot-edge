@@ -2,5 +2,5 @@
 // Licensed under the MIT license.
 
 export interface IDeviceItem {
-	readonly connectionString: string;
+    readonly connectionString: string;
 }
