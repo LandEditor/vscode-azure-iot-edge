@@ -2,10 +2,10 @@
 	"object" == typeof exports && "object" == typeof module
 		? (module.exports = e())
 		: "function" == typeof define && define.amd
-		? define([], e)
-		: "object" == typeof exports
-		? (exports.VueSelect = e())
-		: (t.VueSelect = e());
+		  ? define([], e)
+		  : "object" == typeof exports
+		    ? (exports.VueSelect = e())
+		    : (t.VueSelect = e());
 })(this, function () {
 	return (function (t) {
 		function e(o) {
@@ -40,8 +40,8 @@
 				"undefined" != typeof window && window.Math == Math
 					? window
 					: "undefined" != typeof self && self.Math == Math
-					? self
-					: Function("return this")());
+					  ? self
+					  : Function("return this")());
 			"number" == typeof __g && (__g = n);
 		},
 		function (t, e) {
@@ -165,36 +165,49 @@
 									d && "function" != typeof x[l]
 										? n[l]
 										: v && c
-										? i(f, o)
-										: g && x[l] == f
-										? (function (t) {
-												var e = function (e, n, o) {
-													if (this instanceof t) {
-														switch (
-															arguments.length
+										  ? i(f, o)
+										  : g && x[l] == f
+										    ? (function (t) {
+														var e = function (
+															e,
+															n,
+															o
 														) {
-															case 0:
-																return new t();
-															case 1:
-																return new t(e);
-															case 2:
+															if (
+																this instanceof
+																t
+															) {
+																switch (
+																	arguments.length
+																) {
+																	case 0:
+																		return new t();
+																	case 1:
+																		return new t(
+																			e
+																		);
+																	case 2:
+																		return new t(
+																			e,
+																			n
+																		);
+																}
 																return new t(
 																	e,
-																	n
+																	n,
+																	o
 																);
-														}
-														return new t(e, n, o);
-													}
-													return t.apply(
-														this,
-														arguments
-													);
-												};
-												return (e[a] = t[a]), e;
-										  })(f)
-										: b && "function" == typeof f
-										? i(Function.call, f)
-										: f),
+															}
+															return t.apply(
+																this,
+																arguments
+															);
+														};
+														return (e[a] = t[a]), e;
+										      })(f)
+										    : b && "function" == typeof f
+										      ? i(Function.call, f)
+										      : f),
 								b &&
 									(((y.virtual || (y.virtual = {}))[l] = f),
 									t & u.R && m && !m[l] && s(m, l, f)));
@@ -380,10 +393,11 @@
 						return t <= this.viewport().top
 							? this.scrollTo(t)
 							: e >= this.viewport().bottom
-							? this.scrollTo(
-									this.viewport().top + this.pointerHeight()
-							  )
-							: void 0;
+							  ? this.scrollTo(
+										this.viewport().top +
+											this.pointerHeight()
+							    )
+							  : void 0;
 					},
 					pixelsToPointerTop: function t() {
 						var t = 0;
@@ -796,8 +810,8 @@
 								? this.onChange(t)
 								: null
 							: this.onChange && t !== e
-							? this.onChange(t)
-							: null;
+							  ? this.onChange(t)
+							  : null;
 					},
 					options: function (t) {
 						this.mutableOptions = t;
@@ -840,8 +854,8 @@
 							this.multiple && !this.mutableValue
 								? (this.mutableValue = [t])
 								: this.multiple
-								? this.mutableValue.push(t)
-								: (this.mutableValue = t);
+								  ? this.mutableValue.push(t)
+								  : (this.mutableValue = t);
 						}
 						this.onAfterSelect(t);
 					},
@@ -1021,8 +1035,8 @@
 						return this.multiple && this.mutableValue
 							? this.mutableValue
 							: this.mutableValue
-							? [].concat(this.mutableValue)
-							: [];
+							  ? [].concat(this.mutableValue)
+							  : [];
 					},
 					showClearButton: function () {
 						return (
@@ -1126,8 +1140,8 @@
 								t !== a.default.prototype
 								? "symbol"
 								: "undefined" == typeof t
-								? "undefined"
-								: u(t);
+								  ? "undefined"
+								  : u(t);
 					  };
 		},
 		function (t, e, n) {
@@ -1370,11 +1384,11 @@
 						o(t, i)
 							? t[i]
 							: "function" == typeof t.constructor &&
-							  t instanceof t.constructor
-							? t.constructor.prototype
-							: t instanceof Object
-							? s
-							: null
+							    t instanceof t.constructor
+							  ? t.constructor.prototype
+							  : t instanceof Object
+							    ? s
+							    : null
 					);
 				};
 		},
@@ -1421,8 +1435,8 @@
 									? a.charAt(u)
 									: i
 								: t
-								? a.slice(u, u + 2)
-								: ((i - 55296) << 10) + (s - 56320) + 65536);
+								  ? a.slice(u, u + 2)
+								  : ((i - 55296) << 10) + (s - 56320) + 65536);
 				};
 			};
 		},
@@ -1460,10 +1474,10 @@
 					return !t || n >= t.length
 						? ((this._t = void 0), r(1))
 						: "keys" == e
-						? r(0, n)
-						: "values" == e
-						? r(0, t[n])
-						: r(0, [n, t[n]]);
+						  ? r(0, n)
+						  : "values" == e
+						    ? r(0, t[n])
+						    : r(0, [n, t[n]]);
 				},
 				"values"
 			)),

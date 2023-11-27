@@ -7,8 +7,8 @@
 	typeof exports === "object" && typeof module !== "undefined"
 		? (module.exports = factory())
 		: typeof define === "function" && define.amd
-		? define(factory)
-		: (global.Vue = factory());
+		  ? define(factory)
+		  : (global.Vue = factory());
 })(this, function () {
 	"use strict";
 
@@ -92,8 +92,8 @@
 		return val == null
 			? ""
 			: typeof val === "object"
-			? JSON.stringify(val, null, 2)
-			: String(val);
+			  ? JSON.stringify(val, null, 2)
+			  : String(val);
 	}
 
 	/**
@@ -643,8 +643,8 @@
 				typeof vm === "function" && vm.cid != null
 					? vm.options
 					: vm._isVue
-					? vm.$options || vm.constructor.options
-					: vm || {};
+					  ? vm.$options || vm.constructor.options
+					  : vm || {};
 			var name = options.name || options._componentTag;
 			var file = options.__file;
 			if (!name && file) {
@@ -1284,8 +1284,8 @@
 			? parentVal
 				? parentVal.concat(childVal)
 				: Array.isArray(childVal)
-				? childVal
-				: [childVal]
+				  ? childVal
+				  : [childVal]
 			: parentVal;
 	}
 
@@ -1350,8 +1350,8 @@
 			ret[key$1] = parent
 				? parent.concat(child)
 				: Array.isArray(child)
-				? child
-				: [child];
+				  ? child
+				  : [child];
 		}
 		return ret;
 	};
@@ -2295,8 +2295,8 @@
 		return isPrimitive(children)
 			? [createTextVNode(children)]
 			: Array.isArray(children)
-			? normalizeArrayChildren(children)
-			: undefined;
+			  ? normalizeArrayChildren(children)
+			  : undefined;
 	}
 
 	function isTextNode(node) {
@@ -8836,10 +8836,10 @@
 						? id + "comment"
 						: id + child.tag
 					: isPrimitive(child.key)
-					? String(child.key).indexOf(id) === 0
-						? child.key
-						: id + child.key
-					: child.key;
+					  ? String(child.key).indexOf(id) === 0
+							? child.key
+							: id + child.key
+					  : child.key;
 
 			var data = ((child.data || (child.data = {})).transition =
 				extractTransitionData(this));
@@ -9932,9 +9932,9 @@
 							? text
 							: decodeHTMLCached(text)
 						: // only preserve whitespace if its not right after a starting tag
-						preserveWhitespace && children.length
-						? " "
-						: "";
+						  preserveWhitespace && children.length
+						  ? " "
+						  : "";
 				if (text) {
 					var res;
 					if (
@@ -10769,8 +10769,8 @@
 			var handlerCode = isMethodPath
 				? "return " + handler.value + "($event)"
 				: isFunctionExpression
-				? "return (" + handler.value + ")($event)"
-				: handler.value;
+				  ? "return (" + handler.value + ")($event)"
+				  : handler.value;
 			/* istanbul ignore if */
 			return "function($event){" + code + handlerCode + "}";
 		}
@@ -10994,8 +10994,8 @@
 			return altGen
 				? altGen(el, state)
 				: el.once
-				? genOnce(el, state)
-				: genElement(el, state);
+				  ? genOnce(el, state)
+				  : genElement(el, state);
 		}
 	}
 
