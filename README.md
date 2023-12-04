@@ -169,7 +169,7 @@ modules.
 
 > **Q:** Help me understand IoT Edge deployment manifest.
 >
-> **A:**
+> **A:** >
 > [Learn how to use deployment manifests to deploy modules and establish routes](https://docs.microsoft.com/azure/iot-edge/module-composition)
 
 > **Q:** If I run this extension on Linux (e.g. Ubuntu), when executing docker
