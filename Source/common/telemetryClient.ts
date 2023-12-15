@@ -7,7 +7,7 @@ import * as vscode from "vscode";
 import { Constants } from "./constants";
 
 const packageJSON = vscode.extensions.getExtension(
-	Constants.ExtensionId
+	Constants.ExtensionId,
 ).packageJSON;
 const extensionVersion: string = packageJSON.version;
 const aiKey: string = packageJSON.aiKey;
@@ -15,7 +15,7 @@ const aiKey: string = packageJSON.aiKey;
 export class TelemetryClient {
 	public static sendEvent(
 		eventName: string,
-		properties?: { [key: string]: string }
+		properties?: { [key: string]: string },
 	): void {
 		this.stampInternalProperty(properties);
 		this._client.sendTelemetryEvent(eventName, properties);
@@ -23,7 +23,7 @@ export class TelemetryClient {
 
 	public static sendErrorEvent(
 		eventName: string,
-		properties?: { [key: string]: string }
+		properties?: { [key: string]: string },
 	): void {
 		this.stampInternalProperty(properties);
 		const errorProperties = Object.values(Constants.errorProperties);
@@ -31,7 +31,7 @@ export class TelemetryClient {
 			eventName,
 			properties,
 			null,
-			errorProperties
+			errorProperties,
 		);
 	}
 
@@ -41,7 +41,7 @@ export class TelemetryClient {
 		Constants.ExtensionId,
 		extensionVersion,
 		aiKey,
-		true
+		true,
 	);
 
 	private static isInternalUser(): boolean {

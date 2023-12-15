@@ -25,15 +25,15 @@ export class Gallery {
 				{
 					enableScripts: true,
 					retainContextWhenHidden: true,
-				}
+				},
 			);
 
 			const srcPath: string = this.context.asAbsolutePath(
 				path.join(
 					Constants.assetsFolder,
 					Constants.galleryAssetsFolder,
-					Constants.galleryIndexHtmlName
-				)
+					Constants.galleryIndexHtmlName,
+				),
 			);
 			this.panel.webview.html = await this.getWebViewContent(srcPath);
 
@@ -47,7 +47,7 @@ export class Gallery {
 									"azure-iot-edge.initializeSample",
 									message.name,
 									message.url,
-									message.platform
+									message.platform,
 								);
 							}
 							break;
@@ -55,18 +55,18 @@ export class Gallery {
 							if (message.url) {
 								TelemetryClient.sendEvent(
 									Constants.openSampleUrlEvent,
-									{ Url: message.url }
+									{ Url: message.url },
 								);
 								await vscode.commands.executeCommand(
 									"vscode.open",
-									vscode.Uri.parse(message.url)
+									vscode.Uri.parse(message.url),
 								);
 							}
 							break;
 					}
 				},
 				undefined,
-				this.context.subscriptions
+				this.context.subscriptions,
 			);
 
 			this.panel.onDidDispose(() => {
@@ -81,7 +81,7 @@ export class Gallery {
 		name: string,
 		url: string,
 		platform: string,
-		channel: vscode.OutputChannel
+		channel: vscode.OutputChannel,
 	) {
 		try {
 			const parentPath = await Utility.getSolutionParentFolder();
@@ -93,18 +93,18 @@ export class Gallery {
 			await fse.ensureDir(parentPath);
 			const sampleName: string = await Utility.inputSolutionName(
 				parentPath,
-				name
+				name,
 			);
 			const samplePath: string = path.join(parentPath, sampleName);
 
 			channel.show();
 			channel.appendLine(
-				`Downloading sample project to ${samplePath}...`
+				`Downloading sample project to ${samplePath}...`,
 			);
 			await this.downloadSamplePackage(url, samplePath);
 
 			const defaultPlatformKey = Utility.getVscodeSettingKey(
-				Constants.defPlatformConfig
+				Constants.defPlatformConfig,
 			);
 			let vscodeSettingJson =
 				await Utility.getUserSettingJsonFromSolutionPath(samplePath);
@@ -128,17 +128,17 @@ export class Gallery {
 			}
 
 			channel.appendLine(
-				`Setting default platform to ${vscodeSettingJson[defaultPlatformKey].platform}...`
+				`Setting default platform to ${vscodeSettingJson[defaultPlatformKey].platform}...`,
 			);
 
 			await fse.outputJson(
 				Utility.getVscodeSolutionSettingPath(samplePath),
 				vscodeSettingJson,
-				{ spaces: 2 }
+				{ spaces: 2 },
 			);
 
 			channel.appendLine(
-				`Sample project downloaded successfully and will be opened now.`
+				`Sample project downloaded successfully and will be opened now.`,
 			);
 			TelemetryClient.sendEvent(Constants.openSampleEvent, {
 				Result: "Success",
@@ -146,7 +146,7 @@ export class Gallery {
 			await vscode.commands.executeCommand(
 				"vscode.openFolder",
 				vscode.Uri.file(samplePath),
-				false
+				false,
 			);
 		} catch (error) {
 			if (error instanceof UserCancelledError) {
@@ -162,7 +162,7 @@ export class Gallery {
 		let html = await fse.readFile(templatePath, "utf-8");
 
 		const extensionVersion = vscode.extensions.getExtension(
-			Constants.ExtensionId
+			Constants.ExtensionId,
 		).packageJSON.version;
 		html = html.replace("{{version}}", extensionVersion);
 
@@ -176,14 +176,14 @@ export class Gallery {
 						.toString(true) +
 					'"'
 				);
-			}
+			},
 		);
 		return html;
 	}
 
 	private async downloadSamplePackage(
 		url: string,
-		fsPath: string
+		fsPath: string,
 	): Promise<void> {
 		await new Promise<void>((resolve, reject) => {
 			download(url, fsPath, (err) => {

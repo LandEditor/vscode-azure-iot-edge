@@ -13,7 +13,7 @@ export class AcrRegistryQuickPickItem implements vscode.QuickPickItem {
 
 	constructor(
 		public readonly registry: Registry,
-		public readonly azureSubscription: AzureSubscription
+		public readonly azureSubscription: AzureSubscription,
 	) {
 		this.label = registry.loginServer || "";
 		this.description = azureSubscription.subscription.displayName;

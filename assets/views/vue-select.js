@@ -4,8 +4,8 @@
 		: "function" == typeof define && define.amd
 		  ? define([], e)
 		  : "object" == typeof exports
-		    ? (exports.VueSelect = e())
-		    : (t.VueSelect = e());
+			  ? (exports.VueSelect = e())
+			  : (t.VueSelect = e());
 })(this, function () {
 	return (function (t) {
 		function e(o) {
@@ -167,11 +167,11 @@
 										: v && c
 										  ? i(f, o)
 										  : g && x[l] == f
-										    ? (function (t) {
+											  ? (function (t) {
 														var e = function (
 															e,
 															n,
-															o
+															o,
 														) {
 															if (
 																this instanceof
@@ -184,30 +184,30 @@
 																		return new t();
 																	case 1:
 																		return new t(
-																			e
+																			e,
 																		);
 																	case 2:
 																		return new t(
 																			e,
-																			n
+																			n,
 																		);
 																}
 																return new t(
 																	e,
 																	n,
-																	o
+																	o,
 																);
 															}
 															return t.apply(
 																this,
-																arguments
+																arguments,
 															);
 														};
 														return (e[a] = t[a]), e;
-										      })(f)
-										    : b && "function" == typeof f
-										      ? i(Function.call, f)
-										      : f),
+												  })(f)
+											  : b && "function" == typeof f
+												  ? i(Function.call, f)
+												  : f),
 								b &&
 									(((y.virtual || (y.virtual = {}))[l] = f),
 									t & u.R && m && !m[l] && s(m, l, f)));
@@ -248,7 +248,7 @@
 				return "Symbol(".concat(
 					void 0 === t ? "" : t,
 					")_",
-					(++n + o).toString(36)
+					(++n + o).toString(36),
 				);
 			};
 		},
@@ -261,7 +261,7 @@
 		function (t, e) {
 			t.exports =
 				"constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(
-					","
+					",",
 				);
 		},
 		function (t, e) {
@@ -358,7 +358,7 @@
 							this.$emit(
 								"search",
 								this.search,
-								this.toggleLoading
+								this.toggleLoading,
 							));
 					},
 					loading: function (t) {
@@ -395,8 +395,8 @@
 							: e >= this.viewport().bottom
 							  ? this.scrollTo(
 										this.viewport().top +
-											this.pointerHeight()
-							    )
+											this.pointerHeight(),
+								  )
 							  : void 0;
 					},
 					pixelsToPointerTop: function t() {
@@ -464,7 +464,7 @@
 					typeAheadSelect: function () {
 						this.filteredOptions[this.typeAheadPointer]
 							? this.select(
-									this.filteredOptions[this.typeAheadPointer]
+									this.filteredOptions[this.typeAheadPointer],
 							  )
 							: this.taggable &&
 							  this.search.length &&
@@ -607,12 +607,11 @@
 									"document.F=Object" +
 									r +
 									"/script" +
-									s
+									s,
 							),
 							t.close(),
 							l = t.F;
 						o--;
-
 					)
 						delete l[u][i[o]];
 					return l();
@@ -729,7 +728,7 @@
 													(" exist in options object " +
 														(0, l.default)(t) +
 														".\n") +
-													"http://sagalbot.github.io/vue-select/#ex-labels"
+													"http://sagalbot.github.io/vue-select/#ex-labels",
 										  )
 									: t
 							);
@@ -847,7 +846,7 @@
 											'" does not' +
 											(" exist in options object " +
 												(0, l.default)(t) +
-												".")
+												"."),
 									);
 								t = t[this.index];
 							}
@@ -1012,7 +1011,7 @@
 							? this.filter(
 									this.mutableOptions,
 									this.search,
-									this
+									this,
 							  )
 							: this.mutableOptions;
 						return (
@@ -1384,11 +1383,11 @@
 						o(t, i)
 							? t[i]
 							: "function" == typeof t.constructor &&
-							    t instanceof t.constructor
+								  t instanceof t.constructor
 							  ? t.constructor.prototype
 							  : t instanceof Object
-							    ? s
-							    : null
+								  ? s
+								  : null
 					);
 				};
 		},
@@ -1407,7 +1406,7 @@
 									n(1);
 								}),
 						"Object",
-						s
+						s,
 					);
 			};
 		},
@@ -1476,10 +1475,10 @@
 						: "keys" == e
 						  ? r(0, n)
 						  : "values" == e
-						    ? r(0, t[n])
-						    : r(0, [n, t[n]]);
+							  ? r(0, t[n])
+							  : r(0, [n, t[n]]);
 				},
-				"values"
+				"values",
 			)),
 				(i.Arguments = i.Array),
 				o("keys"),
@@ -1518,7 +1517,7 @@
 						: ((t = o(e, n)),
 						  (this._i += t.length),
 						  { value: t, done: !1 });
-				}
+				},
 			);
 		},
 		function (t, e, n) {
@@ -1575,7 +1574,7 @@
 									get: function () {
 										return C(this, "a", { value: 7 }).a;
 									},
-								})
+								}),
 							).a
 						);
 					})
@@ -1661,7 +1660,6 @@
 					for (
 						var e, n = t === R, o = M(n ? I : x(t)), i = [], s = 0;
 						o.length > s;
-
 					)
 						!r(D, (e = o[s++])) || (n && !r(R, e)) || i.push(D[e]);
 					return i;
@@ -1698,11 +1696,10 @@
 			for (
 				var et =
 						"hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(
-							","
+							",",
 						),
 					nt = 0;
 				et.length > nt;
-
 			)
 				d(et[nt++]);
 			for (var ot = P(d.store), rt = 0; ot.length > rt; ) b(ot[rt++]);
@@ -1748,7 +1745,6 @@
 								for (
 									var e, n, o = [t], r = 1;
 									arguments.length > r;
-
 								)
 									o.push(arguments[r++]);
 								if (
@@ -1763,7 +1759,7 @@
 														(e = n.call(
 															this,
 															t,
-															e
+															e,
 														)),
 													!W(e))
 												)
@@ -1773,7 +1769,7 @@
 										E.apply(T, o)
 									);
 							},
-						}
+						},
 					),
 				L[V][F] || n(6)(L[V], F, L[V].valueOf),
 				f(L, "Symbol"),
@@ -1795,7 +1791,7 @@
 					s = n(8)("toStringTag"),
 					a =
 						"CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,TextTrackList,TouchList".split(
-							","
+							",",
 						),
 					u = 0;
 				u < a.length;
@@ -1932,15 +1928,15 @@
 																			"\n            " +
 																				t._s(
 																					t.getOptionLabel(
-																						e
-																					)
+																						e,
+																					),
 																				) +
-																				"\n          "
+																				"\n          ",
 																		),
 																	],
 																	null,
 																	"object" ==
-																		typeof e
+																	typeof e
 																		? e
 																		: ((o =
 																				{}),
@@ -1948,7 +1944,7 @@
 																				t.label
 																		  ] =
 																				e),
-																		  o)
+																		  o),
 																),
 																t._v(" "),
 																t.multiple
@@ -1966,10 +1962,10 @@
 																				},
 																				on: {
 																					click: function (
-																						n
+																						n,
 																					) {
 																						t.deselect(
-																							e
+																							e,
 																						);
 																					},
 																				},
@@ -1985,15 +1981,15 @@
 																					},
 																					[
 																						t._v(
-																							"×"
+																							"×",
 																						),
-																					]
+																					],
 																				),
-																			]
+																			],
 																	  )
 																	: t._e(),
 															],
-															2
+															2,
 														),
 													],
 													{
@@ -2007,7 +2003,7 @@
 														deselect: t.deselect,
 														multiple: t.multiple,
 														disabled: t.disabled,
-													}
+													},
 												);
 												var o, r;
 											}),
@@ -2048,10 +2044,10 @@
 																	e.keyCode,
 																	"delete",
 																	[8, 46],
-																	e.key
+																	e.key,
 																)
 																? void t.maybeDeleteValue(
-																		e
+																		e,
 																  )
 																: null;
 														},
@@ -2062,11 +2058,11 @@
 																	e.keyCode,
 																	"up",
 																	38,
-																	e.key
+																	e.key,
 																)
 																? (e.preventDefault(),
 																  void t.typeAheadUp(
-																		e
+																		e,
 																  ))
 																: null;
 														},
@@ -2077,11 +2073,11 @@
 																	e.keyCode,
 																	"down",
 																	40,
-																	e.key
+																	e.key,
 																)
 																? (e.preventDefault(),
 																  void t.typeAheadDown(
-																		e
+																		e,
 																  ))
 																: null;
 														},
@@ -2092,11 +2088,11 @@
 																	e.keyCode,
 																	"enter",
 																	13,
-																	e.key
+																	e.key,
 																)
 																? (e.preventDefault(),
 																  void t.typeAheadSelect(
-																		e
+																		e,
 																  ))
 																: null;
 														},
@@ -2107,10 +2103,10 @@
 																	e.keyCode,
 																	"tab",
 																	9,
-																	e.key
+																	e.key,
 																)
 																? void t.onTab(
-																		e
+																		e,
 																  )
 																: null;
 														},
@@ -2121,7 +2117,7 @@
 																e.keyCode,
 																"esc",
 																27,
-																e.key
+																e.key,
 															)
 															? void t.onEscape(e)
 															: null;
@@ -2136,7 +2132,7 @@
 												},
 											}),
 										],
-										2
+										2,
 									),
 									t._v(" "),
 									n(
@@ -2174,9 +2170,9 @@
 																	"true",
 															},
 														},
-														[t._v("×")]
+														[t._v("×")],
 													),
-												]
+												],
 											),
 											t._v(" "),
 											t.noDrop
@@ -2206,13 +2202,13 @@
 														],
 														staticClass: "spinner",
 													},
-													[t._v("Loading...")]
+													[t._v("Loading...")],
 												),
 											]),
 										],
-										2
+										2,
 									),
-								]
+								],
 							),
 							t._v(" "),
 							n("transition", { attrs: { name: t.transition } }, [
@@ -2240,7 +2236,7 @@
 																key: o,
 																class: {
 																	active: t.isOptionSelected(
-																		e
+																		e,
 																	),
 																	highlight:
 																		o ===
@@ -2252,7 +2248,7 @@
 																on: {
 																	mouseover:
 																		function (
-																			e
+																			e,
 																		) {
 																			t.typeAheadPointer =
 																				o;
@@ -2266,12 +2262,12 @@
 																		on: {
 																			mousedown:
 																				function (
-																					n
+																					n,
 																				) {
 																					n.preventDefault(),
 																						n.stopPropagation(),
 																						t.select(
-																							e
+																							e,
 																						);
 																				},
 																		},
@@ -2284,15 +2280,15 @@
 																					"\n          " +
 																						t._s(
 																							t.getOptionLabel(
-																								e
-																							)
+																								e,
+																							),
 																						) +
-																						"\n        "
+																						"\n        ",
 																				),
 																			],
 																			null,
 																			"object" ==
-																				typeof e
+																			typeof e
 																				? e
 																				: ((r =
 																						{}),
@@ -2300,15 +2296,15 @@
 																						t.label
 																				  ] =
 																						e),
-																				  r)
+																				  r),
 																		),
 																	],
-																	2
+																	2,
 																),
-															]
+															],
 														);
 														var r;
-													}
+													},
 												),
 												t._v(" "),
 												t.filteredOptions.length
@@ -2324,20 +2320,20 @@
 																	"no-options",
 																	[
 																		t._v(
-																			"Sorry, no matching options."
+																			"Sorry, no matching options.",
 																		),
-																	]
+																	],
 																),
 															],
-															2
+															2,
 													  ),
 											],
-											2
+											2,
 									  )
 									: t._e(),
 							]),
 						],
-						1
+						1,
 					);
 				},
 				staticRenderFns: [],
@@ -2388,7 +2384,7 @@
 				else {
 					if ("bottom" !== t.insertAt)
 						throw new Error(
-							"Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'."
+							"Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.",
 						);
 					n.appendChild(e);
 				}
@@ -2451,7 +2447,7 @@
 						(n +=
 							"\n/*# sourceMappingURL=data:application/json;base64," +
 							btoa(
-								unescape(encodeURIComponent(JSON.stringify(r)))
+								unescape(encodeURIComponent(JSON.stringify(r))),
 							) +
 							" */")),
 					t.styleSheet)
@@ -2475,7 +2471,7 @@
 				},
 				d = p(function () {
 					return /msie [6-9]\b/.test(
-						window.navigator.userAgent.toLowerCase()
+						window.navigator.userAgent.toLowerCase(),
 					);
 				}),
 				h = p(function () {

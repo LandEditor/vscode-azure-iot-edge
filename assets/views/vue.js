@@ -630,7 +630,9 @@
 		tip = function (msg, vm) {
 			if (hasConsole && !config.silent) {
 				console.warn(
-					"[Vue tip]: " + msg + (vm ? generateComponentTrace(vm) : "")
+					"[Vue tip]: " +
+						msg +
+						(vm ? generateComponentTrace(vm) : ""),
 				);
 			}
 		};
@@ -779,7 +781,7 @@
 		elm,
 		context,
 		componentOptions,
-		asyncFactory
+		asyncFactory,
 	) {
 		this.tag = tag;
 		this.data = data;
@@ -842,7 +844,7 @@
 			vnode.elm,
 			vnode.context,
 			vnode.componentOptions,
-			vnode.asyncFactory
+			vnode.asyncFactory,
 		);
 		cloned.ns = vnode.ns;
 		cloned.isStatic = vnode.isStatic;
@@ -1082,7 +1084,7 @@
 		) {
 			warn(
 				"Cannot set reactive property on undefined, null, or primitive value: " +
-					target
+					target,
 			);
 		}
 		if (Array.isArray(target) && isValidArrayIndex(key)) {
@@ -1099,7 +1101,7 @@
 			"development" !== "production" &&
 				warn(
 					"Avoid adding reactive properties to a Vue instance or its root $data " +
-						"at runtime - declare it upfront in the data option."
+						"at runtime - declare it upfront in the data option.",
 				);
 			return val;
 		}
@@ -1122,7 +1124,7 @@
 		) {
 			warn(
 				"Cannot delete reactive property on undefined, null, or primitive value: " +
-					target
+					target,
 			);
 		}
 		if (Array.isArray(target) && isValidArrayIndex(key)) {
@@ -1134,7 +1136,7 @@
 			"development" !== "production" &&
 				warn(
 					"Avoid deleting properties on a Vue instance or its root $data " +
-						"- just set it to null."
+						"- just set it to null.",
 				);
 			return;
 		}
@@ -1181,7 +1183,7 @@
 					'option "' +
 						key +
 						'" can only be used during instance ' +
-						"creation with the `new` keyword."
+						"creation with the `new` keyword.",
 				);
 			}
 			return defaultStrat(parent, child);
@@ -1234,7 +1236,7 @@
 						: childVal,
 					typeof parentVal === "function"
 						? parentVal.call(this, this)
-						: parentVal
+						: parentVal,
 				);
 			};
 		} else {
@@ -1265,7 +1267,7 @@
 						'The "data" option should be a function ' +
 							"that returns a per-instance value in component " +
 							"definitions.",
-						vm
+						vm,
 					);
 
 				return parentVal;
@@ -1402,14 +1404,14 @@
 					name +
 					'". Component names ' +
 					"can only contain alphanumeric characters and the hyphen, " +
-					"and must start with a letter."
+					"and must start with a letter.",
 			);
 		}
 		if (isBuiltInTag(name) || config.isReservedTag(name)) {
 			warn(
 				"Do not use built-in or reserved HTML elements as component " +
 					"id: " +
-					name
+					name,
 			);
 		}
 	}
@@ -1448,7 +1450,7 @@
 					"but got " +
 					toRawType(props) +
 					".",
-				vm
+				vm,
 			);
 		}
 		options.props = res;
@@ -1480,7 +1482,7 @@
 					"but got " +
 					toRawType(inject) +
 					".",
-				vm
+				vm,
 			);
 		}
 	}
@@ -1509,7 +1511,7 @@
 					"but got " +
 					toRawType(value) +
 					".",
-				vm
+				vm,
 			);
 		}
 	}
@@ -1640,7 +1642,7 @@
 					'": ' +
 					"Props with type Object/Array must use a factory function " +
 					"to return the default value.",
-				vm
+				vm,
 			);
 		}
 		// the raw prop value was also undefined from previous render,
@@ -1694,7 +1696,7 @@
 					", got " +
 					toRawType(value) +
 					".",
-				vm
+				vm,
 			);
 			return;
 		}
@@ -1705,7 +1707,7 @@
 					'Invalid prop: custom validator check failed for prop "' +
 						name +
 						'".',
-					vm
+					vm,
 				);
 			}
 		}
@@ -1966,7 +1968,7 @@
 			"Infinity,undefined,NaN,isFinite,isNaN," +
 				"parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent," +
 				"Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl," +
-				"require" // for Webpack/Browserify
+				"require", // for Webpack/Browserify
 		);
 
 		var warnNonPresent = function (target, key) {
@@ -1978,7 +1980,7 @@
 					"either in the data option, or for class-based components, by " +
 					"initializing the property. " +
 					"See: https://vuejs.org/v2/guide/reactivity.html#Declaring-Reactive-Properties.",
-				target
+				target,
 			);
 		};
 
@@ -1986,14 +1988,14 @@
 
 		if (hasProxy) {
 			var isBuiltInModifier = makeMap(
-				"stop,prevent,self,ctrl,shift,alt,meta,exact"
+				"stop,prevent,self,ctrl,shift,alt,meta,exact",
 			);
 			config.keyCodes = new Proxy(config.keyCodes, {
 				set: function set(target, key, value) {
 					if (isBuiltInModifier(key)) {
 						warn(
 							"Avoid overwriting built-in modifier in config.keyCodes: ." +
-								key
+								key,
 						);
 						return false;
 					} else {
@@ -2134,7 +2136,7 @@
 							event.name +
 							'": got ' +
 							String(cur),
-						vm
+						vm,
 					);
 			} else if (isUndef(old)) {
 				if (isUndef(cur.fns)) {
@@ -2146,7 +2148,7 @@
 					event.once,
 					event.capture,
 					event.passive,
-					event.params
+					event.params,
 				);
 			} else if (cur !== old) {
 				old.fns = cur;
@@ -2234,7 +2236,7 @@
 								altKey +
 								'" instead of "' +
 								key +
-								'".'
+								'".',
 						);
 					}
 				}
@@ -2318,7 +2320,7 @@
 				if (c.length > 0) {
 					c = normalizeArrayChildren(
 						c,
-						(nestedIndex || "") + "_" + i
+						(nestedIndex || "") + "_" + i,
 					);
 					// merge adjacent text nodes
 					if (isTextNode(c[0]) && isTextNode(last)) {
@@ -2423,7 +2425,7 @@
 					warn(
 						"Failed to resolve async component: " +
 							String(factory) +
-							(reason ? "\nReason: " + reason : "")
+							(reason ? "\nReason: " + reason : ""),
 					);
 				if (isDef(factory.errorComp)) {
 					factory.error = true;
@@ -2454,15 +2456,18 @@
 						if (res.delay === 0) {
 							factory.loading = true;
 						} else {
-							setTimeout(function () {
-								if (
-									isUndef(factory.resolved) &&
-									isUndef(factory.error)
-								) {
-									factory.loading = true;
-									forceRender();
-								}
-							}, res.delay || 200);
+							setTimeout(
+								function () {
+									if (
+										isUndef(factory.resolved) &&
+										isUndef(factory.error)
+									) {
+										factory.loading = true;
+										forceRender();
+									}
+								},
+								res.delay || 200,
+							);
 						}
 					}
 
@@ -2629,7 +2634,7 @@
 							hyphenate(event) +
 							'" instead of "' +
 							event +
-							'".'
+							'".',
 					);
 				}
 			}
@@ -2699,7 +2704,7 @@
 
 	function resolveScopedSlots(
 		fns, // see flow/vnode
-		res
+		res,
 	) {
 		res = res || {};
 		for (var i = 0; i < fns.length; i++) {
@@ -2764,7 +2769,7 @@
 					hydrating,
 					false /* removeOnly */,
 					vm.$options._parentElm,
-					vm.$options._refElm
+					vm.$options._refElm,
 				);
 				// no need for the ref nodes after initial patch
 				// this prevents keeping a detached DOM tree in memory (#5851)
@@ -2856,12 +2861,12 @@
 						"You are using the runtime-only build of Vue where the template " +
 							"compiler is not available. Either pre-compile the templates into " +
 							"render functions, or use the compiler-included build.",
-						vm
+						vm,
 					);
 				} else {
 					warn(
 						"Failed to mount component: template or render function not defined.",
-						vm
+						vm,
 					);
 				}
 			}
@@ -2901,7 +2906,7 @@
 			updateComponent,
 			noop,
 			null,
-			true /* isRenderWatcher */
+			true /* isRenderWatcher */,
 		);
 		hydrating = false;
 
@@ -2919,7 +2924,7 @@
 		propsData,
 		listeners,
 		parentVnode,
-		renderChildren
+		renderChildren,
 	) {
 		{
 			isUpdatingChildComponent = true;
@@ -3106,7 +3111,7 @@
 								  watcher.expression +
 								  '"'
 								: "in a component render function."),
-						watcher.vm
+						watcher.vm,
 					);
 					break;
 				}
@@ -3234,7 +3239,7 @@
 							'" ' +
 							"Watcher only accepts simple dot-delimited paths. " +
 							"For full control, use a function instead.",
-						vm
+						vm,
 					);
 			}
 		}
@@ -3255,7 +3260,7 @@
 				handleError(
 					e,
 					vm,
-					'getter for watcher "' + this.expression + '"'
+					'getter for watcher "' + this.expression + '"',
 				);
 			} else {
 				throw e;
@@ -3349,7 +3354,7 @@
 						handleError(
 							e,
 							this.vm,
-							'callback for watcher "' + this.expression + '"'
+							'callback for watcher "' + this.expression + '"',
 						);
 					}
 				} else {
@@ -3467,7 +3472,7 @@
 						'"' +
 							hyphenatedKey +
 							'" is a reserved attribute and cannot be used as component prop.',
-						vm
+						vm,
 					);
 				}
 				defineReactive(props, key, value, function () {
@@ -3479,7 +3484,7 @@
 								'value. Prop being mutated: "' +
 								key +
 								'"',
-							vm
+							vm,
 						);
 					}
 				});
@@ -3506,7 +3511,7 @@
 				warn(
 					"data functions should return an object:\n" +
 						"https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function",
-					vm
+					vm,
 				);
 		}
 		// proxy data on instance
@@ -3522,7 +3527,7 @@
 						'Method "' +
 							key +
 							'" has already been defined as a data property.',
-						vm
+						vm,
 					);
 				}
 			}
@@ -3533,7 +3538,7 @@
 							key +
 							'" is already declared as a prop. ' +
 							"Use prop default value instead.",
-						vm
+						vm,
 					);
 			} else if (!isReserved(key)) {
 				proxy(vm, "_data", key);
@@ -3570,7 +3575,7 @@
 			if ("development" !== "production" && getter == null) {
 				warn(
 					'Getter is missing for computed property "' + key + '".',
-					vm
+					vm,
 				);
 			}
 
@@ -3580,7 +3585,7 @@
 					vm,
 					getter || noop,
 					noop,
-					computedWatcherOptions
+					computedWatcherOptions,
 				);
 			}
 
@@ -3595,14 +3600,14 @@
 						'The computed property "' +
 							key +
 							'" is already defined in data.',
-						vm
+						vm,
 					);
 				} else if (vm.$options.props && key in vm.$options.props) {
 					warn(
 						'The computed property "' +
 							key +
 							'" is already defined as a prop.',
-						vm
+						vm,
 					);
 				}
 			}
@@ -3633,7 +3638,7 @@
 					'Computed property "' +
 						key +
 						'" was assigned to but it has no setter.',
-					this
+					this,
 				);
 			};
 		}
@@ -3665,7 +3670,7 @@
 							key +
 							'" has an undefined value in the component definition. ' +
 							"Did you reference the function correctly?",
-						vm
+						vm,
 					);
 				}
 				if (props && hasOwn(props, key)) {
@@ -3673,7 +3678,7 @@
 						'Method "' +
 							key +
 							'" has already been defined as a prop.',
-						vm
+						vm,
 					);
 				}
 				if (key in vm && isReserved(key)) {
@@ -3681,7 +3686,7 @@
 						'Method "' +
 							key +
 							'" conflicts with an existing Vue instance method. ' +
-							"Avoid defining component methods that start with _ or $."
+							"Avoid defining component methods that start with _ or $.",
 					);
 				}
 			}
@@ -3730,7 +3735,7 @@
 				warn(
 					"Avoid replacing instance root $data. " +
 						"Use nested data properties instead.",
-					this
+					this,
 				);
 			};
 			propsDef.set = function () {
@@ -3784,7 +3789,7 @@
 								'injection being mutated: "' +
 								key +
 								'"',
-							vm
+							vm,
 						);
 					});
 				}
@@ -3881,7 +3886,7 @@
 				if ("development" !== "production" && !isObject(bindObject)) {
 					warn(
 						"slot v-bind without argument expects an Object",
-						this
+						this,
 					);
 				}
 				props = extend(extend({}, bindObject), props);
@@ -3897,7 +3902,7 @@
 							name +
 							'" found in the same render tree ' +
 							"- this will likely cause render errors.",
-						this
+						this,
 					);
 				}
 				slotNodes._rendered = true;
@@ -3942,7 +3947,7 @@
 		key,
 		builtInKeyCode,
 		eventKeyName,
-		builtInKeyName
+		builtInKeyName,
 	) {
 		var mappedKeyCode = config.keyCodes[key] || builtInKeyCode;
 		if (builtInKeyName && eventKeyName && !config.keyCodes[key]) {
@@ -3965,7 +3970,7 @@
 				"development" !== "production" &&
 					warn(
 						"v-bind without argument expects an Object or Array value",
-						this
+						this,
 					);
 			} else {
 				if (Array.isArray(value)) {
@@ -4021,7 +4026,7 @@
 		tree = cached[index] = this.$options.staticRenderFns[index].call(
 			this._renderProxy,
 			null,
-			this // for render fns generated for functional component templates
+			this, // for render fns generated for functional component templates
 		);
 		markStatic(tree, "__static__" + index, false);
 		return tree;
@@ -4142,7 +4147,7 @@
 					b,
 					c,
 					d,
-					needNormalization
+					needNormalization,
 				);
 				if (vnode && !Array.isArray(vnode)) {
 					vnode.fnScopeId = options._scopeId;
@@ -4164,7 +4169,7 @@
 		propsData,
 		data,
 		contextVm,
-		children
+		children,
 	) {
 		var options = Ctor.options;
 		var props = {};
@@ -4174,7 +4179,7 @@
 				props[key] = validateProp(
 					key,
 					propOptions,
-					propsData || emptyObject
+					propsData || emptyObject,
 				);
 			}
 		} else {
@@ -4191,7 +4196,7 @@
 			props,
 			children,
 			contextVm,
-			Ctor
+			Ctor,
 		);
 
 		var vnode = options.render.call(null, renderContext._c, renderContext);
@@ -4201,7 +4206,7 @@
 				vnode,
 				data,
 				renderContext.parent,
-				options
+				options,
 			);
 		} else if (Array.isArray(vnode)) {
 			var vnodes = normalizeChildren(vnode) || [];
@@ -4211,7 +4216,7 @@
 					vnodes[i],
 					data,
 					renderContext.parent,
-					options
+					options,
 				);
 			}
 			return res;
@@ -4271,7 +4276,7 @@
 						vnode,
 						activeInstance,
 						parentElm,
-						refElm
+						refElm,
 					));
 				child.$mount(hydrating ? vnode.elm : undefined, hydrating);
 			}
@@ -4285,7 +4290,7 @@
 				options.propsData, // updated props
 				options.listeners, // updated listeners
 				vnode, // new parent vnode
-				options.children // new children
+				options.children, // new children
 			);
 		},
 
@@ -4307,7 +4312,7 @@
 				} else {
 					activateChildComponent(
 						componentInstance,
-						true /* direct */
+						true /* direct */,
 					);
 				}
 			}
@@ -4321,7 +4326,7 @@
 				} else {
 					deactivateChildComponent(
 						componentInstance,
-						true /* direct */
+						true /* direct */,
 					);
 				}
 			}
@@ -4365,7 +4370,7 @@
 					data,
 					context,
 					children,
-					tag
+					tag,
 				);
 			}
 		}
@@ -4391,7 +4396,7 @@
 				propsData,
 				data,
 				context,
-				children
+				children,
 			);
 		}
 
@@ -4433,7 +4438,7 @@
 				tag: tag,
 				children: children,
 			},
-			asyncFactory
+			asyncFactory,
 		);
 
 		// Weex specific: invoke recycle-list optimized @render function for
@@ -4447,7 +4452,7 @@
 		vnode, // we know it's MountedComponentVNode but flow doesn't
 		parent, // activeInstance in lifecycle state
 		parentElm,
-		refElm
+		refElm,
 	) {
 		var options = {
 			_isComponent: true,
@@ -4500,7 +4505,7 @@
 		data,
 		children,
 		normalizationType,
-		alwaysNormalize
+		alwaysNormalize,
 	) {
 		if (Array.isArray(data) || isPrimitive(data)) {
 			normalizationType = children;
@@ -4521,7 +4526,7 @@
 						JSON.stringify(data) +
 						"\n" +
 						"Always create fresh vnode data objects in each render!",
-					context
+					context,
 				);
 			return createEmptyVNode();
 		}
@@ -4544,7 +4549,7 @@
 				warn(
 					"Avoid using non-primitive value as key, " +
 						"use string/number value instead.",
-					context
+					context,
 				);
 			}
 		}
@@ -4573,11 +4578,11 @@
 					children,
 					undefined,
 					undefined,
-					context
+					context,
 				);
 			} else if (
 				isDef(
-					(Ctor = resolveAsset(context.$options, "components", tag))
+					(Ctor = resolveAsset(context.$options, "components", tag)),
 				)
 			) {
 				// component
@@ -4592,7 +4597,7 @@
 					children,
 					undefined,
 					undefined,
-					context
+					context,
 				);
 			}
 		} else {
@@ -4684,7 +4689,7 @@
 					!isUpdatingChildComponent &&
 						warn("$attrs is readonly.", vm);
 				},
-				true
+				true,
 			);
 			defineReactive(
 				vm,
@@ -4694,7 +4699,7 @@
 					!isUpdatingChildComponent &&
 						warn("$listeners is readonly.", vm);
 				},
-				true
+				true,
 			);
 		}
 	}
@@ -4743,7 +4748,7 @@
 							vnode = vm.$options.renderError.call(
 								vm._renderProxy,
 								vm.$createElement,
-								e
+								e,
 							);
 						} catch (e) {
 							handleError(e, vm, "renderError");
@@ -4760,7 +4765,7 @@
 					warn(
 						"Multiple root nodes returned from render function. Render function " +
 							"should return a single root node.",
-						vm
+						vm,
 					);
 				}
 				vnode = createEmptyVNode();
@@ -4801,7 +4806,7 @@
 				vm.$options = mergeOptions(
 					resolveConstructorOptions(vm.constructor),
 					options || {},
-					vm
+					vm,
 				);
 			}
 			/* istanbul ignore else */
@@ -4870,7 +4875,7 @@
 				}
 				options = Ctor.options = mergeOptions(
 					superOptions,
-					Ctor.extendOptions
+					Ctor.extendOptions,
 				);
 				if (options.name) {
 					options.components[options.name] = Ctor;
@@ -4921,7 +4926,7 @@
 	function Vue(options) {
 		if ("development" !== "production" && !(this instanceof Vue)) {
 			warn(
-				"Vue is a constructor and should be called with the `new` keyword"
+				"Vue is a constructor and should be called with the `new` keyword",
 			);
 		}
 		this._init(options);
@@ -5237,7 +5242,7 @@
 		{
 			configDef.set = function () {
 				warn(
-					"Do not replace the Vue.config object, set individual fields instead."
+					"Do not replace the Vue.config object, set individual fields instead.",
 				);
 			};
 		}
@@ -5319,7 +5324,7 @@
 			"enabled,formnovalidate,hidden,indeterminate,inert,ismap,itemscope,loop,multiple," +
 			"muted,nohref,noresize,noshade,novalidate,nowrap,open,pauseonexit,readonly," +
 			"required,reversed,scoped,seamless,selected,sortable,translate," +
-			"truespeed,typemustmatch,visible"
+			"truespeed,typemustmatch,visible",
 	);
 
 	var xlinkNS = "http://www.w3.org/1999/xlink";
@@ -5439,7 +5444,7 @@
 			"button,datalist,fieldset,form,input,label,legend,meter,optgroup,option," +
 			"output,progress,select,textarea," +
 			"details,dialog,menu,menuitem,summary," +
-			"content,element,shadow,template,blockquote,iframe,tfoot"
+			"content,element,shadow,template,blockquote,iframe,tfoot",
 	);
 
 	// this map is intentionally selective, only covering SVG elements that may
@@ -5448,7 +5453,7 @@
 		"svg,animate,circle,clippath,cursor,defs,desc,ellipse,filter,font-face," +
 			"foreignObject,g,glyph,image,line,marker,mask,missing-glyph,path,pattern," +
 			"polygon,polyline,rect,switch,symbol,text,textpath,tspan,use,view",
-		true
+		true,
 	);
 
 	var isPreTag = function (tag) {
@@ -5492,7 +5497,7 @@
 				el.constructor === window.HTMLElement);
 		} else {
 			return (unknownElementCache[tag] = /HTMLUnknownElement/.test(
-				el.toString()
+				el.toString(),
 			));
 		}
 	}
@@ -5717,7 +5722,7 @@
 				{},
 				[],
 				undefined,
-				elm
+				elm,
 			);
 		}
 
@@ -5764,7 +5769,7 @@
 			refElm,
 			nested,
 			ownerArray,
-			index
+			index,
 		) {
 			if (isDef(vnode.elm) && isDef(ownerArray)) {
 				// This vnode was used in a previous render!
@@ -5795,7 +5800,7 @@
 								"> - did you " +
 								"register the component correctly? For recursive components, " +
 								'make sure to provide the "name" option.',
-							vnode.context
+							vnode.context,
 						);
 					}
 				}
@@ -5845,7 +5850,7 @@
 							vnode,
 							insertedVnodeQueue,
 							parentElm,
-							refElm
+							refElm,
 						);
 					}
 					return true;
@@ -5857,7 +5862,7 @@
 			if (isDef(vnode.data.pendingInsert)) {
 				insertedVnodeQueue.push.apply(
 					insertedVnodeQueue,
-					vnode.data.pendingInsert
+					vnode.data.pendingInsert,
 				);
 				vnode.data.pendingInsert = null;
 			}
@@ -5878,7 +5883,7 @@
 			vnode,
 			insertedVnodeQueue,
 			parentElm,
-			refElm
+			refElm,
 		) {
 			var i;
 			// hack for #4339: a reactivated component with inner transition
@@ -5926,13 +5931,13 @@
 						null,
 						true,
 						children,
-						i
+						i,
 					);
 				}
 			} else if (isPrimitive(vnode.text)) {
 				nodeOps.appendChild(
 					vnode.elm,
-					nodeOps.createTextNode(String(vnode.text))
+					nodeOps.createTextNode(String(vnode.text)),
 				);
 			}
 		}
@@ -5995,7 +6000,7 @@
 			vnodes,
 			startIdx,
 			endIdx,
-			insertedVnodeQueue
+			insertedVnodeQueue,
 		) {
 			for (; startIdx <= endIdx; ++startIdx) {
 				createElm(
@@ -6005,7 +6010,7 @@
 					refElm,
 					false,
 					vnodes,
-					startIdx
+					startIdx,
 				);
 			}
 		}
@@ -6081,7 +6086,7 @@
 			oldCh,
 			newCh,
 			insertedVnodeQueue,
-			removeOnly
+			removeOnly,
 		) {
 			var oldStartIdx = 0;
 			var newStartIdx = 0;
@@ -6111,7 +6116,7 @@
 					patchVnode(
 						oldStartVnode,
 						newStartVnode,
-						insertedVnodeQueue
+						insertedVnodeQueue,
 					);
 					oldStartVnode = oldCh[++oldStartIdx];
 					newStartVnode = newCh[++newStartIdx];
@@ -6126,7 +6131,7 @@
 						nodeOps.insertBefore(
 							parentElm,
 							oldStartVnode.elm,
-							nodeOps.nextSibling(oldEndVnode.elm)
+							nodeOps.nextSibling(oldEndVnode.elm),
 						);
 					oldStartVnode = oldCh[++oldStartIdx];
 					newEndVnode = newCh[--newEndIdx];
@@ -6137,7 +6142,7 @@
 						nodeOps.insertBefore(
 							parentElm,
 							oldEndVnode.elm,
-							oldStartVnode.elm
+							oldStartVnode.elm,
 						);
 					oldEndVnode = oldCh[--oldEndIdx];
 					newStartVnode = newCh[++newStartIdx];
@@ -6146,7 +6151,7 @@
 						oldKeyToIdx = createKeyToOldIdx(
 							oldCh,
 							oldStartIdx,
-							oldEndIdx
+							oldEndIdx,
 						);
 					}
 					idxInOld = isDef(newStartVnode.key)
@@ -6155,7 +6160,7 @@
 								newStartVnode,
 								oldCh,
 								oldStartIdx,
-								oldEndIdx
+								oldEndIdx,
 						  );
 					if (isUndef(idxInOld)) {
 						// New element
@@ -6166,7 +6171,7 @@
 							oldStartVnode.elm,
 							false,
 							newCh,
-							newStartIdx
+							newStartIdx,
 						);
 					} else {
 						vnodeToMove = oldCh[idxInOld];
@@ -6174,14 +6179,14 @@
 							patchVnode(
 								vnodeToMove,
 								newStartVnode,
-								insertedVnodeQueue
+								insertedVnodeQueue,
 							);
 							oldCh[idxInOld] = undefined;
 							canMove &&
 								nodeOps.insertBefore(
 									parentElm,
 									vnodeToMove.elm,
-									oldStartVnode.elm
+									oldStartVnode.elm,
 								);
 						} else {
 							// same key but different element. treat as new element
@@ -6192,7 +6197,7 @@
 								oldStartVnode.elm,
 								false,
 								newCh,
-								newStartIdx
+								newStartIdx,
 							);
 						}
 					}
@@ -6209,7 +6214,7 @@
 					newCh,
 					newStartIdx,
 					newEndIdx,
-					insertedVnodeQueue
+					insertedVnodeQueue,
 				);
 			} else if (newStartIdx > newEndIdx) {
 				removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
@@ -6227,7 +6232,7 @@
 							"Duplicate keys detected: '" +
 								key +
 								"'. This may cause an update error.",
-							vnode.context
+							vnode.context,
 						);
 					} else {
 						seenKeys[key] = true;
@@ -6303,7 +6308,7 @@
 							oldCh,
 							ch,
 							insertedVnodeQueue,
-							removeOnly
+							removeOnly,
 						);
 					}
 				} else if (isDef(ch)) {
@@ -6316,7 +6321,7 @@
 						ch,
 						0,
 						ch.length - 1,
-						insertedVnodeQueue
+						insertedVnodeQueue,
 					);
 				} else if (isDef(oldCh)) {
 					removeVnodes(elm, oldCh, 0, oldCh.length - 1);
@@ -6351,7 +6356,7 @@
 		// Note: style is excluded because it relies on initial clone for future
 		// deep updates (#7063).
 		var isRenderedModule = makeMap(
-			"attrs,class,staticClass,staticStyle,key"
+			"attrs,class,staticClass,staticStyle,key",
 		);
 
 		// Note: this is a browser-only function so we can assume elms are DOM nodes.
@@ -6407,7 +6412,7 @@
 									console.warn("server innerHTML: ", i);
 									console.warn(
 										"client innerHTML: ",
-										elm.innerHTML
+										elm.innerHTML,
 									);
 								}
 								return false;
@@ -6423,7 +6428,7 @@
 										childNode,
 										children[i$1],
 										insertedVnodeQueue,
-										inVPre
+										inVPre,
 									)
 								) {
 									childrenMatch = false;
@@ -6445,7 +6450,7 @@
 									console.warn(
 										"Mismatching childNodes vs. VNodes: ",
 										elm.childNodes,
-										children
+										children,
 									);
 								}
 								return false;
@@ -6492,7 +6497,7 @@
 			hydrating,
 			removeOnly,
 			parentElm,
-			refElm
+			refElm,
 		) {
 			if (isUndef(vnode)) {
 				if (isDef(oldVnode)) {
@@ -6530,7 +6535,7 @@
 								invokeInsertHook(
 									vnode,
 									insertedVnodeQueue,
-									true
+									true,
 								);
 								return oldVnode;
 							} else {
@@ -6539,7 +6544,7 @@
 										"server-rendered content. This is likely caused by incorrect " +
 										"HTML markup, for example nesting block-level elements inside " +
 										"<p>, or missing <tbody>. Bailing hydration and performing " +
-										"full client-side render."
+										"full client-side render.",
 								);
 							}
 						}
@@ -6560,7 +6565,7 @@
 						// leaving transition. Only happens when combining transition +
 						// keep-alive + HOCs. (#4590)
 						oldElm._leaveCb ? null : parentElm$1,
-						nodeOps.nextSibling(oldElm)
+						nodeOps.nextSibling(oldElm),
 					);
 
 					// update parent placeholder node element, recursively
@@ -6636,11 +6641,11 @@
 		var isDestroy = vnode === emptyNode;
 		var oldDirs = normalizeDirectives$1(
 			oldVnode.data.directives,
-			oldVnode.context
+			oldVnode.context,
 		);
 		var newDirs = normalizeDirectives$1(
 			vnode.data.directives,
-			vnode.context
+			vnode.context,
 		);
 
 		var dirsWithInsert = [];
@@ -6686,7 +6691,7 @@
 						dirsWithPostpatch[i],
 						"componentUpdated",
 						vnode,
-						oldVnode
+						oldVnode,
 					);
 				}
 			});
@@ -6701,7 +6706,7 @@
 						"unbind",
 						oldVnode,
 						oldVnode,
-						isDestroy
+						isDestroy,
 					);
 				}
 			}
@@ -6746,7 +6751,7 @@
 				handleError(
 					e,
 					vnode.context,
-					"directive " + dir.name + " " + hook + " hook"
+					"directive " + dir.name + " " + hook + " hook",
 				);
 			}
 		}
@@ -6817,7 +6822,7 @@
 		} else if (isEnumeratedAttr(key)) {
 			el.setAttribute(
 				key,
-				isFalsyAttrValue(value) || value === "false" ? "false" : "true"
+				isFalsyAttrValue(value) || value === "false" ? "false" : "true",
 			);
 		} else if (isXlink(key)) {
 			if (isFalsyAttrValue(value)) {
@@ -7002,7 +7007,7 @@
 
 		function pushFilter() {
 			(filters || (filters = [])).push(
-				exp.slice(lastFilterIndex, i).trim()
+				exp.slice(lastFilterIndex, i).trim(),
 			);
 			lastFilterIndex = i + 1;
 		}
@@ -7087,7 +7092,7 @@
 		) {
 			warn(
 				"passive and prevent can't be used together. " +
-					"Passive handler can't prevent default event."
+					"Passive handler can't prevent default event.",
 			);
 		}
 
@@ -7366,7 +7371,7 @@
 						' v-model="' +
 						value +
 						'" type="file">:\n' +
-						"File inputs are read only. Use a v-on:change listener instead."
+						"File inputs are read only. Use a v-on:change listener instead.",
 				);
 			}
 		}
@@ -7396,7 +7401,7 @@
 					'">: ' +
 					"v-model is not supported on this element type. " +
 					"If you are working with contenteditable, it's recommended to " +
-					"wrap a library dedicated for that purpose inside a custom component."
+					"wrap a library dedicated for that purpose inside a custom component.",
 			);
 		}
 
@@ -7422,7 +7427,7 @@
 				")>-1" +
 				(trueValueBinding === "true"
 					? ":(" + value + ")"
-					: ":_q(" + value + "," + trueValueBinding + ")")
+					: ":_q(" + value + "," + trueValueBinding + ")"),
 		);
 		addHandler(
 			el,
@@ -7447,14 +7452,14 @@
 				"else{$$i>-1&&(" +
 				genAssignmentCode(
 					value,
-					"$$a.slice(0,$$i).concat($$a.slice($$i+1))"
+					"$$a.slice(0,$$i).concat($$a.slice($$i+1))",
 				) +
 				")}" +
 				"}else{" +
 				genAssignmentCode(value, "$$c") +
 				"}",
 			null,
-			true
+			true,
 		);
 	}
 
@@ -7468,7 +7473,7 @@
 			"change",
 			genAssignmentCode(value, valueBinding),
 			null,
-			true
+			true,
 		);
 	}
 
@@ -7507,7 +7512,7 @@
 						'="' +
 						value$1 +
 						'" conflicts with v-model on the same element ' +
-						"because the latter already expands to a value binding internally"
+						"because the latter already expands to a value binding internally",
 				);
 			}
 		}
@@ -7582,7 +7587,7 @@
 		target$1.addEventListener(
 			event,
 			handler,
-			supportsPassive ? { capture: capture, passive: passive } : capture
+			supportsPassive ? { capture: capture, passive: passive } : capture,
 		);
 	}
 
@@ -7590,7 +7595,7 @@
 		(_target || target$1).removeEventListener(
 			event,
 			handler._withTask || handler,
-			capture
+			capture,
 		);
 	}
 
@@ -7795,7 +7800,7 @@
 			el.style.setProperty(
 				name,
 				val.replace(importantRE, ""),
-				"important"
+				"important",
 			);
 		} else {
 			var normalizedName = normalize(name);
@@ -8074,7 +8079,7 @@
 			styles[transitionProp + "Duration"].split(", ");
 		var transitionTimeout = getTimeout(
 			transitionDelays,
-			transitionDurations
+			transitionDurations,
 		);
 		var animationDelays = styles[animationProp + "Delay"].split(", ");
 		var animationDurations = styles[animationProp + "Duration"].split(", ");
@@ -8131,7 +8136,7 @@
 			null,
 			durations.map(function (d, i) {
 				return toMs(d) + toMs(delays[i]);
-			})
+			}),
 		);
 	}
 
@@ -8216,7 +8221,7 @@
 			: enterCancelled;
 
 		var explicitEnterDuration = toNumber(
-			isObject(duration) ? duration.enter : duration
+			isObject(duration) ? duration.enter : duration,
 		);
 
 		if ("development" !== "production" && explicitEnterDuration != null) {
@@ -8324,7 +8329,7 @@
 		var userWantsControl = getHookArgumentsLength(leave);
 
 		var explicitLeaveDuration = toNumber(
-			isObject(duration) ? duration.leave : duration
+			isObject(duration) ? duration.leave : duration,
 		);
 
 		if ("development" !== "production" && isDef(explicitLeaveDuration)) {
@@ -8403,7 +8408,7 @@
 					"got " +
 					JSON.stringify(val) +
 					".",
-				vnode.context
+				vnode.context,
 			);
 		} else if (isNaN(val)) {
 			warn(
@@ -8411,7 +8416,7 @@
 					name +
 					" duration is NaN - " +
 					"the duration expression might be incorrect.",
-				vnode.context
+				vnode.context,
 			);
 		}
 	}
@@ -8434,7 +8439,7 @@
 		if (isDef(invokerFns)) {
 			// invoker
 			return getHookArgumentsLength(
-				Array.isArray(invokerFns) ? invokerFns[0] : invokerFns
+				Array.isArray(invokerFns) ? invokerFns[0] : invokerFns,
 			);
 		} else {
 			return (fn._length || fn.length) > 1;
@@ -8528,7 +8533,7 @@
 				var prevOptions = el._vOptions;
 				var curOptions = (el._vOptions = [].map.call(
 					el.options,
-					getValue
+					getValue,
 				));
 				if (
 					curOptions.some(function (o, i) {
@@ -8572,7 +8577,7 @@
 						'"> ' +
 						"expects an Array value for its binding, but got " +
 						Object.prototype.toString.call(value).slice(8, -1),
-					vm
+					vm,
 				);
 			return;
 		}
@@ -8790,7 +8795,7 @@
 				warn(
 					"<transition> can only be used on a single element. Use " +
 						"<transition-group> for lists.",
-					this.$parent
+					this.$parent,
 				);
 			}
 
@@ -8918,7 +8923,7 @@
 			tag: String,
 			moveClass: String,
 		},
-		transitionProps
+		transitionProps,
 	);
 
 	delete props.mode;
@@ -8952,7 +8957,7 @@
 						warn(
 							"<transition-group> children must be keyed: <" +
 								name +
-								">"
+								">",
 						);
 					}
 				}
@@ -8984,7 +8989,7 @@
 				this._vnode,
 				this.kept,
 				false, // hydrating
-				true // removeOnly (!important, avoids unnecessary moves)
+				true, // removeOnly (!important, avoids unnecessary moves)
 			);
 			this._vnode = this.kept;
 		},
@@ -9021,7 +9026,7 @@
 								el._moveCb = null;
 								removeTransitionClass(el, moveClass);
 							}
-						})
+						}),
 					);
 				}
 			});
@@ -9128,7 +9133,7 @@
 				) {
 					console[console.info ? "info" : "log"](
 						"Download the Vue Devtools extension for a better development experience:\n" +
-							"https://github.com/vuejs/vue-devtools"
+							"https://github.com/vuejs/vue-devtools",
 					);
 				}
 			}
@@ -9141,7 +9146,7 @@
 				console[console.info ? "info" : "log"](
 					"You are running Vue in development mode.\n" +
 						"Make sure to turn on production mode when deploying for production.\n" +
-						"See more tips at https://vuejs.org/guide/deployment.html"
+						"See more tips at https://vuejs.org/guide/deployment.html",
 				);
 			}
 		}, 0);
@@ -9204,7 +9209,7 @@
 						'": ' +
 						"Interpolation inside attributes has been removed. " +
 						"Use v-bind or the colon shorthand instead. For example, " +
-						'instead of <div class="{{ val }}">, use <div :class="val">.'
+						'instead of <div class="{{ val }}">, use <div :class="val">.',
 				);
 			}
 		}
@@ -9250,7 +9255,7 @@
 							'": ' +
 							"Interpolation inside attributes has been removed. " +
 							"Use v-bind or the colon shorthand instead. For example, " +
-							'instead of <div style="{{ val }}">, use <div :style="val">.'
+							'instead of <div style="{{ val }}">, use <div :style="val">.',
 					);
 				}
 			}
@@ -9296,13 +9301,13 @@
 
 	var isUnaryTag = makeMap(
 		"area,base,br,col,embed,frame,hr,img,input,isindex,keygen," +
-			"link,meta,param,source,track,wbr"
+			"link,meta,param,source,track,wbr",
 	);
 
 	// Elements that you can, intentionally, leave open
 	// (and which close themselves)
 	var canBeLeftOpenTag = makeMap(
-		"colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr,source"
+		"colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr,source",
 	);
 
 	// HTML5 tags https://html.spec.whatwg.org/multipage/indices.html#elements-3
@@ -9312,7 +9317,7 @@
 			"details,dialog,div,dl,dt,fieldset,figcaption,figure,footer,form," +
 			"h1,h2,h3,h4,h5,h6,head,header,hgroup,hr,html,legend,li,menuitem,meta," +
 			"optgroup,option,param,rp,rt,source,style,summary,tbody,td,tfoot,th,thead," +
-			"title,tr,track"
+			"title,tr,track",
 	);
 
 	/**
@@ -9475,7 +9480,7 @@
 					reCache[stackedTag] ||
 					(reCache[stackedTag] = new RegExp(
 						"([\\s\\S]*?)(</" + stackedTag + "[^>]*>)",
-						"i"
+						"i",
 					));
 				var rest$1 = html.replace(
 					reStackedTag,
@@ -9496,7 +9501,7 @@
 							options.chars(text);
 						}
 						return "";
-					}
+					},
 				);
 				index += html.length - rest$1.length;
 				html = rest$1;
@@ -9511,7 +9516,7 @@
 					options.warn
 				) {
 					options.warn(
-						'Mal-formatted tag at end of template: "' + html + '"'
+						'Mal-formatted tag at end of template: "' + html + '"',
 					);
 				}
 				break;
@@ -9644,7 +9649,7 @@
 						options.warn(
 							"tag <" +
 								stack[i].tag +
-								"> has no matching end tag."
+								"> has no matching end tag.",
 						);
 					}
 					if (options.end) {
@@ -9718,11 +9723,11 @@
 		transforms = pluckModuleFunction(options.modules, "transformNode");
 		preTransforms = pluckModuleFunction(
 			options.modules,
-			"preTransformNode"
+			"preTransformNode",
 		);
 		postTransforms = pluckModuleFunction(
 			options.modules,
-			"postTransformNode"
+			"postTransformNode",
 		);
 
 		delimiters = options.delimiters;
@@ -9791,7 +9796,7 @@
 								"<" +
 								tag +
 								">" +
-								", as they will not be parsed."
+								", as they will not be parsed.",
 						);
 				}
 
@@ -9827,13 +9832,13 @@
 								"Cannot use <" +
 									el.tag +
 									"> as component root element because it may " +
-									"contain multiple nodes."
+									"contain multiple nodes.",
 							);
 						}
 						if (el.attrsMap.hasOwnProperty("v-for")) {
 							warnOnce(
 								"Cannot use v-for on stateful component root element because " +
-									"it renders multiple elements."
+									"it renders multiple elements.",
 							);
 						}
 					}
@@ -9855,7 +9860,7 @@
 						warnOnce(
 							"Component template should contain exactly one root element. " +
 								"If you are using v-if on multiple elements, " +
-								"use v-else-if to chain them instead."
+								"use v-else-if to chain them instead.",
 						);
 					}
 				}
@@ -9904,13 +9909,13 @@
 					{
 						if (text === template) {
 							warnOnce(
-								"Component template requires a root element, rather than just text."
+								"Component template requires a root element, rather than just text.",
 							);
 						} else if ((text = text.trim())) {
 							warnOnce(
 								'text "' +
 									text +
-									'" outside root element will be ignored.'
+									'" outside root element will be ignored.',
 							);
 						}
 					}
@@ -10014,7 +10019,7 @@
 		if (exp) {
 			if ("development" !== "production" && el.tag === "template") {
 				warn$2(
-					"<template> cannot be keyed. Place the key on real elements instead."
+					"<template> cannot be keyed. Place the key on real elements instead.",
 				);
 			}
 			el.key = exp;
@@ -10095,7 +10100,7 @@
 					" " +
 					"used on element <" +
 					el.tag +
-					"> without corresponding v-if."
+					"> without corresponding v-if.",
 			);
 		}
 	}
@@ -10114,7 +10119,7 @@
 						'text "' +
 							children[i].text.trim() +
 							'" between v-if and v-else(-if) ' +
-							"will be ignored."
+							"will be ignored.",
 					);
 				}
 				children.pop();
@@ -10143,7 +10148,7 @@
 				warn$2(
 					"`key` does not work on <slot> because slots are abstract outlets " +
 						"and can possibly expand into multiple elements. " +
-						"Use the key on a wrapping element instead."
+						"Use the key on a wrapping element instead.",
 				);
 			}
 		} else {
@@ -10157,7 +10162,7 @@
 							'replaced by "slot-scope" since 2.5. The new "slot-scope" attribute ' +
 							"can also be used on plain elements in addition to <template> to " +
 							"denote scoped slots.",
-						true
+						true,
 					);
 				}
 				el.slotScope = slotScope || getAndRemoveAttr(el, "slot-scope");
@@ -10170,7 +10175,7 @@
 							"> " +
 							"(v-for takes higher priority). Use a wrapper <template> for the " +
 							"scoped slot to make it clearer.",
-						true
+						true,
 					);
 				}
 				el.slotScope = slotScope;
@@ -10231,7 +10236,7 @@
 							addHandler(
 								el,
 								"update:" + camelize(name),
-								genAssignmentCode(value, "$event")
+								genAssignmentCode(value, "$event"),
 							);
 						}
 					}
@@ -10274,7 +10279,7 @@
 								'": ' +
 								"Interpolation inside attributes has been removed. " +
 								"Use v-bind or the colon shorthand instead. For example, " +
-								'instead of <div id="{{ val }}">, use <div :id="val">.'
+								'instead of <div id="{{ val }}">, use <div :id="val">.',
 						);
 					}
 				}
@@ -10372,7 +10377,7 @@
 						"You are binding v-model directly to a v-for iteration alias. " +
 						"This will not be able to modify the v-for source array because " +
 						"writing to the alias is like modifying a function local variable. " +
-						"Consider using an array of objects and use v-model on an object property instead."
+						"Consider using an array of objects and use v-model on an object property instead.",
 				);
 			}
 			_el = _el.parent;
@@ -10536,7 +10541,7 @@
 	function genStaticKeys$1(keys) {
 		return makeMap(
 			"type,tag,attrsList,attrsMap,plain,parent,children,attrs" +
-				(keys ? "," + keys : "")
+				(keys ? "," + keys : ""),
 		);
 	}
 
@@ -10661,7 +10666,7 @@
 		left: 37,
 		right: 39,
 		down: 40,
-		"delete": [8, 46],
+		delete: [8, 46],
 	};
 
 	// KeyboardEvent.key aliases
@@ -10675,7 +10680,7 @@
 		left: ["Left", "ArrowLeft"],
 		right: ["Right", "ArrowRight"],
 		down: ["Down", "ArrowDown"],
-		"delete": ["Backspace", "Delete"],
+		delete: ["Backspace", "Delete"],
 	};
 
 	// #4868: modifiers that prevent the execution of the listener
@@ -10753,7 +10758,7 @@
 							.map(function (keyModifier) {
 								return "$event." + keyModifier + "Key";
 							})
-							.join("||")
+							.join("||"),
 					);
 				} else {
 					keys.push(key);
@@ -10851,7 +10856,7 @@
 		this.dataGenFns = pluckModuleFunction(options.modules, "genData");
 		this.directives = extend(
 			extend({}, baseDirectives),
-			options.directives
+			options.directives,
 		);
 		var isReservedTag = options.isReservedTag || no;
 		this.maybeComponent = function (el) {
@@ -10914,7 +10919,7 @@
 	function genStatic(el, state) {
 		el.staticProcessed = true;
 		state.staticRenderFns.push(
-			"with(this){return " + genElement(el, state) + "}"
+			"with(this){return " + genElement(el, state) + "}",
 		);
 		return (
 			"_m(" +
@@ -10942,7 +10947,7 @@
 			if (!key) {
 				"development" !== "production" &&
 					state.warn(
-						"v-once can only be used inside v-for that is keyed. "
+						"v-once can only be used inside v-for that is keyed. ",
 					);
 				return genElement(el, state);
 			}
@@ -10966,7 +10971,7 @@
 			el.ifConditions.slice(),
 			state,
 			altGen,
-			altEmpty
+			altEmpty,
 		);
 	}
 
@@ -11022,7 +11027,7 @@
 					'">: component lists rendered with ' +
 					"v-for should have explicit keys. " +
 					"See https://vuejs.org/guide/list.html#key for more info.",
-				true /* tip */
+				true /* tip */,
 			);
 		}
 
@@ -11180,7 +11185,7 @@
 			(el.children.length !== 1 || ast.type !== 1)
 		) {
 			state.warn(
-				"Inline-template components must have exactly one child element."
+				"Inline-template components must have exactly one child element.",
 			);
 		}
 		if (ast.type === 1) {
@@ -11422,14 +11427,14 @@
 			)
 				.split(",")
 				.join("\\b|\\b") +
-			"\\b"
+			"\\b",
 	);
 
 	// these unary operators should not be used as property/method names
 	var unaryOperatorsRE = new RegExp(
 		"\\b" +
 			"delete,typeof,void".split(",").join("\\s*\\([^\\)]*\\)|\\b") +
-			"\\s*\\([^\\)]*\\)"
+			"\\s*\\([^\\)]*\\)",
 	);
 
 	// strip strings in expressions
@@ -11457,13 +11462,13 @@
 							checkEvent(
 								value,
 								name + '="' + value + '"',
-								errors
+								errors,
 							);
 						} else {
 							checkExpression(
 								value,
 								name + '="' + value + '"',
-								errors
+								errors,
 							);
 						}
 					}
@@ -11488,7 +11493,7 @@
 					'"' +
 					keywordMatch[0] +
 					'" in expression ' +
-					text.trim()
+					text.trim(),
 			);
 		}
 		checkExpression(exp, text, errors);
@@ -11512,7 +11517,7 @@
 						' "' +
 						ident +
 						'" in expression: ' +
-						text.trim()
+						text.trim(),
 				);
 			}
 		}
@@ -11531,7 +11536,7 @@
 						'"' +
 						keywordMatch[0] +
 						'"\n  Raw expression: ' +
-						text.trim()
+						text.trim(),
 				);
 			} else {
 				errors.push(
@@ -11543,7 +11548,7 @@
 						"\n\n" +
 						"  Raw expression: " +
 						text.trim() +
-						"\n"
+						"\n",
 				);
 			}
 		}
@@ -11580,7 +11585,7 @@
 								"environment with Content Security Policy that prohibits unsafe-eval. " +
 								"The template compiler cannot work in this environment. Consider " +
 								"relaxing the policy to allow unsafe-eval or pre-compiling your " +
-								"templates into render functions."
+								"templates into render functions.",
 						);
 					}
 				}
@@ -11610,7 +11615,7 @@
 								})
 								.join("\n") +
 							"\n",
-						vm
+						vm,
 					);
 				}
 				if (compiled.tips && compiled.tips.length) {
@@ -11649,7 +11654,7 @@
 									);
 								})
 								.join("\n"),
-						vm
+						vm,
 					);
 				}
 			}
@@ -11681,7 +11686,7 @@
 					if (options.directives) {
 						finalOptions.directives = extend(
 							Object.create(baseOptions.directives || null),
-							options.directives
+							options.directives,
 						);
 					}
 					// copy other options
@@ -11713,20 +11718,21 @@
 	// `createCompilerCreator` allows creating compilers that use alternative
 	// parser/optimizer/codegen, e.g the SSR optimizing compiler.
 	// Here we just export a default compiler using the default parts.
-	var createCompiler = createCompilerCreator(
-		function baseCompile(template, options) {
-			var ast = parse(template.trim(), options);
-			if (options.optimize !== false) {
-				optimize(ast, options);
-			}
-			var code = generate(ast, options);
-			return {
-				ast: ast,
-				render: code.render,
-				staticRenderFns: code.staticRenderFns,
-			};
+	var createCompiler = createCompilerCreator(function baseCompile(
+		template,
+		options,
+	) {
+		var ast = parse(template.trim(), options);
+		if (options.optimize !== false) {
+			optimize(ast, options);
 		}
-	);
+		var code = generate(ast, options);
+		return {
+			ast: ast,
+			render: code.render,
+			staticRenderFns: code.staticRenderFns,
+		};
+	});
 
 	/*  */
 
@@ -11763,7 +11769,7 @@
 		if (el === document.body || el === document.documentElement) {
 			"development" !== "production" &&
 				warn(
-					"Do not mount Vue to <html> or <body> - mount to normal elements instead."
+					"Do not mount Vue to <html> or <body> - mount to normal elements instead.",
 				);
 			return this;
 		}
@@ -11781,7 +11787,7 @@
 							warn(
 								"Template element not found or is empty: " +
 									options.template,
-								this
+								this,
 							);
 						}
 					}
@@ -11815,7 +11821,7 @@
 						delimiters: options.delimiters,
 						comments: options.comments,
 					},
-					this
+					this,
 				);
 				var render = ref.render;
 				var staticRenderFns = ref.staticRenderFns;
@@ -11832,7 +11838,7 @@
 					measure(
 						"vue " + this._name + " compile",
 						"compile",
-						"compile end"
+						"compile end",
 					);
 				}
 			}

@@ -13,7 +13,7 @@ export class StreamAnalyticsPickItem implements vscode.QuickPickItem {
 
 	constructor(
 		public readonly job: StreamingJob,
-		public readonly azureSubscription: AzureSubscription
+		public readonly azureSubscription: AzureSubscription,
 	) {
 		this.label = job.name || "";
 		this.description = azureSubscription.subscription.displayName;

@@ -9,21 +9,21 @@ import { IntelliSenseUtility } from "./intelliSenseUtility";
 export class ConfigHoverProvider implements vscode.HoverProvider {
 	public async provideHover(
 		document: vscode.TextDocument,
-		position: vscode.Position
+		position: vscode.Position,
 	): Promise<vscode.Hover> {
 		const dockerfileInfo: { dockerfile: string; range: vscode.Range } =
 			await IntelliSenseUtility.getImageDockerfileAtLocation(
 				document,
-				position
+				position,
 			);
 		if (dockerfileInfo && dockerfileInfo.dockerfile) {
 			const dockerfileContent: string = await fse.readFile(
 				dockerfileInfo.dockerfile,
-				"utf-8"
+				"utf-8",
 			);
 			return new vscode.Hover(
 				{ language: "dockerfile", value: dockerfileContent },
-				dockerfileInfo.range
+				dockerfileInfo.range,
 			);
 		}
 

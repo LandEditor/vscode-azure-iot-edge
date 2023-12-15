@@ -14,7 +14,7 @@ export class ASAModuleUpdateCodeLensProvider
 
 	public async provideCodeLenses(
 		document: vscode.TextDocument,
-		token: vscode.CancellationToken
+		token: vscode.CancellationToken,
 	): Promise<vscode.CodeLens[]> {
 		const deploymentJsonString = document.getText();
 		this.templateFilePath = document.uri.fsPath;
