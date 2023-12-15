@@ -80,9 +80,9 @@ export class AmlManager {
 									? workspace.name
 									: `${
 											workspace.name
-									  } (${Utility.getResourceGroupFromId(
+										} (${Utility.getResourceGroupFromId(
 											workspace.id
-									  )})`;
+										)})`;
 							return new AmlWorkspaceQuickPickItem(
 								label,
 								workspace,
