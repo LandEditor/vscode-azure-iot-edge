@@ -31,13 +31,13 @@ export class Constants {
 	public static repositoryPlaceholder = "%REPOSITORY%";
 	public static dllPlaceholder = "%DLLNAME%";
 	public static externalModulePlaceholderPattern: RegExp = new RegExp(
-		/\${MODULEDIR<(.+)>(\..+)?}/g,
+		/\${MODULEDIR<(.+)>(\..+)?}/g
 	);
 	public static imagePlaceholderPattern: RegExp = new RegExp(
-		/\${MODULES\..+}|\${MODULEDIR<(.+)>(\..+)?}/g,
+		/\${MODULES\..+}|\${MODULEDIR<(.+)>(\..+)?}/g
 	);
 	public static versionPlaceholderPattern: RegExp = new RegExp(
-		/\${VERSION\..+}/g,
+		/\${VERSION\..+}/g
 	);
 	public static assetsFolder = "assets";
 	public static solutionFolder = "solution";

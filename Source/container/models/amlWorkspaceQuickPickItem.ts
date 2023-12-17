@@ -13,7 +13,7 @@ export class AmlWorkspaceQuickPickItem implements vscode.QuickPickItem {
 	constructor(
 		public readonly label: string,
 		public readonly workspace: Workspace,
-		public readonly azureSubscription: AzureSubscription,
+		public readonly azureSubscription: AzureSubscription
 	) {
 		this.description = azureSubscription.subscription.displayName;
 	}

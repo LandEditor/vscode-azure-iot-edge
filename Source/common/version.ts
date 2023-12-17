@@ -8,7 +8,7 @@ export class Versions {
 		const verMap: Map<string, string> = new Map();
 		verMap.set(
 			Constants.edgeAgentVerPlaceHolder,
-			Versions.edgeAgentVersion(),
+			Versions.edgeAgentVersion()
 		);
 		verMap.set(Constants.edgeHubVerPlaceHolder, Versions.edgeHubVersion());
 		return verMap;
@@ -27,11 +27,11 @@ export class Versions {
 		const verMap: Map<string, string> = new Map();
 		verMap.set(
 			Constants.edgeAgentSchemaVerPlaceHolder,
-			edgeAgentSchemaVerMap.get(Versions.edgeAgentVersion()),
+			edgeAgentSchemaVerMap.get(Versions.edgeAgentVersion())
 		);
 		verMap.set(
 			Constants.edgeHubSchemaVerPlaceHolder,
-			edgeHubSchemaVerMap.get(Versions.edgeHubVersion()),
+			edgeHubSchemaVerMap.get(Versions.edgeHubVersion())
 		);
 		return verMap;
 	}
@@ -43,14 +43,14 @@ export class Versions {
 	public static installCSharpTemplate(): boolean {
 		return Versions.getValue(
 			Constants.installCSharpModule,
-			true,
+			true
 		) as boolean;
 	}
 
 	public static installCSFunctionTemplate(): boolean {
 		return Versions.getValue(
 			Constants.installCSFunctionModule,
-			true,
+			true
 		) as boolean;
 	}
 
@@ -69,7 +69,7 @@ export class Versions {
 	public static pythonTemplateVersion(): string {
 		return Versions.getValue(
 			Constants.versionPythonModule,
-			"master",
+			"master"
 		) as string;
 	}
 
@@ -92,7 +92,7 @@ export class Versions {
 	public static updateSystemModuleImageVersion(
 		templateJson: any,
 		moduleName: string,
-		versionMap: Map<string, string>,
+		versionMap: Map<string, string>
 	) {
 		if (templateJson !== undefined) {
 			const sysModuleImage =
@@ -108,7 +108,7 @@ export class Versions {
 	public static updateSystemModuleSchemaVersion(
 		templateJson: any,
 		moduleName: string,
-		versionMap: Map<string, string>,
+		versionMap: Map<string, string>
 	) {
 		if (templateJson !== undefined) {
 			if (moduleName !== undefined) {
@@ -118,14 +118,14 @@ export class Versions {
 							"properties.desired"
 						].schemaVersion = Versions.getNewSchemaVersion(
 							moduleName,
-							versionMap,
+							versionMap
 						);
 					case "edgeHub":
 						templateJson.modulesContent.$edgeHub[
 							"properties.desired"
 						].schemaVersion = Versions.getNewSchemaVersion(
 							moduleName,
-							versionMap,
+							versionMap
 						);
 				}
 			}
@@ -143,13 +143,13 @@ export class Versions {
 	private static getDefaultEdgeRuntimeVersion(): string {
 		return Versions.getValue(
 			Constants.versionDefaultEdgeRuntime,
-			"1.4",
+			"1.4"
 		) as string;
 	}
 
 	private static getNewImageVersionJson(
 		input: ImageJson,
-		versionMap: Map<string, string>,
+		versionMap: Map<string, string>
 	): string {
 		if (input !== undefined) {
 			const imageName: string = input.split(":")[0];
@@ -174,17 +174,17 @@ export class Versions {
 
 	private static getNewSchemaVersion(
 		imageName: string,
-		versionMap: Map<string, string>,
+		versionMap: Map<string, string>
 	): string {
 		if (imageName !== undefined) {
 			switch (imageName) {
 				case "edgeAgent":
 					return versionMap.get(
-						Constants.edgeAgentSchemaVerPlaceHolder,
+						Constants.edgeAgentSchemaVerPlaceHolder
 					);
 				case "edgeHub":
 					return versionMap.get(
-						Constants.edgeHubSchemaVerPlaceHolder,
+						Constants.edgeHubSchemaVerPlaceHolder
 					);
 				default:
 					return imageName;
@@ -194,7 +194,7 @@ export class Versions {
 
 	private static getValue(
 		key: string,
-		defaultVal: string | string[] | boolean = null,
+		defaultVal: string | string[] | boolean = null
 	): string | string[] | boolean {
 		const value = Configuration.getConfigurationProperty(key);
 		if (value === undefined || value === null) {

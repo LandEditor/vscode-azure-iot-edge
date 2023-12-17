@@ -52,7 +52,7 @@ const app = new Vue({
 			this.selectedModule = Object.assign({}, module);
 			this.moduleName = this.selectedModule.displayName.replace(
 				/[^a-zA-Z]/g,
-				"",
+				""
 			);
 			this.selectedPlan = this.selectedModule.plans[0];
 		},
@@ -64,7 +64,7 @@ const app = new Vue({
 			}
 			const moduleNameValidationStatus = (
 				await axios.get(
-					`${this.endpoint}/api/v1/modules/${this.moduleName}/status`,
+					`${this.endpoint}/api/v1/modules/${this.moduleName}/status`
 				)
 			).data;
 			if (moduleNameValidationStatus) {

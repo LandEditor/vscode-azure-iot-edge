@@ -40,7 +40,7 @@ export class StreamAnalyticsManager {
 
 	private constructor() {
 		this.azureAccount = vscode.extensions.getExtension<AzureAccount>(
-			"ms-vscode.azure-account",
+			"ms-vscode.azure-account"
 		)!.exports;
 		this.asaUpdateStatus = ASAUpdateStatus.Idle;
 	}
@@ -67,15 +67,15 @@ export class StreamAnalyticsManager {
 				return await this.publishAndQueryASAJobInfo(
 					ASAJobResourceId,
 					streamingJob.azureSubscription.session,
-					token,
+					token
 				);
-			},
+			}
 		);
 	}
 
 	public async checkAndUpdateASAJob(
 		templateFile: string,
-		moduleName: string,
+		moduleName: string
 	) {
 		if (this.asaUpdateStatus === ASAUpdateStatus.Idle) {
 			await Utility.waitForAzLogin(this.azureAccount);
@@ -83,26 +83,26 @@ export class StreamAnalyticsManager {
 				this.asaUpdateStatus = ASAUpdateStatus.CheckingUpdate;
 				const isUpdateAvailable = await this.isASAJobUpdateAvailable(
 					templateFile,
-					moduleName,
+					moduleName
 				);
 				this.asaUpdateStatus = ASAUpdateStatus.Idle;
 				if (isUpdateAvailable) {
 					const yesOption = "Yes";
 					const option = await vscode.window.showInformationMessage(
 						Constants.newASAJobAvailableMsg(moduleName),
-						yesOption,
+						yesOption
 					);
 					if (option === yesOption) {
 						this.asaUpdateStatus = ASAUpdateStatus.Updating;
 						await this.updateASAJobInfoModuleTwin(
 							templateFile,
-							moduleName,
+							moduleName
 						);
 						this.asaUpdateStatus = ASAUpdateStatus.Idle;
 					}
 				} else {
 					await vscode.window.showInformationMessage(
-						Constants.noNewASAJobFoundMsg(moduleName),
+						Constants.noNewASAJobFoundMsg(moduleName)
 					);
 				}
 			} catch (err) {
@@ -114,7 +114,7 @@ export class StreamAnalyticsManager {
 
 	private async updateJobInfo(
 		templateFile: string,
-		moduleName: string,
+		moduleName: string
 	): Promise<any> {
 		return await vscode.window.withProgress(
 			{
@@ -125,22 +125,22 @@ export class StreamAnalyticsManager {
 			async (progress, token): Promise<object> => {
 				const ASAInfo = await this.getJobInfoFromDeploymentTemplate(
 					templateFile,
-					moduleName,
+					moduleName
 				);
 				const subscription = await this.getJobSubscription(ASAInfo);
 				const ASAJobResourceId: string = ASAInfo.ASAJobResourceId;
 				return await this.publishAndQueryASAJobInfo(
 					ASAJobResourceId,
 					subscription.session,
-					token,
+					token
 				);
-			},
+			}
 		);
 	}
 
 	private async isASAJobUpdateAvailable(
 		templateFile: string,
-		moduleName: string,
+		moduleName: string
 	): Promise<boolean> {
 		return await vscode.window.withProgress(
 			{
@@ -150,13 +150,13 @@ export class StreamAnalyticsManager {
 			async (): Promise<boolean> => {
 				const ASAInfo = await this.getJobInfoFromDeploymentTemplate(
 					templateFile,
-					moduleName,
+					moduleName
 				);
 				const GetASAJobApiUrl: string = `https://management.azure.com${ASAInfo.ASAJobResourceId}?api-version=2019-06-01`;
 				const curEtag = ASAInfo.ASAJobEtag;
 				const subscription = await this.getJobSubscription(ASAInfo);
 				const { aadAccessToken } = await Utility.acquireAadToken(
-					subscription.session,
+					subscription.session
 				);
 				const jobInfo = await axios.get(GetASAJobApiUrl, {
 					headers: { Authorization: `bearer ${aadAccessToken}` },
@@ -164,13 +164,13 @@ export class StreamAnalyticsManager {
 
 				const latestETag = jobInfo.headers.etag;
 				return latestETag !== curEtag;
-			},
+			}
 		);
 	}
 
 	private async updateASAJobInfoModuleTwin(
 		templateFile: string,
-		moduleName: string,
+		moduleName: string
 	) {
 		const jobInfo = await this.updateJobInfo(templateFile, moduleName);
 		const moduleTwin = jobInfo.twin.content;
@@ -179,14 +179,14 @@ export class StreamAnalyticsManager {
 		await fse.writeFile(
 			templateFile,
 			JSON.stringify(templateJson, null, 2),
-			{ encoding: "utf8" },
+			{ encoding: "utf8" }
 		);
 	}
 
 	private async publishAndQueryASAJobInfo(
 		resourceId: string,
 		session: AzureSession,
-		token: vscode.CancellationToken,
+		token: vscode.CancellationToken
 	) {
 		try {
 			const apiUrl: string = `https://management.azure.com${resourceId}/publishedgepackage?api-version=2019-06-01`;
@@ -228,7 +228,7 @@ export class StreamAnalyticsManager {
 					}
 				} else {
 					throw new Error(
-						"http status code: " + jobInfoResult.status,
+						"http status code: " + jobInfoResult.status
 					);
 				}
 			}
@@ -244,7 +244,7 @@ export class StreamAnalyticsManager {
 		for (const azureSubscription of this.azureAccount.subscriptions) {
 			if (
 				ASAInfo.ASAJobResourceId.indexOf(
-					azureSubscription.subscription.id,
+					azureSubscription.subscription.id
 				) >= 0
 			) {
 				return azureSubscription;
@@ -253,13 +253,13 @@ export class StreamAnalyticsManager {
 
 		const ASAJobName: string = ASAInfo.ASAJobResourceId.split("/").pop();
 		throw new Error(
-			`Cannot find Stream Analytics Job '${ASAJobName}' in your Azure account, please make sure to login to the right acount.`,
+			`Cannot find Stream Analytics Job '${ASAJobName}' in your Azure account, please make sure to login to the right acount.`
 		);
 	}
 
 	private async getJobInfoFromDeploymentTemplate(
 		templateFile: string,
-		moduleName,
+		moduleName
 	) {
 		try {
 			const templateJson = await fse.readJson(templateFile);
@@ -269,7 +269,7 @@ export class StreamAnalyticsManager {
 		} catch (err) {
 			throw new Error(
 				"Cannot parse Stream Analytics Job information from module twin: " +
-					err.message,
+					err.message
 			);
 		}
 	}
@@ -280,33 +280,33 @@ export class StreamAnalyticsManager {
 			const jobPromises: Array<Promise<StreamAnalyticsPickItem[]>> = [];
 			for (const azureSubscription of this.azureAccount.filters) {
 				const tokenCredentials = await Utility.aquireTokenCredentials(
-					azureSubscription.session,
+					azureSubscription.session
 				);
 				const client: StreamingJobs =
 					new StreamAnalyticsManagementClient(
 						tokenCredentials,
-						azureSubscription.subscription.subscriptionId!,
+						azureSubscription.subscription.subscriptionId!
 					).streamingJobs;
 
 				jobPromises.push(
 					Utility.listAzureResources<StreamingJob>(
 						client.list(),
-						client.listNext,
+						client.listNext
 					).then((jobs: StreamingJob[]) =>
 						jobs.map((job: StreamingJob) => {
 							return new StreamAnalyticsPickItem(
 								job,
-								azureSubscription,
+								azureSubscription
 							);
-						}),
-					),
+						})
+					)
 				);
 			}
 
 			const jobItems: StreamAnalyticsPickItem[] =
 				await Utility.awaitPromiseArray<StreamAnalyticsPickItem>(
 					jobPromises,
-					Constants.asaJobDesc,
+					Constants.asaJobDesc
 				);
 			return jobItems;
 		} catch (error) {

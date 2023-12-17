@@ -26,7 +26,7 @@ if [ "${USERNAME}" = "auto" ] || [ "${USERNAME}" = "automatic" ]; then
 	USERNAME=""
 	POSSIBLE_USERS=("vscode" "node" "codespace" "$(awk -v val=1000 -F ":" '$3==val{print $1}' /etc/passwd)")
 	for CURRENT_USER in ${POSSIBLE_USERS[@]}; do
-		if id -u ${CURRENT_USER} >/dev/null 2>&1; then
+		if id -u ${CURRENT_USER} > /dev/null 2>&1; then
 			USERNAME=${CURRENT_USER}
 			break
 		fi
@@ -34,14 +34,14 @@ if [ "${USERNAME}" = "auto" ] || [ "${USERNAME}" = "automatic" ]; then
 	if [ "${USERNAME}" = "" ]; then
 		USERNAME=root
 	fi
-elif [ "${USERNAME}" = "none" ] || ! id -u ${USERNAME} >/dev/null 2>&1; then
+elif [ "${USERNAME}" = "none" ] || ! id -u ${USERNAME} > /dev/null 2>&1; then
 	USERNAME=root
 fi
 
 # Get central common setting
 get_common_setting() {
 	if [ "${common_settings_file_loaded}" != "true" ]; then
-		curl -sfL "https://aka.ms/vscode-dev-containers/script-library/settings.env" -o /tmp/vsdc-settings.env 2>/dev/null || echo "Could not download settings file. Skipping."
+		curl -sfL "https://aka.ms/vscode-dev-containers/script-library/settings.env" -o /tmp/vsdc-settings.env 2> /dev/null || echo "Could not download settings file. Skipping."
 		common_settings_file_loaded=true
 	fi
 	if [ -f "/tmp/vsdc-settings.env" ]; then
@@ -65,7 +65,7 @@ apt_get_update_if_needed() {
 
 # Checks if packages are installed and installs them if not
 check_packages() {
-	if ! dpkg -s "$@" >/dev/null 2>&1; then
+	if ! dpkg -s "$@" > /dev/null 2>&1; then
 		apt_get_update_if_needed
 		apt-get -y install --no-install-recommends "$@"
 	fi
@@ -78,14 +78,14 @@ export DEBIAN_FRONTEND=noninteractive
 check_packages apt-transport-https curl ca-certificates lxc pigz iptables gnupg2 dirmngr
 
 # Swap to legacy iptables for compatibility
-if type iptables-legacy >/dev/null 2>&1; then
+if type iptables-legacy > /dev/null 2>&1; then
 	update-alternatives --set iptables /usr/sbin/iptables-legacy
 	update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 fi
 
 # Install Docker / Moby CLI if not already installed
 architecture="$(dpkg --print-architecture)"
-if type docker >/dev/null 2>&1 && type dockerd >/dev/null 2>&1; then
+if type docker > /dev/null 2>&1 && type dockerd > /dev/null 2>&1; then
 	echo "Docker / Moby CLI and Engine already installed."
 else
 	# Source /etc/os-release to get OS info
@@ -93,15 +93,15 @@ else
 	if [ "${USE_MOBY}" = "true" ]; then
 		# Import key safely (new 'signed-by' method rather than deprecated apt-key approach) and install
 		get_common_setting MICROSOFT_GPG_KEYS_URI
-		curl -sSL ${MICROSOFT_GPG_KEYS_URI} | gpg --dearmor >/usr/share/keyrings/microsoft-archive-keyring.gpg
-		echo "deb [arch=${architecture} signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/microsoft-${ID}-${VERSION_CODENAME}-prod ${VERSION_CODENAME} main" >/etc/apt/sources.list.d/microsoft.list
+		curl -sSL ${MICROSOFT_GPG_KEYS_URI} | gpg --dearmor > /usr/share/keyrings/microsoft-archive-keyring.gpg
+		echo "deb [arch=${architecture} signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/microsoft-${ID}-${VERSION_CODENAME}-prod ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/microsoft.list
 		apt-get update
 		apt-get -y install --no-install-recommends moby-cli moby-buildx moby-engine
 		apt-get -y install --no-install-recommends moby-compose || echo "(*) Package moby-compose (Docker Compose v2) not available for ${VERSION_CODENAME} ${architecture}. Skipping."
 	else
 		# Import key safely (new 'signed-by' method rather than deprecated apt-key approach) and install
-		curl -fsSL https://download.docker.com/linux/${ID}/gpg | gpg --dearmor >/usr/share/keyrings/docker-archive-keyring.gpg
-		echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/${ID} ${VERSION_CODENAME} stable" >/etc/apt/sources.list.d/docker.list
+		curl -fsSL https://download.docker.com/linux/${ID}/gpg | gpg --dearmor > /usr/share/keyrings/docker-archive-keyring.gpg
+		echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/${ID} ${VERSION_CODENAME} stable" > /etc/apt/sources.list.d/docker.list
 		apt-get update
 		apt-get -y install --no-install-recommends docker-ce-cli docker-ce
 	fi
@@ -110,13 +110,13 @@ fi
 echo "Finished installing docker / moby"
 
 # Install Docker Compose if not already installed  and is on a supported architecture
-if type docker-compose >/dev/null 2>&1; then
+if type docker-compose > /dev/null 2>&1; then
 	echo "Docker Compose already installed."
 else
 	target_compose_arch="${architecture}"
 	if [ "${target_compose_arch}" != "x86_64" ]; then
 		# Use pip to get a version that runns on this architecture
-		if ! dpkg -s python3-minimal python3-pip libffi-dev python3-venv >/dev/null 2>&1; then
+		if ! dpkg -s python3-minimal python3-pip libffi-dev python3-venv > /dev/null 2>&1; then
 			apt_get_update_if_needed
 			apt-get -y install python3-minimal python3-pip libffi-dev python3-venv
 		fi
@@ -126,7 +126,7 @@ else
 		export PYTHONUSERBASE=/tmp/pip-tmp
 		export PIP_CACHE_DIR=/tmp/pip-tmp/cache
 		pipx_bin=pipx
-		if ! type pipx >/dev/null 2>&1; then
+		if ! type pipx > /dev/null 2>&1; then
 			pip3 install --disable-pip-version-check --no-warn-script-location --no-cache-dir --user pipx
 			pipx_bin=/tmp/pip-tmp/bin/pipx
 		fi
@@ -148,15 +148,15 @@ echo "docker-init doesnt exist..."
 
 # Add user to the docker group
 if [ "${ENABLE_NONROOT_DOCKER}" = "true" ]; then
-	if ! getent group docker >/dev/null 2>&1; then
+	if ! getent group docker > /dev/null 2>&1; then
 		groupadd docker
 	fi
 
 	usermod -aG docker ${USERNAME}
 fi
 
-tee /usr/local/share/docker-init.sh >/dev/null \
-	<<'EOF'
+tee /usr/local/share/docker-init.sh > /dev/null \
+	<< 'EOF'
 #!/usr/bin/env bash
 #-------------------------------------------------------------------------------------------------------------
 # Copyright (c) Microsoft Corporation. All rights reserved.

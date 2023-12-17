@@ -2,10 +2,10 @@
 	"object" == typeof exports && "object" == typeof module
 		? (module.exports = e())
 		: "function" == typeof define && define.amd
-		  ? define([], e)
-		  : "object" == typeof exports
-			  ? (exports.VueSelect = e())
-			  : (t.VueSelect = e());
+			? define([], e)
+			: "object" == typeof exports
+				? (exports.VueSelect = e())
+				: (t.VueSelect = e());
 })(this, function () {
 	return (function (t) {
 		function e(o) {
@@ -40,8 +40,8 @@
 				"undefined" != typeof window && window.Math == Math
 					? window
 					: "undefined" != typeof self && self.Math == Math
-					  ? self
-					  : Function("return this")());
+						? self
+						: Function("return this")());
 			"number" == typeof __g && (__g = n);
 		},
 		function (t, e) {
@@ -81,7 +81,7 @@
 						if ("get" in n || "set" in n)
 							throw TypeError("Accessors not supported!");
 						return "value" in n && (t[e] = n.value), t;
-				  };
+					};
 		},
 		function (t, e, n) {
 			var o = n(5),
@@ -89,10 +89,10 @@
 			t.exports = n(3)
 				? function (t, e, n) {
 						return o.f(t, e, r(1, n));
-				  }
+					}
 				: function (t, e, n) {
 						return (t[e] = n), t;
-				  };
+					};
 		},
 		function (t, e, n) {
 			var o = n(61),
@@ -165,13 +165,13 @@
 									d && "function" != typeof x[l]
 										? n[l]
 										: v && c
-										  ? i(f, o)
-										  : g && x[l] == f
-											  ? (function (t) {
+											? i(f, o)
+											: g && x[l] == f
+												? (function (t) {
 														var e = function (
 															e,
 															n,
-															o,
+															o
 														) {
 															if (
 																this instanceof
@@ -184,30 +184,30 @@
 																		return new t();
 																	case 1:
 																		return new t(
-																			e,
+																			e
 																		);
 																	case 2:
 																		return new t(
 																			e,
-																			n,
+																			n
 																		);
 																}
 																return new t(
 																	e,
 																	n,
-																	o,
+																	o
 																);
 															}
 															return t.apply(
 																this,
-																arguments,
+																arguments
 															);
 														};
 														return (e[a] = t[a]), e;
-												  })(f)
-											  : b && "function" == typeof f
-												  ? i(Function.call, f)
-												  : f),
+													})(f)
+												: b && "function" == typeof f
+													? i(Function.call, f)
+													: f),
 								b &&
 									(((y.virtual || (y.virtual = {}))[l] = f),
 									t & u.R && m && !m[l] && s(m, l, f)));
@@ -248,7 +248,7 @@
 				return "Symbol(".concat(
 					void 0 === t ? "" : t,
 					")_",
-					(++n + o).toString(36),
+					(++n + o).toString(36)
 				);
 			};
 		},
@@ -261,7 +261,7 @@
 		function (t, e) {
 			t.exports =
 				"constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(
-					",",
+					","
 				);
 		},
 		function (t, e) {
@@ -358,7 +358,7 @@
 							this.$emit(
 								"search",
 								this.search,
-								this.toggleLoading,
+								this.toggleLoading
 							));
 					},
 					loading: function (t) {
@@ -393,11 +393,11 @@
 						return t <= this.viewport().top
 							? this.scrollTo(t)
 							: e >= this.viewport().bottom
-							  ? this.scrollTo(
+								? this.scrollTo(
 										this.viewport().top +
-											this.pointerHeight(),
-								  )
-							  : void 0;
+											this.pointerHeight()
+									)
+								: void 0;
 					},
 					pixelsToPointerTop: function t() {
 						var t = 0;
@@ -426,7 +426,7 @@
 								: 0,
 							bottom: this.$refs.dropdownMenu
 								? this.$refs.dropdownMenu.offsetHeight +
-								  this.$refs.dropdownMenu.scrollTop
+									this.$refs.dropdownMenu.scrollTop
 								: 0,
 						};
 					},
@@ -464,11 +464,11 @@
 					typeAheadSelect: function () {
 						this.filteredOptions[this.typeAheadPointer]
 							? this.select(
-									this.filteredOptions[this.typeAheadPointer],
-							  )
+									this.filteredOptions[this.typeAheadPointer]
+								)
 							: this.taggable &&
-							  this.search.length &&
-							  this.select(this.search),
+								this.search.length &&
+								this.select(this.search),
 							this.clearSearchOnSelect && (this.search = "");
 					},
 				},
@@ -607,11 +607,12 @@
 									"document.F=Object" +
 									r +
 									"/script" +
-									s,
+									s
 							),
 							t.close(),
 							l = t.F;
 						o--;
+
 					)
 						delete l[u][i[o]];
 					return l();
@@ -623,9 +624,9 @@
 					return (
 						null !== t
 							? ((a[u] = o(t)),
-							  (n = new a()),
-							  (a[u] = null),
-							  (n[s] = t))
+								(n = new a()),
+								(a[u] = null),
+								(n[s] = t))
 							: (n = l()),
 						void 0 === e ? n : r(n, e)
 					);
@@ -728,8 +729,8 @@
 													(" exist in options object " +
 														(0, l.default)(t) +
 														".\n") +
-													"http://sagalbot.github.io/vue-select/#ex-labels",
-										  )
+													"http://sagalbot.github.io/vue-select/#ex-labels"
+											)
 									: t
 							);
 						},
@@ -809,8 +810,8 @@
 								? this.onChange(t)
 								: null
 							: this.onChange && t !== e
-							  ? this.onChange(t)
-							  : null;
+								? this.onChange(t)
+								: null;
 					},
 					options: function (t) {
 						this.mutableOptions = t;
@@ -846,15 +847,15 @@
 											'" does not' +
 											(" exist in options object " +
 												(0, l.default)(t) +
-												"."),
+												".")
 									);
 								t = t[this.index];
 							}
 							this.multiple && !this.mutableValue
 								? (this.mutableValue = [t])
 								: this.multiple
-								  ? this.mutableValue.push(t)
-								  : (this.mutableValue = t);
+									? this.mutableValue.push(t)
+									: (this.mutableValue = t);
 						}
 						this.onAfterSelect(t);
 					},
@@ -894,8 +895,8 @@
 							(this.open
 								? this.$refs.search.blur()
 								: this.disabled ||
-								  ((this.open = !0),
-								  this.$refs.search.focus()));
+									((this.open = !0),
+									this.$refs.search.focus()));
 					},
 					isOptionSelected: function (t) {
 						var e = this,
@@ -939,8 +940,8 @@
 						this.mousedown && !this.searching
 							? (this.mousedown = !1)
 							: (this.clearSearchOnBlur && (this.search = ""),
-							  (this.open = !1),
-							  this.$emit("search:blur"));
+								(this.open = !1),
+								this.$emit("search:blur"));
 					},
 					onSearchFocus: function () {
 						(this.open = !0), this.$emit("search:focus");
@@ -1011,8 +1012,8 @@
 							? this.filter(
 									this.mutableOptions,
 									this.search,
-									this,
-							  )
+									this
+								)
 							: this.mutableOptions;
 						return (
 							this.taggable &&
@@ -1034,8 +1035,8 @@
 						return this.multiple && this.mutableValue
 							? this.mutableValue
 							: this.mutableValue
-							  ? [].concat(this.mutableValue)
-							  : [];
+								? [].concat(this.mutableValue)
+								: [];
 					},
 					showClearButton: function () {
 						return (
@@ -1097,7 +1098,7 @@
 								enumerable: !0,
 								configurable: !0,
 								writable: !0,
-						  })
+							})
 						: (t[e] = n),
 					t
 				);
@@ -1118,7 +1119,7 @@
 					"symbol" == typeof i.default
 						? function (t) {
 								return typeof t;
-						  }
+							}
 						: function (t) {
 								return t &&
 									"function" == typeof a.default &&
@@ -1126,12 +1127,12 @@
 									t !== a.default.prototype
 									? "symbol"
 									: typeof t;
-						  };
+							};
 			e.default =
 				"function" == typeof a.default && "symbol" === u(i.default)
 					? function (t) {
 							return "undefined" == typeof t ? "undefined" : u(t);
-					  }
+						}
 					: function (t) {
 							return t &&
 								"function" == typeof a.default &&
@@ -1139,9 +1140,9 @@
 								t !== a.default.prototype
 								? "symbol"
 								: "undefined" == typeof t
-								  ? "undefined"
-								  : u(t);
-					  };
+									? "undefined"
+									: u(t);
+						};
 		},
 		function (t, e, n) {
 			var o = n(2),
@@ -1241,7 +1242,7 @@
 				? Object
 				: function (t) {
 						return "String" == o(t) ? t.split("") : Object(t);
-				  };
+					};
 		},
 		function (t, e, n) {
 			var o = n(31);
@@ -1329,7 +1330,7 @@
 						for (var n, s = i(e), a = s.length, u = 0; a > u; )
 							o.f(t, (n = s[u++]), e[n]);
 						return t;
-				  };
+					};
 		},
 		function (t, e, n) {
 			var o = n(20),
@@ -1347,7 +1348,7 @@
 								return l(t, e);
 							} catch (t) {}
 						if (a(t, e)) return r(!o.f.call(t, e), t[e]);
-				  };
+					};
 		},
 		function (t, e, n) {
 			var o = n(7),
@@ -1384,10 +1385,10 @@
 							? t[i]
 							: "function" == typeof t.constructor &&
 								  t instanceof t.constructor
-							  ? t.constructor.prototype
-							  : t instanceof Object
-								  ? s
-								  : null
+								? t.constructor.prototype
+								: t instanceof Object
+									? s
+									: null
 					);
 				};
 		},
@@ -1406,7 +1407,7 @@
 									n(1);
 								}),
 						"Object",
-						s,
+						s
 					);
 			};
 		},
@@ -1425,17 +1426,19 @@
 							? ""
 							: void 0
 						: ((i = a.charCodeAt(u)),
-						  i < 55296 ||
-						  i > 56319 ||
-						  u + 1 === l ||
-						  (s = a.charCodeAt(u + 1)) < 56320 ||
-						  s > 57343
+							i < 55296 ||
+							i > 56319 ||
+							u + 1 === l ||
+							(s = a.charCodeAt(u + 1)) < 56320 ||
+							s > 57343
 								? t
 									? a.charAt(u)
 									: i
 								: t
-								  ? a.slice(u, u + 2)
-								  : ((i - 55296) << 10) + (s - 56320) + 65536);
+									? a.slice(u, u + 2)
+									: ((i - 55296) << 10) +
+										(s - 56320) +
+										65536);
 				};
 			};
 		},
@@ -1473,12 +1476,12 @@
 					return !t || n >= t.length
 						? ((this._t = void 0), r(1))
 						: "keys" == e
-						  ? r(0, n)
-						  : "values" == e
-							  ? r(0, t[n])
-							  : r(0, [n, t[n]]);
+							? r(0, n)
+							: "values" == e
+								? r(0, t[n])
+								: r(0, [n, t[n]]);
 				},
-				"values",
+				"values"
 			)),
 				(i.Arguments = i.Array),
 				o("keys"),
@@ -1515,9 +1518,9 @@
 					return n >= e.length
 						? { value: void 0, done: !0 }
 						: ((t = o(e, n)),
-						  (this._i += t.length),
-						  { value: t, done: !1 });
-				},
+							(this._i += t.length),
+							{ value: t, done: !1 });
+				}
 			);
 		},
 		function (t, e, n) {
@@ -1574,7 +1577,7 @@
 									get: function () {
 										return C(this, "a", { value: 7 }).a;
 									},
-								}),
+								})
 							).a
 						);
 					})
@@ -1583,7 +1586,7 @@
 								o && delete R[e],
 									C(t, e, n),
 									o && t !== R && C(R, e, o);
-						  }
+							}
 						: C,
 				U = function (t) {
 					var e = (D[t] = O(L[V]));
@@ -1593,10 +1596,10 @@
 					z && "symbol" == typeof L.iterator
 						? function (t) {
 								return "symbol" == typeof t;
-						  }
+							}
 						: function (t) {
 								return t instanceof L;
-						  },
+							},
 				K = function (t, e, n) {
 					return (
 						t === R && K(I, e, n),
@@ -1606,10 +1609,10 @@
 						r(D, e)
 							? (n.enumerable
 									? (r(t, B) && t[B][e] && (t[B][e] = !1),
-									  (n = O(n, { enumerable: S(0, !1) })))
+										(n = O(n, { enumerable: S(0, !1) })))
 									: (r(t, B) || C(t, B, S(1, {})),
-									  (t[B][e] = !0)),
-							  J(t, e, n))
+										(t[B][e] = !0)),
+								J(t, e, n))
 							: C(t, e, n)
 					);
 				},
@@ -1660,6 +1663,7 @@
 					for (
 						var e, n = t === R, o = M(n ? I : x(t)), i = [], s = 0;
 						o.length > s;
+
 					)
 						!r(D, (e = o[s++])) || (n && !r(R, e)) || i.push(D[e]);
 					return i;
@@ -1696,10 +1700,11 @@
 			for (
 				var et =
 						"hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(
-							",",
+							","
 						),
 					nt = 0;
 				et.length > nt;
+
 			)
 				d(et[nt++]);
 			for (var ot = P(d.store), rt = 0; ot.length > rt; ) b(ot[rt++]);
@@ -1745,6 +1750,7 @@
 								for (
 									var e, n, o = [t], r = 1;
 									arguments.length > r;
+
 								)
 									o.push(arguments[r++]);
 								if (
@@ -1759,7 +1765,7 @@
 														(e = n.call(
 															this,
 															t,
-															e,
+															e
 														)),
 													!W(e))
 												)
@@ -1769,7 +1775,7 @@
 										E.apply(T, o)
 									);
 							},
-						},
+						}
 					),
 				L[V][F] || n(6)(L[V], F, L[V].valueOf),
 				f(L, "Symbol"),
@@ -1791,7 +1797,7 @@
 					s = n(8)("toStringTag"),
 					a =
 						"CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,TextTrackList,TouchList".split(
-							",",
+							","
 						),
 					u = 0;
 				u < a.length;
@@ -1836,7 +1842,8 @@
 								(n && !s[2]
 									? (s[2] = n)
 									: n &&
-									  (s[2] = "(" + s[2] + ") and (" + n + ")"),
+										(s[2] =
+											"(" + s[2] + ") and (" + n + ")"),
 								t.push(s));
 						}
 					}),
@@ -1928,23 +1935,23 @@
 																			"\n            " +
 																				t._s(
 																					t.getOptionLabel(
-																						e,
-																					),
+																						e
+																					)
 																				) +
-																				"\n          ",
+																				"\n          "
 																		),
 																	],
 																	null,
 																	"object" ==
-																	typeof e
+																		typeof e
 																		? e
 																		: ((o =
 																				{}),
-																		  (o[
+																			(o[
 																				t.label
-																		  ] =
+																			] =
 																				e),
-																		  o),
+																			o)
 																),
 																t._v(" "),
 																t.multiple
@@ -1962,10 +1969,10 @@
 																				},
 																				on: {
 																					click: function (
-																						n,
+																						n
 																					) {
 																						t.deselect(
-																							e,
+																							e
 																						);
 																					},
 																				},
@@ -1981,15 +1988,15 @@
 																					},
 																					[
 																						t._v(
-																							"×",
+																							"×"
 																						),
-																					],
+																					]
 																				),
-																			],
-																	  )
+																			]
+																		)
 																	: t._e(),
 															],
-															2,
+															2
 														),
 													],
 													{
@@ -1997,13 +2004,14 @@
 															"object" == typeof e
 																? e
 																: ((r = {}),
-																  (r[t.label] =
-																		e),
-																  r),
+																	(r[
+																		t.label
+																	] = e),
+																	r),
 														deselect: t.deselect,
 														multiple: t.multiple,
 														disabled: t.disabled,
-													},
+													}
 												);
 												var o, r;
 											}),
@@ -2044,11 +2052,11 @@
 																	e.keyCode,
 																	"delete",
 																	[8, 46],
-																	e.key,
+																	e.key
 																)
 																? void t.maybeDeleteValue(
-																		e,
-																  )
+																		e
+																	)
 																: null;
 														},
 														function (e) {
@@ -2058,12 +2066,12 @@
 																	e.keyCode,
 																	"up",
 																	38,
-																	e.key,
+																	e.key
 																)
 																? (e.preventDefault(),
-																  void t.typeAheadUp(
-																		e,
-																  ))
+																	void t.typeAheadUp(
+																		e
+																	))
 																: null;
 														},
 														function (e) {
@@ -2073,12 +2081,12 @@
 																	e.keyCode,
 																	"down",
 																	40,
-																	e.key,
+																	e.key
 																)
 																? (e.preventDefault(),
-																  void t.typeAheadDown(
-																		e,
-																  ))
+																	void t.typeAheadDown(
+																		e
+																	))
 																: null;
 														},
 														function (e) {
@@ -2088,12 +2096,12 @@
 																	e.keyCode,
 																	"enter",
 																	13,
-																	e.key,
+																	e.key
 																)
 																? (e.preventDefault(),
-																  void t.typeAheadSelect(
-																		e,
-																  ))
+																	void t.typeAheadSelect(
+																		e
+																	))
 																: null;
 														},
 														function (e) {
@@ -2103,11 +2111,11 @@
 																	e.keyCode,
 																	"tab",
 																	9,
-																	e.key,
+																	e.key
 																)
 																? void t.onTab(
-																		e,
-																  )
+																		e
+																	)
 																: null;
 														},
 													],
@@ -2117,7 +2125,7 @@
 																e.keyCode,
 																"esc",
 																27,
-																e.key,
+																e.key
 															)
 															? void t.onEscape(e)
 															: null;
@@ -2132,7 +2140,7 @@
 												},
 											}),
 										],
-										2,
+										2
 									),
 									t._v(" "),
 									n(
@@ -2170,9 +2178,9 @@
 																	"true",
 															},
 														},
-														[t._v("×")],
+														[t._v("×")]
 													),
-												],
+												]
 											),
 											t._v(" "),
 											t.noDrop
@@ -2184,7 +2192,7 @@
 														attrs: {
 															role: "presentation",
 														},
-												  }),
+													}),
 											t._v(" "),
 											t._t("spinner", [
 												n(
@@ -2202,13 +2210,13 @@
 														],
 														staticClass: "spinner",
 													},
-													[t._v("Loading...")],
+													[t._v("Loading...")]
 												),
 											]),
 										],
-										2,
+										2
 									),
-								],
+								]
 							),
 							t._v(" "),
 							n("transition", { attrs: { name: t.transition } }, [
@@ -2236,7 +2244,7 @@
 																key: o,
 																class: {
 																	active: t.isOptionSelected(
-																		e,
+																		e
 																	),
 																	highlight:
 																		o ===
@@ -2248,7 +2256,7 @@
 																on: {
 																	mouseover:
 																		function (
-																			e,
+																			e
 																		) {
 																			t.typeAheadPointer =
 																				o;
@@ -2262,12 +2270,12 @@
 																		on: {
 																			mousedown:
 																				function (
-																					n,
+																					n
 																				) {
 																					n.preventDefault(),
 																						n.stopPropagation(),
 																						t.select(
-																							e,
+																							e
 																						);
 																				},
 																		},
@@ -2280,31 +2288,31 @@
 																					"\n          " +
 																						t._s(
 																							t.getOptionLabel(
-																								e,
-																							),
+																								e
+																							)
 																						) +
-																						"\n        ",
+																						"\n        "
 																				),
 																			],
 																			null,
 																			"object" ==
-																			typeof e
+																				typeof e
 																				? e
 																				: ((r =
 																						{}),
-																				  (r[
+																					(r[
 																						t.label
-																				  ] =
+																					] =
 																						e),
-																				  r),
+																					r)
 																		),
 																	],
-																	2,
+																	2
 																),
-															],
+															]
 														);
 														var r;
-													},
+													}
 												),
 												t._v(" "),
 												t.filteredOptions.length
@@ -2320,20 +2328,20 @@
 																	"no-options",
 																	[
 																		t._v(
-																			"Sorry, no matching options.",
+																			"Sorry, no matching options."
 																		),
-																	],
+																	]
 																),
 															],
-															2,
-													  ),
+															2
+														),
 											],
-											2,
-									  )
+											2
+										)
 									: t._e(),
 							]),
 						],
-						1,
+						1
 					);
 				},
 				staticRenderFns: [],
@@ -2384,7 +2392,7 @@
 				else {
 					if ("bottom" !== t.insertAt)
 						throw new Error(
-							"Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.",
+							"Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'."
 						);
 					n.appendChild(e);
 				}
@@ -2447,7 +2455,7 @@
 						(n +=
 							"\n/*# sourceMappingURL=data:application/json;base64," +
 							btoa(
-								unescape(encodeURIComponent(JSON.stringify(r))),
+								unescape(encodeURIComponent(JSON.stringify(r)))
 							) +
 							" */")),
 					t.styleSheet)
@@ -2471,7 +2479,7 @@
 				},
 				d = p(function () {
 					return /msie [6-9]\b/.test(
-						window.navigator.userAgent.toLowerCase(),
+						window.navigator.userAgent.toLowerCase()
 					);
 				}),
 				h = p(function () {

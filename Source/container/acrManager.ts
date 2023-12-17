@@ -24,7 +24,7 @@ export class AcrManager {
 
 	constructor() {
 		this.azureAccount = vscode.extensions.getExtension<AzureAccount>(
-			"ms-vscode.azure-account",
+			"ms-vscode.azure-account"
 		)!.exports;
 	}
 
@@ -39,7 +39,7 @@ export class AcrManager {
 
 		const acrRepoItem: vscode.QuickPickItem = await this.selectAcrRepo(
 			registryUrl,
-			acrRegistryItem.azureSubscription.session,
+			acrRegistryItem.azureSubscription.session
 		);
 		if (acrRepoItem === undefined) {
 			throw new UserCancelledError();
@@ -47,7 +47,7 @@ export class AcrManager {
 
 		const acrTagItem: vscode.QuickPickItem = await this.selectAcrTag(
 			registryUrl,
-			acrRepoItem.label,
+			acrRepoItem.label
 		);
 		if (acrTagItem === undefined) {
 			throw new UserCancelledError();
@@ -57,7 +57,7 @@ export class AcrManager {
 	}
 
 	public async getAcrRegistryCredential(
-		address: string,
+		address: string
 	): Promise<{ username: string; password: string }> {
 		let username: string;
 		let password: string;
@@ -76,12 +76,12 @@ export class AcrManager {
 						Utility.getResourceGroupFromId(registry.id);
 					const client = new ContainerRegistryManagementClient(
 						azureSubscription.session.credentials,
-						azureSubscription.subscription.subscriptionId!,
+						azureSubscription.subscription.subscriptionId!
 					);
 					const creds: RegistryListCredentialsResult =
 						await client.registries.listCredentials(
 							resourceGroup,
-							registryName,
+							registryName
 						);
 					username = creds.username;
 					password = creds.passwords[0].value;
@@ -111,33 +111,33 @@ export class AcrManager {
 				[];
 			for (const azureSubscription of this.azureAccount.filters) {
 				const tokenCredentials = await Utility.aquireTokenCredentials(
-					azureSubscription.session,
+					azureSubscription.session
 				);
 				const client: Registries =
 					new ContainerRegistryManagementClient(
 						tokenCredentials,
-						azureSubscription.subscription.subscriptionId!,
+						azureSubscription.subscription.subscriptionId!
 					).registries;
 
 				registryPromises.push(
 					Utility.listAzureResources<Registry>(
 						client.list(),
-						client.listNext,
+						client.listNext
 					).then((registries: Registry[]) =>
 						registries.map((registry: Registry) => {
 							return new AcrRegistryQuickPickItem(
 								registry,
-								azureSubscription,
+								azureSubscription
 							);
-						}),
-					),
+						})
+					)
 				);
 			}
 
 			const registryItems: AcrRegistryQuickPickItem[] =
 				await Utility.awaitPromiseArray<AcrRegistryQuickPickItem>(
 					registryPromises,
-					"Azure Container Registry",
+					"Azure Container Registry"
 				);
 			return registryItems;
 		} catch (error) {
@@ -148,19 +148,19 @@ export class AcrManager {
 
 	private async selectAcrRepo(
 		registryUrl: string,
-		session: AzureSession,
+		session: AzureSession
 	): Promise<vscode.QuickPickItem> {
 		const acrRepoItem: vscode.QuickPickItem =
 			await vscode.window.showQuickPick(
 				this.loadAcrRepoItems(registryUrl, session),
-				{ placeHolder: "Select Repository", ignoreFocusOut: true },
+				{ placeHolder: "Select Repository", ignoreFocusOut: true }
 			);
 		return acrRepoItem;
 	}
 
 	private async loadAcrRepoItems(
 		registryUrl: string,
-		session: AzureSession,
+		session: AzureSession
 	): Promise<vscode.QuickPickItem[]> {
 		try {
 			const { aadAccessToken, aadRefreshToken } =
@@ -169,17 +169,17 @@ export class AcrManager {
 				registryUrl,
 				session.tenantId,
 				aadRefreshToken,
-				aadAccessToken,
+				aadAccessToken
 			);
 			const acrAccessToken = await this.acquireAcrAccessToken(
 				registryUrl,
 				"registry:catalog:*",
-				this.acrRefreshToken,
+				this.acrRefreshToken
 			);
 
 			const catalogResponse = await axios.get(
 				`https://${registryUrl}/v2/_catalog`,
-				{ headers: { Authorization: `bearer ${acrAccessToken}` } },
+				{ headers: { Authorization: `bearer ${acrAccessToken}` } }
 			);
 
 			const repoItems: vscode.QuickPickItem[] = [];
@@ -187,7 +187,7 @@ export class AcrManager {
 
 			if (!repos) {
 				const error: any = new Error(
-					"There is no repository in the registry.",
+					"There is no repository in the registry."
 				);
 				error.statusCode = 404;
 				throw error;
@@ -216,7 +216,7 @@ export class AcrManager {
 		registryUrl: string,
 		tenantId: string,
 		aadRefreshToken: string,
-		aadAccessToken: string,
+		aadAccessToken: string
 	): Promise<string> {
 		const qs = require("qs");
 		const data = {
@@ -242,7 +242,7 @@ export class AcrManager {
 	private async acquireAcrAccessToken(
 		registryUrl: string,
 		scope: string,
-		acrRefreshToken: string,
+		acrRefreshToken: string
 	) {
 		const qs = require("qs");
 
@@ -253,7 +253,7 @@ export class AcrManager {
 				service: registryUrl,
 				scope,
 				refresh_token: acrRefreshToken,
-			}),
+			})
 		);
 
 		return acrAccessTokenResponse.data.access_token;
@@ -261,29 +261,29 @@ export class AcrManager {
 
 	private async selectAcrTag(
 		registryUrl: string,
-		repo: string,
+		repo: string
 	): Promise<vscode.QuickPickItem> {
 		const tag: vscode.QuickPickItem = await vscode.window.showQuickPick(
 			this.loadAcrTagItems(registryUrl, repo),
-			{ placeHolder: "Select Tag", ignoreFocusOut: true },
+			{ placeHolder: "Select Tag", ignoreFocusOut: true }
 		);
 		return tag;
 	}
 
 	private async loadAcrTagItems(
 		registryUrl: string,
-		repo: string,
+		repo: string
 	): Promise<vscode.QuickPickItem[]> {
 		try {
 			const acrAccessToken = await this.acquireAcrAccessToken(
 				registryUrl,
 				`repository:${repo}:pull`,
-				this.acrRefreshToken,
+				this.acrRefreshToken
 			);
 
 			const tagsResponse = await axios.get(
 				`https://${registryUrl}/v2/${repo}/tags/list`,
-				{ headers: { Authorization: `bearer ${acrAccessToken}` } },
+				{ headers: { Authorization: `bearer ${acrAccessToken}` } }
 			);
 
 			const tagItems: vscode.QuickPickItem[] = [];

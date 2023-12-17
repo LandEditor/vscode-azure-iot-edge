@@ -14,21 +14,21 @@ export class ConfigCompletionItemProvider
 {
 	public async provideCompletionItems(
 		document: vscode.TextDocument,
-		position: vscode.Position,
+		position: vscode.Position
 	): Promise<vscode.CompletionItem[]> {
 		const location: parser.Location = parser.getLocation(
 			document.getText(),
-			document.offsetAt(position),
+			document.offsetAt(position)
 		);
 
 		if (
 			IntelliSenseUtility.locationMatch(
 				location,
-				Constants.moduleDeploymentManifestJsonPath,
+				Constants.moduleDeploymentManifestJsonPath
 			)
 		) {
 			const moduleCompletionItem = new vscode.CompletionItem(
-				Constants.moduleSnippetLabel,
+				Constants.moduleSnippetLabel
 			);
 			moduleCompletionItem.filterText = `\"${Constants.moduleSnippetLabel}\"`;
 			moduleCompletionItem.kind = vscode.CompletionItemKind.Snippet;
@@ -57,7 +57,7 @@ export class ConfigCompletionItemProvider
 					'\t\t"createOptions": {$8}',
 					"\t}",
 					"}",
-				].join("\n"),
+				].join("\n")
 			);
 			return [moduleCompletionItem];
 		}
@@ -80,26 +80,26 @@ export class ConfigCompletionItemProvider
 		if (
 			IntelliSenseUtility.locationMatch(
 				location,
-				Constants.imgDeploymentManifestJsonPath,
+				Constants.imgDeploymentManifestJsonPath
 			)
 		) {
 			const moduleToImageMap: Map<string, string> = new Map();
 			await Utility.setSlnModulesMap(
 				document.uri.fsPath,
-				moduleToImageMap,
+				moduleToImageMap
 			);
 			return this.getCompletionItems(
 				Array.from(moduleToImageMap.keys()),
 				document,
 				position,
-				location,
+				location
 			);
 		}
 
 		if (
 			IntelliSenseUtility.locationMatch(
 				location,
-				Constants.routeDeploymentManifestJsonPath,
+				Constants.routeDeploymentManifestJsonPath
 			)
 		) {
 			const json = parser.parse(document.getText());
@@ -119,7 +119,7 @@ export class ConfigCompletionItemProvider
 			routeCompletionItem.range =
 				document.getWordRangeAtPosition(position);
 			routeCompletionItem.insertText = new vscode.SnippetString(
-				this.getRouteSnippetString(moduleIds),
+				this.getRouteSnippetString(moduleIds)
 			);
 			return [routeCompletionItem];
 		}
@@ -129,7 +129,7 @@ export class ConfigCompletionItemProvider
 		values: string[],
 		document: vscode.TextDocument,
 		position: vscode.Position,
-		location: parser.Location,
+		location: parser.Location
 	): vscode.CompletionItem[] {
 		const offset: number = document.offsetAt(position);
 		const node: parser.Node = location.previousNode;
@@ -138,13 +138,13 @@ export class ConfigCompletionItemProvider
 			document,
 			position,
 			offset,
-			node,
+			node
 		);
 		const separator: string = this.evaluateSeparatorAfter(
 			document,
 			position,
 			offset,
-			node,
+			node
 		);
 
 		const completionItems: vscode.CompletionItem[] = [];
@@ -168,7 +168,7 @@ export class ConfigCompletionItemProvider
 		document: vscode.TextDocument,
 		position: vscode.Position,
 		offset: number,
-		node: parser.Node,
+		node: parser.Node
 	): vscode.Range {
 		let overwriteRange: vscode.Range;
 		if (
@@ -184,14 +184,14 @@ export class ConfigCompletionItemProvider
 			// when the cursor is placed in a node, overwrite the entire content of the node with the completion text
 			overwriteRange = new vscode.Range(
 				document.positionAt(node.offset),
-				document.positionAt(node.offset + node.length),
+				document.positionAt(node.offset + node.length)
 			);
 		} else {
 			// when the cursor is not placed in a node, overwrite the word to the postion with the completion text
 			const currentWord: string = this.getCurrentWord(document, position);
 			overwriteRange = new vscode.Range(
 				document.positionAt(offset - currentWord.length),
-				position,
+				position
 			);
 		}
 
@@ -200,7 +200,7 @@ export class ConfigCompletionItemProvider
 
 	private getCurrentWord(
 		document: vscode.TextDocument,
-		position: vscode.Position,
+		position: vscode.Position
 	): string {
 		let i: number = position.character - 1;
 		const text: string = document.lineAt(position.line).text;
@@ -215,7 +215,7 @@ export class ConfigCompletionItemProvider
 		document: vscode.TextDocument,
 		position: vscode.Position,
 		offset: number,
-		node: parser.Node,
+		node: parser.Node
 	) {
 		// when the cursor is placed in a node, set the scanner location to the end of the node
 		if (
@@ -230,7 +230,7 @@ export class ConfigCompletionItemProvider
 
 		const scanner: parser.JSONScanner = parser.createScanner(
 			document.getText(),
-			true,
+			true
 		);
 		scanner.setPosition(offset);
 		const token: parser.SyntaxKind = scanner.scan();
@@ -276,12 +276,12 @@ export class ConfigCompletionItemProvider
 		const sinks: string[] = ["${4|$upstream"];
 		if (moduleIds.length === 0) {
 			sinks.push(
-				`BrokeredEndpoint(\\"/modules/{moduleId}/inputs/{input}\\")`,
+				`BrokeredEndpoint(\\"/modules/{moduleId}/inputs/{input}\\")`
 			);
 		} else {
 			for (const moduleId of moduleIds) {
 				sinks.push(
-					`BrokeredEndpoint(\\"/modules/${moduleId}/inputs/{input}\\")`,
+					`BrokeredEndpoint(\\"/modules/${moduleId}/inputs/{input}\\")`
 				);
 			}
 		}

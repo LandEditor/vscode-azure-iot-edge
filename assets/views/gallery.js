@@ -82,20 +82,20 @@
 							let device = examples[i].supportDevices[j];
 							if (!device.deviceId || !device.platform) {
 								throw Error(
-									`Missing property deviceId or platform for sample ${examples[i].name}`,
+									`Missing property deviceId or platform for sample ${examples[i].name}`
 								);
 							}
 							if (
 								!allDevices.find(
-									(d) => d.id === device.deviceId,
+									(d) => d.id === device.deviceId
 								)
 							) {
 								throw Error(
 									`The device id ${
 										device.deviceId
 									} is not in the list ${JSON.stringify(
-										allDevices,
-									)}`,
+										allDevices
+									)}`
 								);
 							}
 							if (!allPlatforms.includes(device.platform)) {
@@ -103,17 +103,17 @@
 									`The platform ${
 										device.platform
 									} is not in the list ${JSON.stringify(
-										allPlatforms,
-									)}`,
+										allPlatforms
+									)}`
 								);
 							}
 							let logicalDevice = LogicalDevice.fromObject(
 								device,
-								allDevices,
+								allDevices
 							);
 							addToArrayWithoutDup(
 								logicalDevice,
-								this.logicalDevices,
+								this.logicalDevices
 							);
 							examples[i].supportDevices[j] = logicalDevice;
 						}
@@ -127,7 +127,7 @@
 					this.$nextTick(function () {
 						this.adjustFilterWidth();
 					});
-				}.bind(this),
+				}.bind(this)
 			);
 		},
 		methods: {
@@ -151,11 +151,11 @@
 				// else it will set the platform as the first support devices platform in the sample
 				if (this.selectedLogicalDevice) {
 					let supportedPlatforms = sample.supportDevices.map(
-						(device) => device.platform,
+						(device) => device.platform
 					);
 					if (
 						supportedPlatforms.includes(
-							this.selectedLogicalDevice.value.platform,
+							this.selectedLogicalDevice.value.platform
 						)
 					) {
 						platform = this.selectedLogicalDevice.value.platform;
@@ -192,7 +192,7 @@
 				// Code that will run only after the
 				// entire view has been re-rendered
 				let num = Math.floor(
-					this.$refs.elist.$el.offsetWidth / (320 + 20),
+					this.$refs.elist.$el.offsetWidth / (320 + 20)
 				);
 				console.log(this);
 				this.$refs.filter.$el.style.width = `${

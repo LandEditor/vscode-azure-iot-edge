@@ -2,7 +2,7 @@ const fs = require("fs");
 
 if (process.env.BUILD_SOURCEBRANCH) {
 	const ISPROD = new RegExp(process.env.ISPRODTAG).test(
-		process.env.BUILD_SOURCEBRANCH || "",
+		process.env.BUILD_SOURCEBRANCH || ""
 	);
 	const packageJson = JSON.parse(fs.readFileSync("package.json"));
 	if (ISPROD) {
@@ -14,7 +14,7 @@ if (process.env.BUILD_SOURCEBRANCH) {
 	}
 	fs.writeFileSync(
 		"package.json",
-		JSON.stringify(packageJson, null, 2) + "\n",
+		JSON.stringify(packageJson, null, 2) + "\n"
 	);
 } else {
 	console.log("Skipping genAiKey");

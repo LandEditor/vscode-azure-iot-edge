@@ -8,7 +8,7 @@ export class RetryPolicy {
 		maxRetryTimes: number,
 		retryInterval: number,
 		outputChannel: vscode.OutputChannel,
-		func: () => Promise<void>,
+		func: () => Promise<void>
 	) {
 		let retries: number = 0;
 		while (true) {
@@ -19,7 +19,7 @@ export class RetryPolicy {
 			} catch (err) {
 				if (retries <= maxRetryTimes) {
 					outputChannel.appendLine(
-						`Task failed with error: ${err.message}, wait ${retryInterval} milliseconds and retry (${retries})...`,
+						`Task failed with error: ${err.message}, wait ${retryInterval} milliseconds and retry (${retries})...`
 					);
 					await this.sleep(retryInterval);
 					continue;

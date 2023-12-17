@@ -4,7 +4,7 @@ import { Constants } from "./constants";
 export class Platform {
 	public static getDefaultPlatform(): Platform {
 		const defaultPlatform = Configuration.getConfigurationProperty(
-			Constants.defPlatformConfig,
+			Constants.defPlatformConfig
 		);
 		if (!defaultPlatform) {
 			return new Platform("amd64", null);
@@ -21,7 +21,7 @@ export class Platform {
 
 	public static getPlatformsSetting(): Platform[] {
 		const platformObjs = Configuration.getConfiguration().get<any>(
-			Constants.platformsConfig,
+			Constants.platformsConfig
 		);
 		const platforms: Platform[] = [];
 		for (const key in platformObjs) {

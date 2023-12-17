@@ -44,12 +44,12 @@ export class LocalServer {
 		this.router = express.Router();
 		this.router.get(
 			"/api/v1/modules",
-			async (req, res, next) => await this.getModules(req, res, next),
+			async (req, res, next) => await this.getModules(req, res, next)
 		);
 		this.router.get(
 			"/api/v1/modules/:module/status",
 			async (req, res, next) =>
-				await this.validateModuleName(req, res, next),
+				await this.validateModuleName(req, res, next)
 		);
 	}
 
@@ -77,7 +77,7 @@ export class LocalServer {
 	private async validateModuleName(
 		req: express.Request,
 		res: express.Response,
-		next: express.NextFunction,
+		next: express.NextFunction
 	) {
 		try {
 			const moduleName = req.params.module;
@@ -94,7 +94,7 @@ export class LocalServer {
 	private async getModules(
 		req: express.Request,
 		res: express.Response,
-		next: express.NextFunction,
+		next: express.NextFunction
 	) {
 		try {
 			let apiUrl =
@@ -115,7 +115,7 @@ export class LocalServer {
 								const metaData = plan.artifacts.find(
 									(artifact) =>
 										artifact.name ===
-										"iot-edge-metadata.json",
+										"iot-edge-metadata.json"
 								);
 								if (metaData !== undefined) {
 									plan.iotEdgeMetadataUrl = metaData.uri;
