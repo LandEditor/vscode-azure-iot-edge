@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-"use strict";
-
 import * as jsonMap from "json-source-map";
 import * as vscode from "vscode";
 
@@ -10,11 +8,11 @@ export class ASAModuleUpdateCodeLensProvider
 	implements vscode.CodeLensProvider
 {
 	private templateFilePath: string;
-	private ASAModuleTwinPathRoot: string = "/modulesContent/";
+	private ASAModuleTwinPathRoot = "/modulesContent/";
 
 	public async provideCodeLenses(
 		document: vscode.TextDocument,
-		token: vscode.CancellationToken
+		token: vscode.CancellationToken,
 	): Promise<vscode.CodeLens[]> {
 		const deploymentJsonString = document.getText();
 		this.templateFilePath = document.uri.fsPath;

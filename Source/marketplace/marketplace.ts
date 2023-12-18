@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-"use strict";
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
@@ -32,10 +31,12 @@ export class Marketplace {
 	public async openMarketplacePage(
 		templateFile: string,
 		isNewSolution: boolean,
-		modules: string[]
+		modules: string[],
 	): Promise<any> {
 		this.setStatus(templateFile, isNewSolution, modules);
-		if (!this.panel) {
+		if (this.panel) {
+			this.panel.reveal();
+		} else {
 			this.localServer.startServer();
 			this.panel = vscode.window.createWebviewPanel(
 				Constants.marketplacePanelViewType,
@@ -45,23 +46,23 @@ export class Marketplace {
 					enableCommandUris: true,
 					enableScripts: true,
 					retainContextWhenHidden: true,
-				}
+				},
 			);
 
 			let html = fs.readFileSync(
 				this.context.asAbsolutePath(
-					path.join("assets", "marketplace", "index.html")
+					path.join("assets", "marketplace", "index.html"),
 				),
-				"utf8"
+				"utf8",
 			);
 			html = html
 				.replace(
 					/{{root}}/g,
 					this.panel.webview
 						.asWebviewUri(
-							vscode.Uri.file(this.context.asAbsolutePath("."))
+							vscode.Uri.file(this.context.asAbsolutePath(".")),
 						)
-						.toString()
+						.toString(),
 				)
 				.replace(/{{endpoint}}/g, this.localServer.getServerUri());
 			this.panel.webview.html = html;
@@ -70,8 +71,6 @@ export class Marketplace {
 				this.panel = undefined;
 				this.localServer.stopServer();
 			});
-		} else {
-			this.panel.reveal();
 		}
 
 		this.panel.webview.onDidReceiveMessage(
@@ -81,7 +80,7 @@ export class Marketplace {
 				});
 				this.panel.dispose();
 				const repositoryName = Utility.getRepositoryNameFromImageName(
-					message.imageName
+					message.imageName,
 				);
 				const moduleInfo = new ModuleInfo(
 					message.moduleName,
@@ -93,25 +92,25 @@ export class Marketplace {
 					message.createOptions,
 					message.routes,
 					message.environmentVariables,
-					true
+					true,
 				);
 				await vscode.commands.executeCommand(
 					"azure-iot-edge.internal.addModule",
 					this.templateFile,
 					this.isNewSolution,
 					moduleInfo,
-					Constants.MARKETPLACE_MODULE
+					Constants.MARKETPLACE_MODULE,
 				);
 			},
 			undefined,
-			this.context.subscriptions
+			this.context.subscriptions,
 		);
 	}
 
 	private setStatus(
 		templateFile: string,
 		isNewSolution: boolean,
-		modules: string[]
+		modules: string[],
 	) {
 		this.localServer.modules = modules;
 		this.templateFile = templateFile;

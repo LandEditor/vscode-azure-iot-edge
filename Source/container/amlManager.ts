@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-"use strict";
 import { AzureMachineLearningWorkspaces } from "@azure/arm-machinelearningservices";
 import { Workspace } from "@azure/arm-machinelearningservices/esm/models";
 import { Workspaces } from "@azure/arm-machinelearningservices/esm/operations";
 import { HttpOperationResponse, ServiceClient } from "@azure/ms-rest-js";
 import * as vscode from "vscode";
-import { Constants } from "../common/constants";
 import { UserCancelledError } from "../common/UserCancelledError";
+import { Constants } from "../common/constants";
 import { Utility } from "../common/utility";
 import { AzureAccount, AzureSession } from "../typings/azure-account.api";
 import { AmlWorkspaceQuickPickItem } from "./models/amlWorkspaceQuickPickItem";
@@ -17,7 +16,7 @@ export class AmlManager {
 	private readonly azureAccount: AzureAccount;
 	constructor() {
 		this.azureAccount = vscode.extensions.getExtension<AzureAccount>(
-			"ms-vscode.azure-account"
+			"ms-vscode.azure-account",
 		)!.exports;
 	}
 
@@ -30,7 +29,7 @@ export class AmlManager {
 
 		const imageItem: vscode.QuickPickItem = await this.selectImage(
 			workspaceItem.workspace,
-			workspaceItem.azureSubscription.session
+			workspaceItem.azureSubscription.session,
 		);
 		if (imageItem === undefined) {
 			throw new UserCancelledError();
@@ -59,17 +58,17 @@ export class AmlManager {
 			> = [];
 			for (const azureSubscription of this.azureAccount.filters) {
 				const tokenCredentials = await Utility.aquireTokenCredentials(
-					azureSubscription.session
+					azureSubscription.session,
 				);
 				const client: Workspaces = new AzureMachineLearningWorkspaces(
 					tokenCredentials,
-					azureSubscription.subscription.subscriptionId!
+					azureSubscription.subscription.subscriptionId!,
 				).workspaces;
 
 				workspacePromises.push(
 					Utility.listAzureResources<Workspace>(
 						client.listBySubscription(),
-						client.listBySubscriptionNext
+						client.listBySubscriptionNext,
 					).then((workspaces: Workspace[]) => {
 						// More than one workspace can have the same name as long as they are in different resource groups.
 						const counts: Map<string, number> =
@@ -80,23 +79,23 @@ export class AmlManager {
 									? workspace.name
 									: `${
 											workspace.name
-										} (${Utility.getResourceGroupFromId(
-											workspace.id
-										)})`;
+									  } (${Utility.getResourceGroupFromId(
+											workspace.id,
+									  )})`;
 							return new AmlWorkspaceQuickPickItem(
 								label,
 								workspace,
-								azureSubscription
+								azureSubscription,
 							);
 						});
-					})
+					}),
 				);
 			}
 
 			const workspaceItems: AmlWorkspaceQuickPickItem[] =
 				await Utility.awaitPromiseArray<AmlWorkspaceQuickPickItem>(
 					workspacePromises,
-					Constants.amlWorkspaceDesc
+					Constants.amlWorkspaceDesc,
 				);
 			return workspaceItems;
 		} catch (error) {
@@ -107,19 +106,19 @@ export class AmlManager {
 
 	private async selectImage(
 		workspace: Workspace,
-		session: AzureSession
+		session: AzureSession,
 	): Promise<vscode.QuickPickItem> {
 		const imageItem: vscode.QuickPickItem =
 			await vscode.window.showQuickPick(
 				this.loadAmlImageItems(workspace, session),
-				{ placeHolder: "Select Image", ignoreFocusOut: true }
+				{ placeHolder: "Select Image", ignoreFocusOut: true },
 			);
 		return imageItem;
 	}
 
 	private async loadAmlImageItems(
 		workspace: Workspace,
-		session: AzureSession
+		session: AzureSession,
 	): Promise<vscode.QuickPickItem[]> {
 		try {
 			const modelMgmtEndpoint: string =
@@ -153,13 +152,13 @@ export class AmlManager {
 	}
 
 	private getWorkspaceNameCounts(
-		workspaces: Workspace[]
+		workspaces: Workspace[],
 	): Map<string, number> {
 		const counts: Map<string, number> = new Map<string, number>();
 		workspaces.forEach((workspace: Workspace) => {
 			counts.set(
 				workspace.name,
-				counts.has(workspace.name) ? counts.get(workspace.name) + 1 : 1
+				counts.has(workspace.name) ? counts.get(workspace.name) + 1 : 1,
 			);
 		});
 
@@ -181,7 +180,7 @@ export class AmlManager {
 	}
 
 	private async getExperimentationEndpoint(
-		workspace: Workspace
+		workspace: Workspace,
 	): Promise<string> {
 		const client: ServiceClient = new ServiceClient();
 		const result: HttpOperationResponse = await client.sendRequest({

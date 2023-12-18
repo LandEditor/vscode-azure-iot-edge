@@ -1,19 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-"use strict";
 import * as tls from "tls";
 import * as vscode from "vscode";
 import { ConfigNotSetError } from "./common/ConfigNotSetError";
-import { Constants } from "./common/constants";
 import { ErrorData } from "./common/ErrorData";
-import { Executor } from "./common/executor";
 import { LearnMoreError } from "./common/LearnMoreError";
+import { UserCancelledError } from "./common/UserCancelledError";
+import { Constants } from "./common/constants";
+import { Executor } from "./common/executor";
 import { ModuleInfo } from "./common/moduleInfo";
 import { NSAT } from "./common/nsat";
 import { Platform } from "./common/platform";
 import { TelemetryClient } from "./common/telemetryClient";
-import { UserCancelledError } from "./common/UserCancelledError";
 import { Utility } from "./common/utility";
 import { ContainerManager } from "./container/containerManager";
 import { EdgeManager } from "./edge/edgeManager";
@@ -43,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const statusBar: vscode.StatusBarItem = vscode.window.createStatusBarItem(
 		vscode.StatusBarAlignment.Left,
-		-10000
+		-10000,
 	);
 	statusBar.command = "azure-iot-edge.setDefaultPlatform";
 	statusBar.text = formatStatusBarText(Platform.getDefaultPlatformStr());
@@ -55,11 +54,11 @@ export function activate(context: vscode.ExtensionContext) {
 			(e: vscode.ConfigurationChangeEvent) => {
 				if (e.affectsConfiguration("azure-iot-edge.defaultPlatform")) {
 					statusBar.text = formatStatusBarText(
-						Platform.getDefaultPlatformStr()
+						Platform.getDefaultPlatformStr(),
 					);
 				}
-			}
-		)
+			},
+		),
 	);
 
 	context.subscriptions.push(statusBar);
@@ -72,8 +71,8 @@ export function activate(context: vscode.ExtensionContext) {
 			new ConfigCompletionItemProvider(),
 			'"',
 			".",
-			":"
-		)
+			":",
+		),
 	);
 	context.subscriptions.push(
 		vscode.languages.registerHoverProvider(
@@ -81,8 +80,8 @@ export function activate(context: vscode.ExtensionContext) {
 				{ scheme: "file", language: "json" },
 				{ scheme: "file", language: "jsonc" },
 			],
-			new ConfigHoverProvider()
-		)
+			new ConfigHoverProvider(),
+		),
 	);
 	// Calling registerDefinitionProvider will add "Go to definition" and "Peek definition" context menus to documents matched with the filter.
 	// Use the strict { pattern: "**/deployment.template.json" } instead of { language: "json" }, { language: "jsonc" } to avoid polluting the context menu of non-config JSON files.
@@ -98,8 +97,8 @@ export function activate(context: vscode.ExtensionContext) {
 					pattern: Constants.debugDeploymentTemplatePattern,
 				},
 			],
-			new ConfigDefinitionProvider()
-		)
+			new ConfigDefinitionProvider(),
+		),
 	);
 
 	const diagCollection: vscode.DiagnosticCollection =
@@ -109,7 +108,7 @@ export function activate(context: vscode.ExtensionContext) {
 	if (vscode.window.activeTextEditor) {
 		configDiagnosticProvider.updateDiagnostics(
 			vscode.window.activeTextEditor.document,
-			diagCollection
+			diagCollection,
 		);
 	}
 	context.subscriptions.push(diagCollection);
@@ -120,37 +119,40 @@ export function activate(context: vscode.ExtensionContext) {
 			if (event) {
 				configDiagnosticProvider.updateDiagnostics(
 					event.document,
-					diagCollection
+					diagCollection,
 				);
 			}
-		})
+		}),
 	);
 	context.subscriptions.push(
 		vscode.workspace.onDidSaveTextDocument((document) =>
-			configDiagnosticProvider.updateDiagnostics(document, diagCollection)
-		)
+			configDiagnosticProvider.updateDiagnostics(
+				document,
+				diagCollection,
+			),
+		),
 	);
 	context.subscriptions.push(
 		vscode.workspace.onDidCloseTextDocument((document) =>
-			diagCollection.delete(document.uri)
-		)
+			diagCollection.delete(document.uri),
+		),
 	);
 	context.subscriptions.push(outputChannel);
 
 	context.subscriptions.push(
 		vscode.debug.registerDebugConfigurationProvider("edge-coreclr", {
 			resolveDebugConfiguration,
-		})
+		}),
 	);
 	context.subscriptions.push(
 		vscode.debug.registerDebugConfigurationProvider("edge-node", {
 			resolveDebugConfiguration,
-		})
+		}),
 	);
 	context.subscriptions.push(
 		vscode.debug.registerDebugConfigurationProvider("edge-python", {
 			resolveDebugConfiguration,
-		})
+		}),
 	);
 
 	context.subscriptions.push(
@@ -158,8 +160,8 @@ export function activate(context: vscode.ExtensionContext) {
 			{
 				pattern: `**/{deployment.*.template.json,deployment.template.json}`,
 			},
-			new ASAModuleUpdateCodeLensProvider()
-		)
+			new ASAModuleUpdateCodeLensProvider(),
+		),
 	);
 
 	initCommandAsync(
@@ -168,7 +170,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.buildModuleImage",
 		(fileUri?: vscode.Uri): Promise<void> => {
 			return containerManager.buildModuleImage(fileUri, false);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -177,7 +179,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.buildAndPushModuleImage",
 		(fileUri?: vscode.Uri): Promise<void> => {
 			return containerManager.buildModuleImage(fileUri, true);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -186,7 +188,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.newSolution",
 		(parentUri?: vscode.Uri): Promise<void> => {
 			return edgeManager.createEdgeSolution(outputChannel, parentUri);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -198,9 +200,9 @@ export function activate(context: vscode.ExtensionContext) {
 				outputChannel,
 				templateUri,
 				false,
-				false
+				false,
 			);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -212,9 +214,9 @@ export function activate(context: vscode.ExtensionContext) {
 				outputChannel,
 				templateUri,
 				true,
-				false
+				false,
 			);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -226,9 +228,9 @@ export function activate(context: vscode.ExtensionContext) {
 				outputChannel,
 				templateUri,
 				false,
-				true
+				true,
 			);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -237,7 +239,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.runSolution",
 		(deployFileUri?: vscode.Uri): Promise<void> => {
 			return simulator.runSolution(outputChannel, deployFileUri);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -246,7 +248,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.stopSolution",
 		(): Promise<void> => {
 			return simulator.stopSolution(outputChannel);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -256,9 +258,9 @@ export function activate(context: vscode.ExtensionContext) {
 		(templateUri?: vscode.Uri): Promise<void> => {
 			return containerManager.generateDeployment(
 				outputChannel,
-				templateUri
+				templateUri,
 			);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -267,7 +269,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.addModule",
 		(templateUri?: vscode.Uri): Promise<void> => {
 			return edgeManager.addModuleForSolution(outputChannel, templateUri);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -276,7 +278,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.convertModule",
 		(fileUri?: vscode.Uri): Promise<void> => {
 			return edgeManager.convertModule(fileUri);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -285,7 +287,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.setupIotedgehubdev",
 		(deviceItem?: IDeviceItem): Promise<void> => {
 			return simulator.setupIotedgehubdev(deviceItem, outputChannel);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -294,7 +296,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.startEdgeHubSingle",
 		(): Promise<void> => {
 			return simulator.startEdgeHubSingleModule(outputChannel);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -303,7 +305,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.setModuleCred",
 		(): Promise<void> => {
 			return simulator.setModuleCred(outputChannel);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -318,9 +320,9 @@ export function activate(context: vscode.ExtensionContext) {
 					: null;
 			return configDiagnosticProvider.updateDiagnostics(
 				document,
-				diagCollection
+				diagCollection,
 			);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -335,9 +337,9 @@ export function activate(context: vscode.ExtensionContext) {
 					: null;
 			return configDiagnosticProvider.updateDiagnostics(
 				document,
-				diagCollection
+				diagCollection,
 			);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -346,7 +348,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.showGallery",
 		async (): Promise<void> => {
 			return gallery.loadWebView();
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -355,7 +357,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.addDevContainer",
 		async (): Promise<void> => {
 			return edgeManager.addDevContainerDefinition();
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -364,7 +366,7 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.initializeSample",
 		async (name: string, url: string, platform: string): Promise<void> => {
 			return gallery.initializeSample(name, url, platform, outputChannel);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -375,16 +377,16 @@ export function activate(context: vscode.ExtensionContext) {
 			templateFile: string,
 			isNewSolution: boolean,
 			moduleInfo: ModuleInfo,
-			template: string
+			template: string,
 		): Promise<void> => {
 			return edgeManager.addModuleInfo(
 				templateFile,
 				outputChannel,
 				isNewSolution,
 				template,
-				moduleInfo
+				moduleInfo,
 			);
-		}
+		},
 	);
 
 	initCommandAsync(
@@ -393,13 +395,13 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.internal.checkUpdateForASAModule",
 		async (templateFile: string, moduleName: string): Promise<void> => {
 			return edgeManager.checkAndUpdateASAJob(templateFile, moduleName);
-		}
+		},
 	);
 
 	context.subscriptions.push(
 		vscode.window.onDidCloseTerminal((closedTerminal: vscode.Terminal) => {
 			Executor.onDidCloseTerminal(closedTerminal);
-		})
+		}),
 	);
 
 	const folders = vscode.workspace.workspaceFolders;
@@ -411,7 +413,7 @@ export function activate(context: vscode.ExtensionContext) {
 function resolveDebugConfiguration(
 	folder: vscode.WorkspaceFolder | undefined,
 	debugConfiguration: vscode.DebugConfiguration,
-	token?: vscode.CancellationToken
+	token?: vscode.CancellationToken,
 ): vscode.ProviderResult<vscode.DebugConfiguration> {
 	// Use static debug initialize configuration in package.json
 	// https://github.com/Microsoft/vscode/issues/68129 and https://github.com/Microsoft/vscode/issues/33794
@@ -426,10 +428,10 @@ function initCommand(
 	context: vscode.ExtensionContext,
 	outputChannel: vscode.OutputChannel,
 	commandId: string,
-	callback: (...args: any[]) => any
+	callback: (...args: any[]) => any,
 ): void {
 	initCommandAsync(context, outputChannel, commandId, async (...args) =>
-		callback(...args)
+		callback(...args),
 	);
 }
 
@@ -442,34 +444,34 @@ async function showLearnMoreError(error: LearnMoreError): Promise<void> {
 	) {
 		await vscode.commands.executeCommand(
 			"vscode.open",
-			vscode.Uri.parse(error.url)
+			vscode.Uri.parse(error.url),
 		);
 	}
 }
 
 async function guideUserToSetupIotedgehubdev(
-	outputChannel: vscode.OutputChannel
+	outputChannel: vscode.OutputChannel,
 ) {
 	const setup: vscode.MessageItem = { title: Constants.Setup };
 	const cancel: vscode.MessageItem = { title: Constants.Cancel };
 	const items: vscode.MessageItem[] = [setup, cancel];
 	const input = await vscode.window.showWarningMessage(
 		Constants.needSetupSimulatorMsg,
-		...items
+		...items,
 	);
 	const telemetryName = "guideUserSetupConnectionString";
 
 	if (input === setup) {
 		TelemetryClient.sendEvent(
-			`${telemetryName}.${Constants.Setup.toLocaleLowerCase()}`
+			`${telemetryName}.${Constants.Setup.toLocaleLowerCase()}`,
 		);
 		await vscode.commands.executeCommand(
 			"azure-iot-edge.setupIotedgehubdev",
-			undefined
+			undefined,
 		);
 	} else {
 		TelemetryClient.sendEvent(
-			`${telemetryName}.${Constants.Cancel.toLocaleLowerCase()}`
+			`${telemetryName}.${Constants.Cancel.toLocaleLowerCase()}`,
 		);
 	}
 }
@@ -478,7 +480,7 @@ function initCommandAsync(
 	context: vscode.ExtensionContext,
 	outputChannel: vscode.OutputChannel,
 	commandId: string,
-	callback: (...args: any[]) => Promise<any>
+	callback: (...args: any[]) => Promise<any>,
 ): void {
 	context.subscriptions.push(
 		vscode.commands.registerCommand(commandId, async (...args: any[]) => {
@@ -518,14 +520,14 @@ function initCommandAsync(
 						errorData.message;
 					TelemetryClient.sendErrorEvent(
 						`${commandId}.end`,
-						properties
+						properties,
 					);
 				} else {
 					TelemetryClient.sendEvent(`${commandId}.end`, properties);
 				}
 				NSAT.takeSurvey(context);
 			}
-		})
+		}),
 	);
 }
 

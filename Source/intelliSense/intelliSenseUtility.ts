@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-"use strict";
 import * as parser from "jsonc-parser";
-import * as path from "path";
 import * as vscode from "vscode";
 import { BuildSettings } from "../common/buildSettings";
 import { Constants } from "../common/constants";
@@ -14,7 +12,7 @@ import { Utility } from "../common/utility";
 export class IntelliSenseUtility {
 	public static locationMatch(
 		location: parser.Location,
-		jsonPath: string[]
+		jsonPath: string[],
 	): boolean {
 		return (
 			location.matches(jsonPath) &&
@@ -24,17 +22,17 @@ export class IntelliSenseUtility {
 
 	public static async getImageDockerfileAtLocation(
 		document: vscode.TextDocument,
-		position: vscode.Position
+		position: vscode.Position,
 	): Promise<{ dockerfile: string; range: vscode.Range }> {
 		const location: parser.Location = parser.getLocation(
 			document.getText(),
-			document.offsetAt(position)
+			document.offsetAt(position),
 		);
 
 		if (
 			IntelliSenseUtility.locationMatch(
 				location,
-				Constants.imgDeploymentManifestJsonPath
+				Constants.imgDeploymentManifestJsonPath,
 			)
 		) {
 			const moduleToImageMap: Map<string, string> = new Map();
@@ -45,12 +43,12 @@ export class IntelliSenseUtility {
 				await Utility.setSlnModulesMap(
 					document.uri.fsPath,
 					moduleToImageMap,
-					imageToBuildSettingsMap
+					imageToBuildSettingsMap,
 				);
 
 				const node: parser.Node = location.previousNode;
 				const imagePlaceholder: string = Utility.unwrapImagePlaceholder(
-					node.value
+					node.value,
 				);
 				const image = moduleToImageMap.get(imagePlaceholder);
 				if (image) {
@@ -70,11 +68,11 @@ export class IntelliSenseUtility {
 
 	public static getNodeRange(
 		document: vscode.TextDocument,
-		node: parser.Node
+		node: parser.Node,
 	): vscode.Range {
 		return new vscode.Range(
 			document.positionAt(node.offset),
-			document.positionAt(node.offset + node.length)
+			document.positionAt(node.offset + node.length),
 		);
 	}
 }

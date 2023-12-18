@@ -1,4 +1,4 @@
-(function () {
+(() => {
 	let vscode = null;
 	class LogicalDevice {
 		constructor(deviceId, platform, deviceName) {
@@ -14,7 +14,7 @@
 			if (!obj.platform) {
 				throw Error(`The platform missing`);
 			}
-			let name = allDevices.find((d) => d.id === obj.deviceId).name;
+			const name = allDevices.find((d) => d.id === obj.deviceId).name;
 			return new this(obj.deviceId, obj.platform, name);
 		}
 
@@ -79,23 +79,23 @@
 							j < examples[i].supportDevices.length;
 							j++
 						) {
-							let device = examples[i].supportDevices[j];
+							const device = examples[i].supportDevices[j];
 							if (!device.deviceId || !device.platform) {
 								throw Error(
-									`Missing property deviceId or platform for sample ${examples[i].name}`
+									`Missing property deviceId or platform for sample ${examples[i].name}`,
 								);
 							}
 							if (
 								!allDevices.find(
-									(d) => d.id === device.deviceId
+									(d) => d.id === device.deviceId,
 								)
 							) {
 								throw Error(
 									`The device id ${
 										device.deviceId
 									} is not in the list ${JSON.stringify(
-										allDevices
-									)}`
+										allDevices,
+									)}`,
 								);
 							}
 							if (!allPlatforms.includes(device.platform)) {
@@ -103,17 +103,17 @@
 									`The platform ${
 										device.platform
 									} is not in the list ${JSON.stringify(
-										allPlatforms
-									)}`
+										allPlatforms,
+									)}`,
 								);
 							}
-							let logicalDevice = LogicalDevice.fromObject(
+							const logicalDevice = LogicalDevice.fromObject(
 								device,
-								allDevices
+								allDevices,
 							);
 							addToArrayWithoutDup(
 								logicalDevice,
-								this.logicalDevices
+								this.logicalDevices,
 							);
 							examples[i].supportDevices[j] = logicalDevice;
 						}
@@ -127,17 +127,17 @@
 					this.$nextTick(function () {
 						this.adjustFilterWidth();
 					});
-				}.bind(this)
+				}.bind(this),
 			);
 		},
 		methods: {
-			getProjectName: function (example) {
+			getProjectName: (example) => {
 				if (example.project_name) {
 					return example.project_name;
 				}
 
 				if (example.name) {
-					let project_name = example.name
+					const project_name = example.name
 						.replace(/[^a-z0-9]/gi, "_")
 						.toLowerCase();
 					return project_name;
@@ -150,12 +150,12 @@
 				// If user has a device filter, then it will set the platform as the first device filter match the sample
 				// else it will set the platform as the first support devices platform in the sample
 				if (this.selectedLogicalDevice) {
-					let supportedPlatforms = sample.supportDevices.map(
-						(device) => device.platform
+					const supportedPlatforms = sample.supportDevices.map(
+						(device) => device.platform,
 					);
 					if (
 						supportedPlatforms.includes(
-							this.selectedLogicalDevice.value.platform
+							this.selectedLogicalDevice.value.platform,
 						)
 					) {
 						platform = this.selectedLogicalDevice.value.platform;
@@ -166,7 +166,7 @@
 					platform = sample.supportDevices[0].platform;
 				}
 
-				let name = this.getProjectName(sample);
+				const name = this.getProjectName(sample);
 				if (!vscode) vscode = acquireVsCodeApi();
 				vscode.postMessage({
 					command: "openSample",
@@ -178,7 +178,7 @@
 				// release the focus. Or when press enter in "set sample name", the enter event will be passed to the webview and trigger the focused element again
 				document.activeElement.blur();
 			},
-			openLink: function (url) {
+			openLink: (url) => {
 				if (!url) {
 					return;
 				}
@@ -191,38 +191,36 @@
 			adjustFilterWidth: function () {
 				// Code that will run only after the
 				// entire view has been re-rendered
-				let num = Math.floor(
-					this.$refs.elist.$el.offsetWidth / (320 + 20)
+				const num = Math.floor(
+					this.$refs.elist.$el.offsetWidth / (320 + 20),
 				);
 				console.log(this);
 				this.$refs.filter.$el.style.width = `${
 					num * (320 + 20) - 20
 				}px`;
 			},
-			httpRequest: function (url, callback) {
-				let xhr = new XMLHttpRequest();
-				xhr.onreadystatechange = function () {
+			httpRequest: (url, callback) => {
+				const xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = () => {
 					if (xhr.readyState === 4) {
 						if (xhr.status === 200) {
 							if (callback) {
 								callback(xhr.responseText);
 							}
-						} else {
-							if (callback) {
-								callback(null);
-							}
+						} else if (callback) {
+							callback(null);
 						}
 					}
 				};
 				xhr.open("GET", url, true);
 				xhr.send();
 			},
-			parseQuery: function (url) {
+			parseQuery: (url) => {
 				if (url.indexOf("?") < 0) {
 					return {};
 				}
 				const query = url.split("?")[1].split("&");
-				let res = {};
+				const res = {};
 				query.forEach((q) => {
 					const item = q.split("=");
 					res[item[0]] = item[1]
@@ -246,7 +244,7 @@
 				get: function () {
 					if (!this.selectedLogicalDevice) return this.examples;
 					return this.examples.filter((e) => {
-						for (let device of e.supportDevices) {
+						for (const device of e.supportDevices) {
 							if (device.equals(this.selectedLogicalDevice.value))
 								return true;
 						}

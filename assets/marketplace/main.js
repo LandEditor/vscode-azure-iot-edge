@@ -27,13 +27,13 @@ const app = new Vue({
 		getModules: async function () {
 			return (await axios.get(`${this.endpoint}/api/v1/modules`)).data;
 		},
-		getModuleMetadata: async function (plan) {
+		getModuleMetadata: async (plan) => {
 			const data = (await axios.get(plan.iotEdgeMetadataUrl)).data;
 			let repository = data.containerUri;
 			let defaultTag = data.tagsOrDigests.includes("latest")
 				? "latest"
 				: data.tagsOrDigests[0];
-			let splitArr = data.containerUri.split(":");
+			const splitArr = data.containerUri.split(":");
 			if (splitArr.length > 1) {
 				defaultTag = splitArr.pop();
 				repository = splitArr.join(":");
@@ -52,7 +52,7 @@ const app = new Vue({
 			this.selectedModule = Object.assign({}, module);
 			this.moduleName = this.selectedModule.displayName.replace(
 				/[^a-zA-Z]/g,
-				""
+				"",
 			);
 			this.selectedPlan = this.selectedModule.plans[0];
 		},
@@ -64,7 +64,7 @@ const app = new Vue({
 			}
 			const moduleNameValidationStatus = (
 				await axios.get(
-					`${this.endpoint}/api/v1/modules/${this.moduleName}/status`
+					`${this.endpoint}/api/v1/modules/${this.moduleName}/status`,
 				)
 			).data;
 			if (moduleNameValidationStatus) {

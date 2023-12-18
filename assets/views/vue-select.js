@@ -1,13 +1,13 @@
-!(function (t, e) {
+!((t, e) => {
 	"object" == typeof exports && "object" == typeof module
 		? (module.exports = e())
 		: "function" == typeof define && define.amd
-			? define([], e)
-			: "object" == typeof exports
-				? (exports.VueSelect = e())
-				: (t.VueSelect = e());
-})(this, function () {
-	return (function (t) {
+		  ? define([], e)
+		  : "object" == typeof exports
+			  ? (exports.VueSelect = e())
+			  : (t.VueSelect = e());
+})(this, () =>
+	((t) => {
 		function e(o) {
 			if (n[o]) return n[o].exports;
 			var r = (n[o] = { exports: {}, id: o, loaded: !1 });
@@ -20,8 +20,7 @@
 		var n = {};
 		return (e.m = t), (e.c = n), (e.p = "/"), e(0);
 	})([
-		function (t, e, n) {
-			"use strict";
+		(t, e, n) => {
 			function o(t) {
 				return t && t.__esModule ? t : { default: t };
 			}
@@ -35,45 +34,40 @@
 				(e.VueSelect = i.default),
 				(e.mixins = a.default);
 		},
-		function (t, e) {
+		(t, e) => {
 			var n = (t.exports =
 				"undefined" != typeof window && window.Math == Math
 					? window
 					: "undefined" != typeof self && self.Math == Math
-						? self
-						: Function("return this")());
+					  ? self
+					  : Function("return this")());
 			"number" == typeof __g && (__g = n);
 		},
-		function (t, e) {
+		(t, e) => {
 			var n = (t.exports = { version: "2.5.3" });
 			"number" == typeof __e && (__e = n);
 		},
-		function (t, e, n) {
-			t.exports = !n(9)(function () {
-				return (
+		(t, e, n) => {
+			t.exports = !n(9)(
+				() =>
 					7 !=
 					Object.defineProperty({}, "a", {
-						get: function () {
-							return 7;
-						},
-					}).a
-				);
-			});
+						get: () => 7,
+					}).a,
+			);
 		},
-		function (t, e) {
+		(t, e) => {
 			var n = {}.hasOwnProperty;
-			t.exports = function (t, e) {
-				return n.call(t, e);
-			};
+			t.exports = (t, e) => n.call(t, e);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(11),
 				r = n(33),
 				i = n(25),
 				s = Object.defineProperty;
 			e.f = n(3)
 				? Object.defineProperty
-				: function (t, e, n) {
+				: (t, e, n) => {
 						if ((o(t), (e = i(e, !0)), o(n), r))
 							try {
 								return s(t, e, n);
@@ -81,41 +75,32 @@
 						if ("get" in n || "set" in n)
 							throw TypeError("Accessors not supported!");
 						return "value" in n && (t[e] = n.value), t;
-					};
+				  };
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(5),
 				r = n(14);
-			t.exports = n(3)
-				? function (t, e, n) {
-						return o.f(t, e, r(1, n));
-					}
-				: function (t, e, n) {
-						return (t[e] = n), t;
-					};
+			(t.exports = n(3)
+				? (t, e, n) => o.f(t, e, r(1, n))
+				: (t, e, n) => (t[e] = n)),
+				t;
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(61),
 				r = n(16);
-			t.exports = function (t) {
-				return o(r(t));
-			};
+			t.exports = (t) => o(r(t));
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(23)("wks"),
 				r = n(15),
 				i = n(1).Symbol,
 				s = "function" == typeof i,
-				a = (t.exports = function (t) {
-					return (
-						o[t] ||
-						(o[t] = (s && i[t]) || (s ? i : r)("Symbol." + t))
-					);
-				});
+				a = (t.exports = (t) =>
+					o[t] || (o[t] = (s && i[t]) || (s ? i : r)("Symbol." + t)));
 			a.store = o;
 		},
-		function (t, e) {
-			t.exports = function (t) {
+		(t, e) => {
+			t.exports = (t) => {
 				try {
 					return !!t();
 				} catch (t) {
@@ -123,27 +108,24 @@
 				}
 			};
 		},
-		function (t, e) {
-			t.exports = function (t) {
-				return "object" == typeof t
-					? null !== t
-					: "function" == typeof t;
-			};
+		(t, e) => {
+			t.exports = (t) =>
+				"object" == typeof t ? null !== t : "function" == typeof t;
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(10);
-			t.exports = function (t) {
+			t.exports = (t) => {
 				if (!o(t)) throw TypeError(t + " is not an object!");
 				return t;
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(1),
 				r = n(2),
 				i = n(58),
 				s = n(6),
 				a = "prototype",
-				u = function (t, e, n) {
+				u = (t, e, n) => {
 					var l,
 						c,
 						f,
@@ -165,13 +147,13 @@
 									d && "function" != typeof x[l]
 										? n[l]
 										: v && c
-											? i(f, o)
-											: g && x[l] == f
-												? (function (t) {
+										  ? i(f, o)
+										  : g && x[l] == f
+											  ? ((t) => {
 														var e = function (
 															e,
 															n,
-															o
+															o,
 														) {
 															if (
 																this instanceof
@@ -184,30 +166,30 @@
 																		return new t();
 																	case 1:
 																		return new t(
-																			e
+																			e,
 																		);
 																	case 2:
 																		return new t(
 																			e,
-																			n
+																			n,
 																		);
 																}
 																return new t(
 																	e,
 																	n,
-																	o
+																	o,
 																);
 															}
 															return t.apply(
 																this,
-																arguments
+																arguments,
 															);
 														};
 														return (e[a] = t[a]), e;
-													})(f)
-												: b && "function" == typeof f
-													? i(Function.call, f)
-													: f),
+												  })(f)
+											  : b && "function" == typeof f
+												  ? i(Function.call, f)
+												  : f),
 								b &&
 									(((y.virtual || (y.virtual = {}))[l] = f),
 									t & u.R && m && !m[l] && s(m, l, f)));
@@ -222,92 +204,80 @@
 				(u.R = 128),
 				(t.exports = u);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(38),
 				r = n(17);
-			t.exports =
-				Object.keys ||
-				function (t) {
-					return o(t, r);
-				};
+			t.exports = Object.keys || t;
+			=> o(t, r)
 		},
-		function (t, e) {
-			t.exports = function (t, e) {
-				return {
-					enumerable: !(1 & t),
-					configurable: !(2 & t),
-					writable: !(4 & t),
-					value: e,
-				};
-			};
+		(t, e) => {
+			t.exports = (t, e) => ({
+				enumerable: !(1 & t),
+				configurable: !(2 & t),
+				writable: !(4 & t),
+				value: e,
+			});
 		},
-		function (t, e) {
+		(t, e) => {
 			var n = 0,
 				o = Math.random();
-			t.exports = function (t) {
-				return "Symbol(".concat(
+			t.exports = (t) =>
+				"Symbol(".concat(
 					void 0 === t ? "" : t,
 					")_",
-					(++n + o).toString(36)
+					(++n + o).toString(36),
 				);
-			};
 		},
-		function (t, e) {
-			t.exports = function (t) {
+		(t, e) => {
+			t.exports = (t) => {
 				if (void 0 == t) throw TypeError("Can't call method on  " + t);
 				return t;
 			};
 		},
-		function (t, e) {
+		(t, e) => {
 			t.exports =
 				"constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(
-					","
+					",",
 				);
 		},
-		function (t, e) {
+		(t, e) => {
 			t.exports = {};
 		},
-		function (t, e) {
+		(t, e) => {
 			t.exports = !0;
 		},
-		function (t, e) {
+		(t, e) => {
 			e.f = {}.propertyIsEnumerable;
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(5).f,
 				r = n(4),
 				i = n(8)("toStringTag");
-			t.exports = function (t, e, n) {
+			t.exports = (t, e, n) => {
 				t &&
 					!r((t = n ? t : t.prototype), i) &&
 					o(t, i, { configurable: !0, value: e });
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(23)("keys"),
 				r = n(15);
-			t.exports = function (t) {
-				return o[t] || (o[t] = r(t));
-			};
+			t.exports = (t) => o[t] || (o[t] = r(t));
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(1),
 				r = "__core-js_shared__",
 				i = o[r] || (o[r] = {});
-			t.exports = function (t) {
-				return i[t] || (i[t] = {});
-			};
+			t.exports = (t) => i[t] || (i[t] = {});
 		},
-		function (t, e) {
+		(t, e) => {
 			var n = Math.ceil,
 				o = Math.floor;
-			t.exports = function (t) {
-				return isNaN((t = +t)) ? 0 : (t > 0 ? o : n)(t);
-			};
+			t.exports = (t) => (isNaN((t = +t)) ? 0 : (t > 0 ? o : n)(t));
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(10);
-			t.exports = function (t, e) {
+			t.exports = (t, e) => {
 				if (!o(t)) return t;
 				var n, r;
 				if (
@@ -327,30 +297,27 @@
 				throw TypeError("Can't convert object to primitive value");
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(1),
 				r = n(2),
 				i = n(19),
 				s = n(27),
 				a = n(5).f;
-			t.exports = function (t) {
+			t.exports = (t) => {
 				var e = r.Symbol || (r.Symbol = i ? {} : o.Symbol || {});
 				"_" == t.charAt(0) || t in e || a(e, t, { value: s.f(t) });
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			e.f = n(8);
 		},
-		function (t, e) {
-			"use strict";
+		(t, e) => {
 			t.exports = {
 				props: {
 					loading: { type: Boolean, default: !1 },
-					onSearch: { type: Function, default: function (t, e) {} },
+					onSearch: { type: Function, default: (t, e) => {} },
 				},
-				data: function () {
-					return { mutableLoading: !1 };
-				},
+				data: () => ({ mutableLoading: !1 }),
 				watch: {
 					search: function () {
 						this.search.length > 0 &&
@@ -358,7 +325,7 @@
 							this.$emit(
 								"search",
 								this.search,
-								this.toggleLoading
+								this.toggleLoading,
 							));
 					},
 					loading: function (t) {
@@ -378,8 +345,7 @@
 				},
 			};
 		},
-		function (t, e) {
-			"use strict";
+		(t, e) => {
 			t.exports = {
 				watch: {
 					typeAheadPointer: function () {
@@ -393,11 +359,11 @@
 						return t <= this.viewport().top
 							? this.scrollTo(t)
 							: e >= this.viewport().bottom
-								? this.scrollTo(
+							  ? this.scrollTo(
 										this.viewport().top +
-											this.pointerHeight()
-									)
-								: void 0;
+											this.pointerHeight(),
+								  )
+							  : void 0;
 					},
 					pixelsToPointerTop: function t() {
 						var t = 0;
@@ -426,7 +392,7 @@
 								: 0,
 							bottom: this.$refs.dropdownMenu
 								? this.$refs.dropdownMenu.offsetHeight +
-									this.$refs.dropdownMenu.scrollTop
+								  this.$refs.dropdownMenu.scrollTop
 								: 0,
 						};
 					},
@@ -438,12 +404,9 @@
 				},
 			};
 		},
-		function (t, e) {
-			"use strict";
+		(t, e) => {
 			t.exports = {
-				data: function () {
-					return { typeAheadPointer: -1 };
-				},
+				data: () => ({ typeAheadPointer: -1 }),
 				watch: {
 					filteredOptions: function () {
 						this.typeAheadPointer = 0;
@@ -464,46 +427,38 @@
 					typeAheadSelect: function () {
 						this.filteredOptions[this.typeAheadPointer]
 							? this.select(
-									this.filteredOptions[this.typeAheadPointer]
-								)
+									this.filteredOptions[this.typeAheadPointer],
+							  )
 							: this.taggable &&
-								this.search.length &&
-								this.select(this.search),
+							  this.search.length &&
+							  this.select(this.search),
 							this.clearSearchOnSelect && (this.search = "");
 					},
 				},
 			};
 		},
-		function (t, e) {
+		(t, e) => {
 			var n = {}.toString;
-			t.exports = function (t) {
-				return n.call(t).slice(8, -1);
-			};
+			t.exports = (t) => n.call(t).slice(8, -1);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(10),
 				r = n(1).document,
 				i = o(r) && o(r.createElement);
-			t.exports = function (t) {
-				return i ? r.createElement(t) : {};
-			};
+			t.exports = (t) => (i ? r.createElement(t) : {});
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			t.exports =
 				!n(3) &&
-				!n(9)(function () {
-					return (
+				!n(9)(
+					() =>
 						7 !=
 						Object.defineProperty(n(32)("div"), "a", {
-							get: function () {
-								return 7;
-							},
-						}).a
-					);
-				});
+							get: () => 7,
+						}).a,
+				);
 		},
-		function (t, e, n) {
-			"use strict";
+		(t, e, n) => {
 			var o = n(19),
 				r = n(12),
 				i = n(39),
@@ -521,12 +476,12 @@
 				g = function () {
 					return this;
 				};
-			t.exports = function (t, e, n, y, m, x, w) {
+			t.exports = (t, e, n, y, m, x, w) => {
 				l(n, e, y);
 				var S,
 					O,
 					_,
-					j = function (t) {
+					j = (t) => {
 						if (!d && t in C) return C[t];
 						switch (t) {
 							case b:
@@ -581,14 +536,14 @@
 				return S;
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(11),
 				r = n(66),
 				i = n(17),
 				s = n(22)("IE_PROTO"),
-				a = function () {},
+				a = () => {},
 				u = "prototype",
-				l = function () {
+				l = () => {
 					var t,
 						e = n(32)("iframe"),
 						o = i.length,
@@ -607,70 +562,63 @@
 									"document.F=Object" +
 									r +
 									"/script" +
-									s
+									s,
 							),
 							t.close(),
 							l = t.F;
 						o--;
-
 					)
 						delete l[u][i[o]];
 					return l();
 				};
-			t.exports =
-				Object.create ||
-				function (t, e) {
-					var n;
-					return (
-						null !== t
-							? ((a[u] = o(t)),
-								(n = new a()),
-								(a[u] = null),
-								(n[s] = t))
-							: (n = l()),
-						void 0 === e ? n : r(n, e)
-					);
-				};
+			t.exports = Object.create || (t, e);
+			=>
+			{
+				var n;
+				return (
+					null !== t
+						? ((a[u] = o(t)),
+						  (n = new a()),
+						  (a[u] = null),
+						  (n[s] = t))
+						: (n = l()),
+					void 0 === e ? n : r(n, e)
+				);
+			}
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(38),
 				r = n(17).concat("length", "prototype");
-			e.f =
-				Object.getOwnPropertyNames ||
-				function (t) {
-					return o(t, r);
-				};
+			e.f = Object.getOwnPropertyNames || t;
+			=> o(t, r)
 		},
-		function (t, e) {
+		(t, e) => {
 			e.f = Object.getOwnPropertySymbols;
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(4),
 				r = n(7),
 				i = n(57)(!1),
 				s = n(22)("IE_PROTO");
-			t.exports = function (t, e) {
+			t.exports = (t, e) => {
 				var n,
 					a = r(t),
 					u = 0,
 					l = [];
 				for (n in a) n != s && o(a, n) && l.push(n);
-				for (; e.length > u; )
+				while (e.length > u)
 					o(a, (n = e[u++])) && (~i(l, n) || l.push(n));
 				return l;
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			t.exports = n(6);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(16);
-			t.exports = function (t) {
-				return Object(o(t));
-			};
+			t.exports = (t) => Object(o(t));
 		},
-		function (t, e, n) {
-			"use strict";
+		(t, e, n) => {
 			function o(t) {
 				return t && t.__esModule ? t : { default: t };
 			}
@@ -695,9 +643,7 @@
 					value: { default: null },
 					options: {
 						type: Array,
-						default: function () {
-							return [];
-						},
+						default: () => [],
 					},
 					disabled: { type: Boolean, default: !1 },
 					clearable: { type: Boolean, default: !0 },
@@ -729,8 +675,8 @@
 													(" exist in options object " +
 														(0, l.default)(t) +
 														".\n") +
-													"http://sagalbot.github.io/vue-select/#ex-labels"
-											)
+													"http://sagalbot.github.io/vue-select/#ex-labels",
+										  )
 									: t
 							);
 						},
@@ -753,23 +699,18 @@
 					filterable: { type: Boolean, default: !0 },
 					filterBy: {
 						type: Function,
-						default: function (t, e, n) {
-							return (
-								(e || "")
-									.toLowerCase()
-									.indexOf(n.toLowerCase()) > -1
-							);
-						},
+						default: (t, e, n) =>
+							(e || "").toLowerCase().indexOf(n.toLowerCase()) >
+							-1,
 					},
 					filter: {
 						type: Function,
 						default: function (t, e) {
-							var n = this;
-							return t.filter(function (t) {
-								var o = n.getOptionLabel(t);
+							return t.filter((t) => {
+								var o = this.getOptionLabel(t);
 								return (
 									"number" == typeof o && (o = o.toString()),
-									n.filterBy(t, o, e)
+									this.filterBy(t, o, e)
 								);
 							});
 						},
@@ -792,14 +733,12 @@
 					dir: { type: String, default: "auto" },
 					selectOnTab: { type: Boolean, default: !1 },
 				},
-				data: function () {
-					return {
-						search: "",
-						open: !1,
-						mutableValue: null,
-						mutableOptions: [],
-					};
-				},
+				data: () => ({
+					search: "",
+					open: !1,
+					mutableValue: null,
+					mutableOptions: [],
+				}),
 				watch: {
 					value: function (t) {
 						this.mutableValue = t;
@@ -810,8 +749,8 @@
 								? this.onChange(t)
 								: null
 							: this.onChange && t !== e
-								? this.onChange(t)
-								: null;
+							  ? this.onChange(t)
+							  : null;
 					},
 					options: function (t) {
 						this.mutableOptions = t;
@@ -847,30 +786,29 @@
 											'" does not' +
 											(" exist in options object " +
 												(0, l.default)(t) +
-												".")
+												"."),
 									);
 								t = t[this.index];
 							}
 							this.multiple && !this.mutableValue
 								? (this.mutableValue = [t])
 								: this.multiple
-									? this.mutableValue.push(t)
-									: (this.mutableValue = t);
+								  ? this.mutableValue.push(t)
+								  : (this.mutableValue = t);
 						}
 						this.onAfterSelect(t);
 					},
 					deselect: function (t) {
-						var e = this;
 						if (this.multiple) {
 							var n = -1;
-							this.mutableValue.forEach(function (o) {
+							this.mutableValue.forEach((o) => {
 								(o === t ||
-									(e.index && o === t[e.index]) ||
+									(this.index && o === t[this.index]) ||
 									("object" ===
 										("undefined" == typeof o
 											? "undefined"
 											: (0, f.default)(o)) &&
-										o[e.label] === t[e.label])) &&
+										o[this.label] === t[this.label])) &&
 									(n = o);
 							});
 							var o = this.mutableValue.indexOf(n);
@@ -895,20 +833,20 @@
 							(this.open
 								? this.$refs.search.blur()
 								: this.disabled ||
-									((this.open = !0),
-									this.$refs.search.focus()));
+								  ((this.open = !0),
+								  this.$refs.search.focus()));
 					},
 					isOptionSelected: function (t) {
-						var e = this,
-							n = !1;
+						var n = !1;
 						return (
-							this.valueAsArray.forEach(function (o) {
+							this.valueAsArray.forEach((o) => {
 								"object" ===
 								("undefined" == typeof o
 									? "undefined"
 									: (0, f.default)(o))
-									? (n = e.optionObjectComparator(o, t))
-									: (o !== t && o !== t[e.index]) || (n = !0);
+									? (n = this.optionObjectComparator(o, t))
+									: (o !== t && o !== t[this.index]) ||
+									  (n = !0);
 							}),
 							n
 						);
@@ -922,10 +860,9 @@
 						);
 					},
 					findOptionByIndexValue: function (t) {
-						var e = this;
 						return (
-							this.options.forEach(function (n) {
-								(0, l.default)(n[e.index]) ===
+							this.options.forEach((n) => {
+								(0, l.default)(n[this.index]) ===
 									(0, l.default)(t) && (t = n);
 							}),
 							t
@@ -940,8 +877,8 @@
 						this.mousedown && !this.searching
 							? (this.mousedown = !1)
 							: (this.clearSearchOnBlur && (this.search = ""),
-								(this.open = !1),
-								this.$emit("search:blur"));
+							  (this.open = !1),
+							  this.$emit("search:blur"));
 					},
 					onSearchFocus: function () {
 						(this.open = !0), this.$emit("search:focus");
@@ -956,14 +893,14 @@
 								: (this.mutableValue = null);
 					},
 					optionExists: function (t) {
-						var e = this,
-							n = !1;
+						var n = !1;
 						return (
-							this.mutableOptions.forEach(function (o) {
+							this.mutableOptions.forEach((o) => {
 								"object" ===
 									("undefined" == typeof o
 										? "undefined"
-										: (0, f.default)(o)) && o[e.label] === t
+										: (0, f.default)(o)) &&
+								o[this.label] === t
 									? (n = !0)
 									: o === t && (n = !0);
 							}),
@@ -1012,8 +949,8 @@
 							? this.filter(
 									this.mutableOptions,
 									this.search,
-									this
-								)
+									this,
+							  )
 							: this.mutableOptions;
 						return (
 							this.taggable &&
@@ -1035,8 +972,8 @@
 						return this.multiple && this.mutableValue
 							? this.mutableValue
 							: this.mutableValue
-								? [].concat(this.mutableValue)
-								: [];
+							  ? [].concat(this.mutableValue)
+							  : [];
 					},
 					showClearButton: function () {
 						return (
@@ -1049,8 +986,7 @@
 				},
 			};
 		},
-		function (t, e, n) {
-			"use strict";
+		(t, e, n) => {
 			function o(t) {
 				return t && t.__esModule ? t : { default: t };
 			}
@@ -1067,45 +1003,41 @@
 				pointerScroll: l.default,
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			t.exports = { default: n(50), __esModule: !0 };
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			t.exports = { default: n(51), __esModule: !0 };
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			t.exports = { default: n(52), __esModule: !0 };
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			t.exports = { default: n(53), __esModule: !0 };
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			t.exports = { default: n(54), __esModule: !0 };
 		},
-		function (t, e, n) {
-			"use strict";
+		(t, e, n) => {
 			function o(t) {
 				return t && t.__esModule ? t : { default: t };
 			}
 			e.__esModule = !0;
 			var r = n(44),
 				i = o(r);
-			e.default = function (t, e, n) {
-				return (
-					e in t
-						? (0, i.default)(t, e, {
-								value: n,
-								enumerable: !0,
-								configurable: !0,
-								writable: !0,
-							})
-						: (t[e] = n),
-					t
-				);
-			};
+			e.default = (t, e, n) => (
+				e in t
+					? (0, i.default)(t, e, {
+							value: n,
+							enumerable: !0,
+							configurable: !0,
+							writable: !0,
+					  })
+					: (t[e] = n),
+				t
+			);
 		},
-		function (t, e, n) {
-			"use strict";
+		(t, e, n) => {
 			function o(t) {
 				return t && t.__esModule ? t : { default: t };
 			}
@@ -1117,113 +1049,93 @@
 				u =
 					"function" == typeof a.default &&
 					"symbol" == typeof i.default
-						? function (t) {
-								return typeof t;
-							}
-						: function (t) {
-								return t &&
-									"function" == typeof a.default &&
-									t.constructor === a.default &&
-									t !== a.default.prototype
-									? "symbol"
-									: typeof t;
-							};
-			e.default =
-				"function" == typeof a.default && "symbol" === u(i.default)
-					? function (t) {
-							return "undefined" == typeof t ? "undefined" : u(t);
-						}
-					: function (t) {
-							return t &&
+						? (t) => typeof t
+						: (t) =>
+								t &&
 								"function" == typeof a.default &&
 								t.constructor === a.default &&
 								t !== a.default.prototype
+									? "symbol"
+									: typeof t;
+			e.default =
+				"function" == typeof a.default && "symbol" === u(i.default)
+					? (t) => ("undefined" == typeof t ? "undefined" : u(t))
+					: (t) =>
+							t &&
+							"function" == typeof a.default &&
+							t.constructor === a.default &&
+							t !== a.default.prototype
 								? "symbol"
 								: "undefined" == typeof t
-									? "undefined"
-									: u(t);
-						};
+								  ? "undefined"
+								  : u(t);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(2),
 				r = o.JSON || (o.JSON = { stringify: JSON.stringify });
-			t.exports = function (t) {
-				return r.stringify.apply(r, arguments);
-			};
+			t.exports = (t) => r.stringify.apply(r, arguments);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			n(75);
 			var o = n(2).Object;
-			t.exports = function (t, e, n) {
-				return o.defineProperty(t, e, n);
-			};
+			t.exports = (t, e, n) => o.defineProperty(t, e, n);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			n(76), (t.exports = n(2).Object.keys);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			n(79), n(77), n(80), n(81), (t.exports = n(2).Symbol);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			n(78), n(82), (t.exports = n(27).f("iterator"));
 		},
-		function (t, e) {
-			t.exports = function (t) {
+		(t, e) => {
+			t.exports = (t) => {
 				if ("function" != typeof t)
 					throw TypeError(t + " is not a function!");
 				return t;
 			};
 		},
-		function (t, e) {
-			t.exports = function () {};
+		(t, e) => {
+			t.exports = () => {};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(7),
 				r = n(73),
 				i = n(72);
-			t.exports = function (t) {
-				return function (e, n, s) {
-					var a,
-						u = o(e),
-						l = r(u.length),
-						c = i(s, l);
-					if (t && n != n) {
-						for (; l > c; ) if (((a = u[c++]), a != a)) return !0;
-					} else
-						for (; l > c; c++)
-							if ((t || c in u) && u[c] === n) return t || c || 0;
-					return !t && -1;
-				};
+			t.exports = (t) => (e, n, s) => {
+				var a,
+					u = o(e),
+					l = r(u.length),
+					c = i(s, l);
+				if (t && n != n) {
+					while (l > c) if (((a = u[c++]), a != a)) return !0;
+				} else
+					for (; l > c; c++)
+						if ((t || c in u) && u[c] === n) return t || c || 0;
+				return !t && -1;
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(55);
-			t.exports = function (t, e, n) {
+			t.exports = (t, e, n) => {
 				if ((o(t), void 0 === e)) return t;
 				switch (n) {
 					case 1:
-						return function (n) {
-							return t.call(e, n);
-						};
+						return (n) => t.call(e, n);
 					case 2:
-						return function (n, o) {
-							return t.call(e, n, o);
-						};
+						return (n, o) => t.call(e, n, o);
 					case 3:
-						return function (n, o, r) {
-							return t.call(e, n, o, r);
-						};
+						return (n, o, r) => t.call(e, n, o, r);
 				}
-				return function () {
-					return t.apply(e, arguments);
-				};
+				return () => t.apply(e, arguments);
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(13),
 				r = n(37),
 				i = n(20);
-			t.exports = function (t) {
+			t.exports = (t) => {
 				var e = o(t),
 					n = r.f;
 				if (n)
@@ -1232,28 +1144,22 @@
 				return e;
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(1).document;
 			t.exports = o && o.documentElement;
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(31);
 			t.exports = Object("z").propertyIsEnumerable(0)
 				? Object
-				: function (t) {
-						return "String" == o(t) ? t.split("") : Object(t);
-					};
+				: (t) => ("String" == o(t) ? t.split("") : Object(t));
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(31);
-			t.exports =
-				Array.isArray ||
-				function (t) {
-					return "Array" == o(t);
-				};
+			t.exports = Array.isArray || t;
+			=> "Array" == o(t)
 		},
-		function (t, e, n) {
-			"use strict";
+		(t, e, n) => {
 			var o = n(35),
 				r = n(14),
 				i = n(21),
@@ -1261,17 +1167,15 @@
 			n(6)(s, n(8)("iterator"), function () {
 				return this;
 			}),
-				(t.exports = function (t, e, n) {
+				(t.exports = (t, e, n) => {
 					(t.prototype = o(s, { next: r(1, n) })),
 						i(t, e + " Iterator");
 				});
 		},
-		function (t, e) {
-			t.exports = function (t, e) {
-				return { value: e, done: !!t };
-			};
+		(t, e) => {
+			t.exports = (t, e) => ({ value: e, done: !!t });
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(15)("meta"),
 				r = n(10),
 				i = n(4),
@@ -1279,60 +1183,66 @@
 				a = 0,
 				u =
 					Object.isExtensible ||
-					function () {
-						return !0;
-					},
-				l = !n(9)(function () {
-					return u(Object.preventExtensions({}));
-				}),
-				c = function (t) {
-					s(t, o, { value: { i: "O" + ++a, w: {} } });
-				},
-				f = function (t, e) {
-					if (!r(t))
-						return "symbol" == typeof t
-							? t
-							: ("string" == typeof t ? "S" : "P") + t;
-					if (!i(t, o)) {
-						if (!u(t)) return "F";
-						if (!e) return "E";
-						c(t);
-					}
-					return t[o].i;
-				},
-				p = function (t, e) {
-					if (!i(t, o)) {
-						if (!u(t)) return !0;
-						if (!e) return !1;
-						c(t);
-					}
-					return t[o].w;
-				},
-				d = function (t) {
-					return l && h.NEED && u(t) && !i(t, o) && c(t), t;
-				},
-				h = (t.exports = {
-					KEY: o,
-					NEED: !1,
+					()
+			=> !0,
+				l = !n(9)(() => u(Object.preventExtensions(
+			{
+			}
+			))),
+				c = (t) =>
+			{
+				s(t, o, { value: { i: "O" + ++a, w: {} } });
+			}
+			,
+				f = (t, e) =>
+			{
+				if (!r(t))
+					return "symbol" == typeof t
+						? t
+						: ("string" == typeof t ? "S" : "P") + t;
+				if (!i(t, o)) {
+					if (!u(t)) return "F";
+					if (!e) return "E";
+					c(t);
+				}
+				return t[o].i;
+			}
+			,
+				p = (t, e) =>
+			{
+				if (!i(t, o)) {
+					if (!u(t)) return !0;
+					if (!e) return !1;
+					c(t);
+				}
+				return t[o].w;
+			}
+			,
+				d = (t) => l && h.NEED && u(t) && !i(t, o) && c(t), t,
+				h = (t.exports =
+			{
+				KEY: o, NEED;
+				: !1,
 					fastKey: f,
 					getWeak: p,
 					onFreeze: d,
-				});
+			}
+			)
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(5),
 				r = n(11),
 				i = n(13);
 			t.exports = n(3)
 				? Object.defineProperties
-				: function (t, e) {
+				: (t, e) => {
 						r(t);
 						for (var n, s = i(e), a = s.length, u = 0; a > u; )
 							o.f(t, (n = s[u++]), e[n]);
 						return t;
-					};
+				  };
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(20),
 				r = n(14),
 				i = n(7),
@@ -1342,15 +1252,15 @@
 				l = Object.getOwnPropertyDescriptor;
 			e.f = n(3)
 				? l
-				: function (t, e) {
+				: (t, e) => {
 						if (((t = i(t)), (e = s(e, !0)), u))
 							try {
 								return l(t, e);
 							} catch (t) {}
 						if (a(t, e)) return r(!o.f.call(t, e), t[e]);
-					};
+				  };
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(7),
 				r = n(36).f,
 				i = {}.toString,
@@ -1360,26 +1270,23 @@
 					Object.getOwnPropertyNames
 						? Object.getOwnPropertyNames(window)
 						: [],
-				a = function (t) {
+				a = (t) => {
 					try {
 						return r(t);
 					} catch (t) {
 						return s.slice();
 					}
 				};
-			t.exports.f = function (t) {
-				return s && "[object Window]" == i.call(t) ? a(t) : r(o(t));
-			};
+			t.exports.f = (t) =>
+				s && "[object Window]" == i.call(t) ? a(t) : r(o(t));
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(4),
 				r = n(40),
 				i = n(22)("IE_PROTO"),
 				s = Object.prototype;
-			t.exports =
-				Object.getPrototypeOf ||
-				function (t) {
-					return (
+			t.exports = Object.getPrototypeOf || t;
+			=> (
 						(t = r(t)),
 						o(t, i)
 							? t[i]
@@ -1389,76 +1296,66 @@
 								: t instanceof Object
 									? s
 									: null
-					);
-				};
+					)
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(12),
 				r = n(2),
 				i = n(9);
-			t.exports = function (t, e) {
+			t.exports = (t, e) => {
 				var n = (r.Object || {})[t] || Object[t],
 					s = {};
 				(s[t] = e(n)),
 					o(
 						o.S +
 							o.F *
-								i(function () {
+								i(() => {
 									n(1);
 								}),
 						"Object",
-						s
+						s,
 					);
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(24),
 				r = n(16);
-			t.exports = function (t) {
-				return function (e, n) {
-					var i,
-						s,
-						a = String(r(e)),
-						u = o(n),
-						l = a.length;
-					return u < 0 || u >= l
-						? t
-							? ""
-							: void 0
-						: ((i = a.charCodeAt(u)),
-							i < 55296 ||
-							i > 56319 ||
-							u + 1 === l ||
-							(s = a.charCodeAt(u + 1)) < 56320 ||
-							s > 57343
-								? t
-									? a.charAt(u)
-									: i
-								: t
-									? a.slice(u, u + 2)
-									: ((i - 55296) << 10) +
-										(s - 56320) +
-										65536);
-				};
+			t.exports = (t) => (e, n) => {
+				var i,
+					s,
+					a = String(r(e)),
+					u = o(n),
+					l = a.length;
+				return u < 0 || u >= l
+					? t
+						? ""
+						: void 0
+					: ((i = a.charCodeAt(u)),
+					  i < 55296 ||
+					  i > 56319 ||
+					  u + 1 === l ||
+					  (s = a.charCodeAt(u + 1)) < 56320 ||
+					  s > 57343
+							? t
+								? a.charAt(u)
+								: i
+							: t
+							  ? a.slice(u, u + 2)
+							  : ((i - 55296) << 10) + (s - 56320) + 65536);
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(24),
 				r = Math.max,
 				i = Math.min;
-			t.exports = function (t, e) {
-				return (t = o(t)), t < 0 ? r(t + e, 0) : i(t, e);
-			};
+			(t.exports = (t, e) => (t = o(t))), t < 0 ? r(t + e, 0) : i(t, e);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(24),
 				r = Math.min;
-			t.exports = function (t) {
-				return t > 0 ? r(o(t), 9007199254740991) : 0;
-			};
+			t.exports = (t) => (t > 0 ? r(o(t), 9007199254740991) : 0);
 		},
-		function (t, e, n) {
-			"use strict";
+		(t, e, n) => {
 			var o = n(56),
 				r = n(64),
 				i = n(18),
@@ -1476,34 +1373,29 @@
 					return !t || n >= t.length
 						? ((this._t = void 0), r(1))
 						: "keys" == e
-							? r(0, n)
-							: "values" == e
-								? r(0, t[n])
-								: r(0, [n, t[n]]);
+						  ? r(0, n)
+						  : "values" == e
+							  ? r(0, t[n])
+							  : r(0, [n, t[n]]);
 				},
-				"values"
+				"values",
 			)),
 				(i.Arguments = i.Array),
 				o("keys"),
 				o("values"),
 				o("entries");
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(12);
 			o(o.S + o.F * !n(3), "Object", { defineProperty: n(5).f });
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(40),
 				r = n(13);
-			n(70)("keys", function () {
-				return function (t) {
-					return r(o(t));
-				};
-			});
+			n(70)("keys", () => (t) => r(o(t)));
 		},
-		function (t, e) {},
-		function (t, e, n) {
-			"use strict";
+		(t, e) => {},
+		(t, e, n) => {
 			var o = n(71)(!0);
 			n(34)(
 				String,
@@ -1518,13 +1410,12 @@
 					return n >= e.length
 						? { value: void 0, done: !0 }
 						: ((t = o(e, n)),
-							(this._i += t.length),
-							{ value: t, done: !1 });
-				}
+						  (this._i += t.length),
+						  { value: t, done: !1 });
+				},
 			);
 		},
-		function (t, e, n) {
-			"use strict";
+		(t, e, n) => {
 			var o = n(1),
 				r = n(4),
 				i = n(3),
@@ -1569,62 +1460,53 @@
 				G = !H || !H[V] || !H[V].findChild,
 				J =
 					i &&
-					l(function () {
-						return (
+					l(
+						() =>
 							7 !=
 							O(
 								C({}, "a", {
 									get: function () {
 										return C(this, "a", { value: 7 }).a;
 									},
-								})
-							).a
-						);
-					})
-						? function (t, e, n) {
+								}),
+							).a,
+					)
+						? (t, e, n) => {
 								var o = A(R, e);
 								o && delete R[e],
 									C(t, e, n),
 									o && t !== R && C(R, e, o);
-							}
+						  }
 						: C,
-				U = function (t) {
+				U = (t) => {
 					var e = (D[t] = O(L[V]));
 					return (e._k = t), e;
 				},
 				W =
 					z && "symbol" == typeof L.iterator
-						? function (t) {
-								return "symbol" == typeof t;
-							}
-						: function (t) {
-								return t instanceof L;
-							},
-				K = function (t, e, n) {
-					return (
-						t === R && K(I, e, n),
-						y(t),
-						(e = w(e, !0)),
-						y(n),
-						r(D, e)
-							? (n.enumerable
-									? (r(t, B) && t[B][e] && (t[B][e] = !1),
-										(n = O(n, { enumerable: S(0, !1) })))
-									: (r(t, B) || C(t, B, S(1, {})),
-										(t[B][e] = !0)),
-								J(t, e, n))
-							: C(t, e, n)
-					);
-				},
-				Y = function (t, e) {
+						? (t) => "symbol" == typeof t
+						: (t) => t instanceof L,
+				K = (t, e, n) => (
+					t === R && K(I, e, n),
+					y(t),
+					(e = w(e, !0)),
+					y(n),
+					r(D, e)
+						? (n.enumerable
+								? (r(t, B) && t[B][e] && (t[B][e] = !1),
+								  (n = O(n, { enumerable: S(0, !1) })))
+								: (r(t, B) || C(t, B, S(1, {})),
+								  (t[B][e] = !0)),
+						  J(t, e, n))
+						: C(t, e, n)
+				),
+				Y = (t, e) => {
 					y(t);
 					for (var n, o = v((e = x(e))), r = 0, i = o.length; i > r; )
 						K(t, (n = o[r++]), e[n]);
 					return t;
 				},
-				q = function (t, e) {
-					return void 0 === e ? O(t) : Y(O(t), e);
-				},
+				q = (t, e) => (void 0 === e ? O(t) : Y(O(t), e)),
 				Q = function (t) {
 					var e = N.call(this, (t = w(t, !0)));
 					return (
@@ -1638,7 +1520,7 @@
 							e)
 					);
 				},
-				Z = function (t, e) {
+				Z = (t, e) => {
 					if (
 						((t = x(t)),
 						(e = w(e, !0)),
@@ -1654,16 +1536,15 @@
 						);
 					}
 				},
-				X = function (t) {
+				X = (t) => {
 					for (var e, n = M(x(t)), o = [], i = 0; n.length > i; )
 						r(D, (e = n[i++])) || e == B || e == u || o.push(e);
 					return o;
 				},
-				tt = function (t) {
+				tt = (t) => {
 					for (
 						var e, n = t === R, o = M(n ? I : x(t)), i = [], s = 0;
 						o.length > s;
-
 					)
 						!r(D, (e = o[s++])) || (n && !r(R, e)) || i.push(D[e]);
 					return i;
@@ -1693,33 +1574,28 @@
 				(n(20).f = Q),
 				(n(37).f = tt),
 				i && !n(19) && a(R, "propertyIsEnumerable", Q, !0),
-				(h.f = function (t) {
-					return U(d(t));
-				})),
+				(h.f = (t) => U(d(t)))),
 				s(s.G + s.W + s.F * !z, { Symbol: L });
 			for (
 				var et =
 						"hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(
-							","
+							",",
 						),
 					nt = 0;
 				et.length > nt;
-
 			)
 				d(et[nt++]);
 			for (var ot = P(d.store), rt = 0; ot.length > rt; ) b(ot[rt++]);
 			s(s.S + s.F * !z, "Symbol", {
-				for: function (t) {
-					return r($, (t += "")) ? $[t] : ($[t] = L(t));
-				},
-				keyFor: function (t) {
+				for: (t) => (r($, (t += "")) ? $[t] : ($[t] = L(t))),
+				keyFor: (t) => {
 					if (!W(t)) throw TypeError(t + " is not a symbol!");
 					for (var e in $) if ($[e] === t) return e;
 				},
-				useSetter: function () {
+				useSetter: () => {
 					G = !0;
 				},
-				useSimple: function () {
+				useSimple: () => {
 					G = !1;
 				},
 			}),
@@ -1736,7 +1612,7 @@
 						s.S +
 							s.F *
 								(!z ||
-									l(function () {
+									l(() => {
 										var t = L();
 										return (
 											"[null]" != E([t]) ||
@@ -1746,11 +1622,10 @@
 									})),
 						"JSON",
 						{
-							stringify: function (t) {
+							stringify: (t) => {
 								for (
 									var e, n, o = [t], r = 1;
 									arguments.length > r;
-
 								)
 									o.push(arguments[r++]);
 								if (
@@ -1765,7 +1640,7 @@
 														(e = n.call(
 															this,
 															t,
-															e
+															e,
 														)),
 													!W(e))
 												)
@@ -1775,20 +1650,20 @@
 										E.apply(T, o)
 									);
 							},
-						}
+						},
 					),
 				L[V][F] || n(6)(L[V], F, L[V].valueOf),
 				f(L, "Symbol"),
 				f(Math, "Math", !0),
 				f(o.JSON, "JSON", !0);
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			n(26)("asyncIterator");
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			n(26)("observable");
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			n(74);
 			for (
 				var o = n(1),
@@ -1797,7 +1672,7 @@
 					s = n(8)("toStringTag"),
 					a =
 						"CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,TextTrackList,TouchList".split(
-							","
+							",",
 						),
 					u = 0;
 				u < a.length;
@@ -1809,7 +1684,7 @@
 				f && !f[s] && r(f, s, l), (i[l] = i.Array);
 			}
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			(e = t.exports = n(84)()),
 				e.push([
 					t.id,
@@ -1817,8 +1692,8 @@
 					"",
 				]);
 		},
-		function (t, e) {
-			t.exports = function () {
+		(t, e) => {
+			t.exports = () => {
 				var t = [];
 				return (
 					(t.toString = function () {
@@ -1842,8 +1717,7 @@
 								(n && !s[2]
 									? (s[2] = n)
 									: n &&
-										(s[2] =
-											"(" + s[2] + ") and (" + n + ")"),
+									  (s[2] = "(" + s[2] + ") and (" + n + ")"),
 								t.push(s));
 						}
 					}),
@@ -1851,13 +1725,13 @@
 				);
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			n(89);
 			var o = n(86)(n(41), n(87), null, null);
 			t.exports = o.exports;
 		},
-		function (t, e) {
-			t.exports = function (t, e, n, o) {
+		(t, e) => {
+			t.exports = (t, e, n, o) => {
 				var r,
 					i = (t = t || {}),
 					s = typeof t.default;
@@ -1872,28 +1746,25 @@
 					o)
 				) {
 					var u = a.computed || (a.computed = {});
-					Object.keys(o).forEach(function (t) {
+					Object.keys(o).forEach((t) => {
 						var e = o[t];
-						u[t] = function () {
-							return e;
-						};
+						u[t] = () => e;
 					});
 				}
 				return { esModule: r, exports: i, options: a };
 			};
 		},
-		function (t, e) {
+		(t, e) => {
 			t.exports = {
 				render: function () {
-					var t = this,
-						e = t.$createElement,
-						n = t._self._c || e;
+					var e = this.$createElement,
+						n = this._self._c || e;
 					return n(
 						"div",
 						{
 							staticClass: "dropdown v-select",
-							class: t.dropdownClasses,
-							attrs: { dir: t.dir },
+							class: this.dropdownClasses,
+							attrs: { dir: this.dir },
 						},
 						[
 							n(
@@ -1902,9 +1773,9 @@
 									ref: "toggle",
 									staticClass: "dropdown-toggle",
 									on: {
-										mousedown: function (e) {
+										mousedown: (e) => {
 											e.preventDefault(),
-												t.toggleDropdown(e);
+												this.toggleDropdown(e);
 										},
 									},
 								},
@@ -1916,8 +1787,8 @@
 											staticClass: "vs__selected-options",
 										},
 										[
-											t._l(t.valueAsArray, function (e) {
-												return t._t(
+											this._l(this.valueAsArray, (e) =>
+												this._t(
 													"selected-option-container",
 													[
 														n(
@@ -1928,33 +1799,33 @@
 																	"selected-tag",
 															},
 															[
-																t._t(
+																this._t(
 																	"selected-option",
 																	[
-																		t._v(
+																		this._v(
 																			"\n            " +
-																				t._s(
-																					t.getOptionLabel(
-																						e
-																					)
+																				this._s(
+																					this.getOptionLabel(
+																						e,
+																					),
 																				) +
-																				"\n          "
+																				"\n          ",
 																		),
 																	],
 																	null,
 																	"object" ==
-																		typeof e
+																	typeof e
 																		? e
 																		: ((o =
 																				{}),
-																			(o[
-																				t.label
-																			] =
+																		  (o[
+																				this.label
+																		  ] =
 																				e),
-																			o)
+																		  o),
 																),
-																t._v(" "),
-																t.multiple
+																this._v(" "),
+																this.multiple
 																	? n(
 																			"button",
 																			{
@@ -1962,17 +1833,18 @@
 																					"close",
 																				attrs: {
 																					disabled:
-																						t.disabled,
+																						this
+																							.disabled,
 																					type: "button",
 																					"aria-label":
 																						"Remove option",
 																				},
 																				on: {
-																					click: function (
-																						n
-																					) {
-																						t.deselect(
-																							e
+																					click: (
+																						n,
+																					) => {
+																						this.deselect(
+																							e,
 																						);
 																					},
 																				},
@@ -1987,16 +1859,16 @@
 																						},
 																					},
 																					[
-																						t._v(
-																							"×"
+																						this._v(
+																							"×",
 																						),
-																					]
+																					],
 																				),
-																			]
-																		)
-																	: t._e(),
+																			],
+																	  )
+																	: this._e(),
 															],
-															2
+															2,
 														),
 													],
 													{
@@ -2004,24 +1876,23 @@
 															"object" == typeof e
 																? e
 																: ((r = {}),
-																	(r[
-																		t.label
-																	] = e),
-																	r),
-														deselect: t.deselect,
-														multiple: t.multiple,
-														disabled: t.disabled,
-													}
-												);
-												var o, r;
-											}),
-											t._v(" "),
+																  (r[
+																		this.label
+																  ] = e),
+																  r),
+														deselect: this.deselect,
+														multiple: this.multiple,
+														disabled: this.disabled,
+													},
+												),
+											),
+											this._v(" "),
 											n("input", {
 												directives: [
 													{
 														name: "model",
 														rawName: "v-model",
-														value: t.search,
+														value: this.search,
 														expression: "search",
 													},
 												],
@@ -2030,119 +1901,112 @@
 												attrs: {
 													type: "search",
 													autocomplete: "off",
-													disabled: t.disabled,
+													disabled: this.disabled,
 													placeholder:
-														t.searchPlaceholder,
-													tabindex: t.tabindex,
-													readonly: !t.searchable,
-													id: t.inputId,
+														this.searchPlaceholder,
+													tabindex: this.tabindex,
+													readonly: !this.searchable,
+													id: this.inputId,
 													role: "combobox",
 													"aria-expanded":
-														t.dropdownOpen,
+														this.dropdownOpen,
 													"aria-label":
 														"Search for option",
 												},
-												domProps: { value: t.search },
+												domProps: {
+													value: this.search,
+												},
 												on: {
 													keydown: [
-														function (e) {
-															return "button" in
-																e ||
-																!t._k(
-																	e.keyCode,
-																	"delete",
-																	[8, 46],
-																	e.key
-																)
-																? void t.maybeDeleteValue(
-																		e
-																	)
-																: null;
-														},
-														function (e) {
-															return "button" in
-																e ||
-																!t._k(
-																	e.keyCode,
-																	"up",
-																	38,
-																	e.key
-																)
-																? (e.preventDefault(),
-																	void t.typeAheadUp(
-																		e
-																	))
-																: null;
-														},
-														function (e) {
-															return "button" in
-																e ||
-																!t._k(
-																	e.keyCode,
-																	"down",
-																	40,
-																	e.key
-																)
-																? (e.preventDefault(),
-																	void t.typeAheadDown(
-																		e
-																	))
-																: null;
-														},
-														function (e) {
-															return "button" in
-																e ||
-																!t._k(
-																	e.keyCode,
-																	"enter",
-																	13,
-																	e.key
-																)
-																? (e.preventDefault(),
-																	void t.typeAheadSelect(
-																		e
-																	))
-																: null;
-														},
-														function (e) {
-															return "button" in
-																e ||
-																!t._k(
-																	e.keyCode,
-																	"tab",
-																	9,
-																	e.key
-																)
-																? void t.onTab(
-																		e
-																	)
-																: null;
-														},
-													],
-													keyup: function (e) {
-														return "button" in e ||
-															!t._k(
+														(e) =>
+															"button" in e ||
+															!this._k(
 																e.keyCode,
-																"esc",
-																27,
-																e.key
+																"delete",
+																[8, 46],
+																e.key,
 															)
-															? void t.onEscape(e)
-															: null;
-													},
-													blur: t.onSearchBlur,
-													focus: t.onSearchFocus,
-													input: function (e) {
+																? void this.maybeDeleteValue(
+																		e,
+																  )
+																: null,
+														(e) =>
+															"button" in e ||
+															!this._k(
+																e.keyCode,
+																"up",
+																38,
+																e.key,
+															)
+																? (e.preventDefault(),
+																  void this.typeAheadUp(
+																		e,
+																  ))
+																: null,
+														(e) =>
+															"button" in e ||
+															!this._k(
+																e.keyCode,
+																"down",
+																40,
+																e.key,
+															)
+																? (e.preventDefault(),
+																  void this.typeAheadDown(
+																		e,
+																  ))
+																: null,
+														(e) =>
+															"button" in e ||
+															!this._k(
+																e.keyCode,
+																"enter",
+																13,
+																e.key,
+															)
+																? (e.preventDefault(),
+																  void this.typeAheadSelect(
+																		e,
+																  ))
+																: null,
+														(e) =>
+															"button" in e ||
+															!this._k(
+																e.keyCode,
+																"tab",
+																9,
+																e.key,
+															)
+																? void this.onTab(
+																		e,
+																  )
+																: null,
+													],
+													keyup: (e) =>
+														"button" in e ||
+														!this._k(
+															e.keyCode,
+															"esc",
+															27,
+															e.key,
+														)
+															? void this.onEscape(
+																	e,
+															  )
+															: null,
+													blur: this.onSearchBlur,
+													focus: this.onSearchFocus,
+													input: (e) => {
 														e.target.composing ||
-															(t.search =
+															(this.search =
 																e.target.value);
 													},
 												},
 											}),
 										],
-										2
+										2,
 									),
-									t._v(" "),
+									this._v(" "),
 									n(
 										"div",
 										{ staticClass: "vs__actions" },
@@ -2154,19 +2018,21 @@
 														{
 															name: "show",
 															rawName: "v-show",
-															value: t.showClearButton,
+															value: this
+																.showClearButton,
 															expression:
 																"showClearButton",
 														},
 													],
 													staticClass: "clear",
 													attrs: {
-														disabled: t.disabled,
+														disabled: this.disabled,
 														type: "button",
 														title: "Clear selection",
 													},
 													on: {
-														click: t.clearSelection,
+														click: this
+															.clearSelection,
 													},
 												},
 												[
@@ -2178,13 +2044,13 @@
 																	"true",
 															},
 														},
-														[t._v("×")]
+														[this._v("×")],
 													),
-												]
+												],
 											),
-											t._v(" "),
-											t.noDrop
-												? t._e()
+											this._v(" "),
+											this.noDrop
+												? this._e()
 												: n("i", {
 														ref: "openIndicator",
 														staticClass:
@@ -2192,9 +2058,9 @@
 														attrs: {
 															role: "presentation",
 														},
-													}),
-											t._v(" "),
-											t._t("spinner", [
+												  }),
+											this._v(" "),
+											this._t("spinner", [
 												n(
 													"div",
 													{
@@ -2203,151 +2069,158 @@
 																name: "show",
 																rawName:
 																	"v-show",
-																value: t.mutableLoading,
+																value: this
+																	.mutableLoading,
 																expression:
 																	"mutableLoading",
 															},
 														],
 														staticClass: "spinner",
 													},
-													[t._v("Loading...")]
+													[this._v("Loading...")],
 												),
 											]),
 										],
-										2
+										2,
 									),
-								]
+								],
 							),
-							t._v(" "),
-							n("transition", { attrs: { name: t.transition } }, [
-								t.dropdownOpen
-									? n(
-											"ul",
-											{
-												ref: "dropdownMenu",
-												staticClass: "dropdown-menu",
-												style: {
-													"max-height": t.maxHeight,
+							this._v(" "),
+							n(
+								"transition",
+								{ attrs: { name: this.transition } },
+								[
+									this.dropdownOpen
+										? n(
+												"ul",
+												{
+													ref: "dropdownMenu",
+													staticClass:
+														"dropdown-menu",
+													style: {
+														"max-height":
+															this.maxHeight,
+													},
+													attrs: { role: "listbox" },
+													on: {
+														mousedown:
+															this.onMousedown,
+													},
 												},
-												attrs: { role: "listbox" },
-												on: {
-													mousedown: t.onMousedown,
-												},
-											},
-											[
-												t._l(
-													t.filteredOptions,
-													function (e, o) {
-														return n(
-															"li",
-															{
-																key: o,
-																class: {
-																	active: t.isOptionSelected(
-																		e
-																	),
-																	highlight:
-																		o ===
-																		t.typeAheadPointer,
-																},
-																attrs: {
-																	role: "option",
-																},
-																on: {
-																	mouseover:
-																		function (
-																			e
-																		) {
-																			t.typeAheadPointer =
-																				o;
-																		},
-																},
-															},
-															[
-																n(
-																	"a",
-																	{
-																		on: {
-																			mousedown:
-																				function (
-																					n
-																				) {
-																					n.preventDefault(),
-																						n.stopPropagation(),
-																						t.select(
-																							e
-																						);
-																				},
-																		},
+												[
+													this._l(
+														this.filteredOptions,
+														(e, o) =>
+															n(
+																"li",
+																{
+																	key: o,
+																	class: {
+																		active: this.isOptionSelected(
+																			e,
+																		),
+																		highlight:
+																			o ===
+																			this
+																				.typeAheadPointer,
 																	},
-																	[
-																		t._t(
-																			"option",
-																			[
-																				t._v(
-																					"\n          " +
-																						t._s(
-																							t.getOptionLabel(
-																								e
-																							)
-																						) +
-																						"\n        "
-																				),
-																			],
-																			null,
-																			"object" ==
+																	attrs: {
+																		role: "option",
+																	},
+																	on: {
+																		mouseover:
+																			(
+																				e,
+																			) => {
+																				this.typeAheadPointer =
+																					o;
+																			},
+																	},
+																},
+																[
+																	n(
+																		"a",
+																		{
+																			on: {
+																				mousedown:
+																					(
+																						n,
+																					) => {
+																						n.preventDefault(),
+																							n.stopPropagation(),
+																							this.select(
+																								e,
+																							);
+																					},
+																			},
+																		},
+																		[
+																			this._t(
+																				"option",
+																				[
+																					this._v(
+																						"\n          " +
+																							this._s(
+																								this.getOptionLabel(
+																									e,
+																								),
+																							) +
+																							"\n        ",
+																					),
+																				],
+																				null,
+																				"object" ==
 																				typeof e
-																				? e
-																				: ((r =
-																						{}),
-																					(r[
-																						t.label
-																					] =
-																						e),
-																					r)
-																		),
-																	],
-																	2
-																),
-															]
-														);
-														var r;
-													}
-												),
-												t._v(" "),
-												t.filteredOptions.length
-													? t._e()
-													: n(
-															"li",
-															{
-																staticClass:
-																	"no-options",
-															},
-															[
-																t._t(
-																	"no-options",
-																	[
-																		t._v(
-																			"Sorry, no matching options."
-																		),
-																	]
-																),
-															],
-															2
-														),
-											],
-											2
-										)
-									: t._e(),
-							]),
+																					? e
+																					: ((r =
+																							{}),
+																					  (r[
+																							this.label
+																					  ] =
+																							e),
+																					  r),
+																			),
+																		],
+																		2,
+																	),
+																],
+															),
+													),
+													this._v(" "),
+													this.filteredOptions.length
+														? this._e()
+														: n(
+																"li",
+																{
+																	staticClass:
+																		"no-options",
+																},
+																[
+																	this._t(
+																		"no-options",
+																		[
+																			this._v(
+																				"Sorry, no matching options.",
+																			),
+																		],
+																	),
+																],
+																2,
+														  ),
+												],
+												2,
+										  )
+										: this._e(),
+								],
+							),
 						],
-						1
+						1,
 					);
 				},
 				staticRenderFns: [],
 			};
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			function o(t, e) {
 				for (var n = 0; n < t.length; n++) {
 					var o = t[n],
@@ -2392,7 +2265,7 @@
 				else {
 					if ("bottom" !== t.insertAt)
 						throw new Error(
-							"Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'."
+							"Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.",
 						);
 					n.appendChild(e);
 				}
@@ -2416,12 +2289,12 @@
 				} else
 					(n = a(e)),
 						(o = c.bind(null, n)),
-						(r = function () {
+						(r = () => {
 							s(n);
 						});
 				return (
 					o(t),
-					function (e) {
+					(e) => {
 						if (e) {
 							if (
 								e.css === t.css &&
@@ -2455,19 +2328,19 @@
 						(n +=
 							"\n/*# sourceMappingURL=data:application/json;base64," +
 							btoa(
-								unescape(encodeURIComponent(JSON.stringify(r)))
+								unescape(encodeURIComponent(JSON.stringify(r))),
 							) +
 							" */")),
 					t.styleSheet)
 				)
 					t.styleSheet.cssText = n;
 				else {
-					for (; t.firstChild; ) t.removeChild(t.firstChild);
+					while (t.firstChild) t.removeChild(t.firstChild);
 					t.appendChild(document.createTextNode(n));
 				}
 			}
 			var f = {},
-				p = function (t) {
+				p = (t) => {
 					var e;
 					return function () {
 						return (
@@ -2477,28 +2350,27 @@
 						);
 					};
 				},
-				d = p(function () {
-					return /msie [6-9]\b/.test(
-						window.navigator.userAgent.toLowerCase()
-					);
-				}),
-				h = p(function () {
-					return (
+				d = p(() =>
+					/msie [6-9]\b/.test(
+						window.navigator.userAgent.toLowerCase(),
+					),
+				),
+				h = p(
+					() =>
 						document.head ||
-						document.getElementsByTagName("head")[0]
-					);
-				}),
+						document.getElementsByTagName("head")[0],
+				),
 				b = null,
 				v = 0,
 				g = [];
-			t.exports = function (t, e) {
+			t.exports = (t, e) => {
 				(e = e || {}),
 					"undefined" == typeof e.singleton && (e.singleton = d()),
 					"undefined" == typeof e.insertAt && (e.insertAt = "bottom");
 				var n = r(t);
 				return (
 					o(n, e),
-					function (t) {
+					(t) => {
 						for (var i = [], s = 0; s < n.length; s++) {
 							var a = n[s],
 								u = f[a.id];
@@ -2519,19 +2391,17 @@
 					}
 				);
 			};
-			var y = (function () {
+			var y = (() => {
 				var t = [];
-				return function (e, n) {
-					return (t[e] = n), t.filter(Boolean).join("\n");
-				};
+				return (e, n) => (t[e] = n), t.filter(Boolean).join("\n");
 			})();
 		},
-		function (t, e, n) {
+		(t, e, n) => {
 			var o = n(83);
 			"string" == typeof o && (o = [[t.id, o, ""]]);
 			n(88)(o, {});
 			o.locals && (t.exports = o.locals);
 		},
-	]);
-});
+	]),
+);
 //# sourceMappingURL=vue-select.js.map

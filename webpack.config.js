@@ -5,8 +5,6 @@
 
 //@ts-check
 
-"use strict";
-
 const failOnErrorsPlugin = require("fail-on-errors-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
@@ -62,13 +60,13 @@ const config = {
 		new webpack.ContextReplacementPlugin(
 			/applicationinsights[\/\\]out[\/\\]Library/,
 			false,
-			/$^/
+			/$^/,
 		),
 		new webpack.ContextReplacementPlugin(/ms-rest[\/\\]lib/, false, /$^/),
 		new webpack.ContextReplacementPlugin(
 			/applicationinsights[\/\\]out[\/\\]AutoCollection/,
 			false,
-			/$^/
+			/$^/,
 		),
 		new webpack.ContextReplacementPlugin(/express[\/\\]lib/, false, /$^/),
 		// Fail on warnings so that CI can report new warnings which requires attention

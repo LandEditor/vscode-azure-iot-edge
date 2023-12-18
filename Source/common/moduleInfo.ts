@@ -20,7 +20,7 @@ export class ModuleInfo {
 		debugCreateOptions: any,
 		routes: any[] = [],
 		environmentVariables: any = null,
-		isPublic = false
+		isPublic = false,
 	) {
 		this.moduleName = moduleName;
 		this.repositoryName = repositoryName;

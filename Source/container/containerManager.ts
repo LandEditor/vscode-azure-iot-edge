@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-"use strict";
-import * as fse from "fs-extra";
 import * as path from "path";
+import * as fse from "fs-extra";
 import * as vscode from "vscode";
 import { BuildSettings } from "../common/buildSettings";
 import { Constants } from "../common/constants";
@@ -15,10 +14,7 @@ import { Simulator } from "../edge/simulator";
 export class ContainerManager {
 	constructor(private simulator: Simulator) {}
 
-	public async buildModuleImage(
-		fileUri?: vscode.Uri,
-		pushImage: boolean = false
-	) {
+	public async buildModuleImage(fileUri?: vscode.Uri, pushImage = false) {
 		const event = pushImage
 			? Constants.buildAndPushModuleImageEvent
 			: Constants.buildModuleImageEvent;
@@ -26,52 +22,52 @@ export class ContainerManager {
 			fileUri,
 			Constants.moduleConfigFileNamePattern,
 			Constants.moduleConfigFile,
-			`${event}.selectModuleConfigFile`
+			`${event}.selectModuleConfigFile`,
 		);
 
 		if (moduleConfigFilePath) {
 			const directory = path.dirname(moduleConfigFilePath);
 			await Utility.loadEnv(
-				path.join(directory, "..", "..", Constants.envFile)
+				path.join(directory, "..", "..", Constants.envFile),
 			);
 			const overrideEnvs = await Utility.parseEnv(
-				path.join(directory, Constants.envFile)
+				path.join(directory, Constants.envFile),
 			);
 			const moduleConfig = await Utility.readJsonAndExpandEnv(
 				moduleConfigFilePath,
 				overrideEnvs,
-				Constants.moduleSchemaVersion
+				Constants.moduleSchemaVersion,
 			);
 			const platforms = moduleConfig.image.tag.platforms;
 			const platform = await vscode.window.showQuickPick(
 				Object.keys(platforms),
-				{ placeHolder: Constants.selectPlatform, ignoreFocusOut: true }
+				{ placeHolder: Constants.selectPlatform, ignoreFocusOut: true },
 			);
 			if (platform) {
 				const dockerfilePath = path.resolve(
 					directory,
-					platforms[platform]
+					platforms[platform],
 				);
 				const imageName = Utility.getImage(
 					moduleConfig.image.repository,
 					moduleConfig.image.tag.version,
-					platform
+					platform,
 				);
 				const buildSettings = Utility.getBuildSettings(
 					directory,
 					dockerfilePath,
 					moduleConfig.image.buildOptions,
-					moduleConfig.image.contextPath
+					moduleConfig.image.contextPath,
 				);
 				const buildCommand = this.constructBuildCmd(
 					imageName,
-					buildSettings
+					buildSettings,
 				);
 				if (pushImage) {
 					await Utility.initLocalRegistry([imageName]);
 					const pushCommand = this.constructPushCmd(imageName);
 					Executor.runInTerminal(
-						Utility.combineCommands([buildCommand, pushCommand])
+						Utility.combineCommands([buildCommand, pushCommand]),
 					);
 				} else {
 					Executor.runInTerminal(buildCommand);
@@ -83,15 +79,15 @@ export class ContainerManager {
 	public async buildSolution(
 		outputChannel: vscode.OutputChannel,
 		templateUri?: vscode.Uri,
-		push: boolean = true,
-		run: boolean = false
+		push = true,
+		run = false,
 	): Promise<void> {
 		const pattern = `{${Constants.deploymentJsonPattern}}`;
 		const templateFile: string = await Utility.getInputFilePath(
 			templateUri,
 			pattern,
 			Constants.deploymentTemplateDesc,
-			`${Constants.buildSolutionEvent}.selectTemplate`
+			`${Constants.buildSolutionEvent}.selectTemplate`,
 		);
 		if (!templateFile) {
 			return;
@@ -101,23 +97,23 @@ export class ContainerManager {
 			templateFile,
 			true,
 			push,
-			run
+			run,
 		);
 		vscode.window.showInformationMessage(
-			`Deployment manifest generated at ${deployFile}. Module images are being built`
+			`Deployment manifest generated at ${deployFile}. Module images are being built`,
 		);
 	}
 
 	public async generateDeployment(
 		outputChannel: vscode.OutputChannel,
-		templateUri?: vscode.Uri
+		templateUri?: vscode.Uri,
 	): Promise<void> {
 		const pattern = `{${Constants.deploymentJsonPattern}}`;
 		const templateFile: string = await Utility.getInputFilePath(
 			templateUri,
 			pattern,
 			Constants.deploymentTemplateDesc,
-			`${Constants.generateDeploymentEvent}.selectTemplate`
+			`${Constants.generateDeploymentEvent}.selectTemplate`,
 		);
 		if (!templateFile) {
 			return;
@@ -125,19 +121,19 @@ export class ContainerManager {
 		const deployFile = await this.createDeploymentFile(
 			outputChannel,
 			templateFile,
-			false
+			false,
 		);
 		vscode.window.showInformationMessage(
-			`Deployment manifest generated at ${deployFile}.`
+			`Deployment manifest generated at ${deployFile}.`,
 		);
 	}
 
 	private async createDeploymentFile(
 		outputChannel: vscode.OutputChannel,
 		templateFile: string,
-		build: boolean = true,
-		push: boolean = true,
-		run: boolean = false
+		build = true,
+		push = true,
+		run = false,
 	): Promise<string> {
 		const moduleToImageMap: Map<string, string> = new Map();
 		const imageToBuildSettings: Map<string, BuildSettings> = new Map();
@@ -146,13 +142,13 @@ export class ContainerManager {
 		await Utility.setSlnModulesMap(
 			templateFile,
 			moduleToImageMap,
-			imageToBuildSettings
+			imageToBuildSettings,
 		);
 		const configPath: string = path.join(slnPath, Constants.outputConfig);
 		const deployment: any = await this.generateDeploymentInfo(
 			templateFile,
 			configPath,
-			moduleToImageMap
+			moduleToImageMap,
 		);
 		const dpManifest: any = deployment.manifestObj;
 		const deployFile: string = deployment.manifestFile;
@@ -164,7 +160,7 @@ export class ContainerManager {
 		// build docker images
 		const buildMap: Map<string, any> = this.getBuildMapFromDeployment(
 			dpManifest,
-			imageToBuildSettings
+			imageToBuildSettings,
 		);
 		const commands: string[] = [];
 		await Utility.initLocalRegistry([...buildMap.keys()]);
@@ -179,7 +175,7 @@ export class ContainerManager {
 			await this.simulator.runSolution(
 				outputChannel,
 				vscode.Uri.file(deployFile),
-				commands
+				commands,
 			);
 			return deployFile;
 		}
@@ -191,12 +187,12 @@ export class ContainerManager {
 	private async generateDeploymentInfo(
 		templateFile: string,
 		configPath: string,
-		moduleToImageMap: Map<string, string>
+		moduleToImageMap: Map<string, string>,
 	): Promise<any> {
 		const data: any = await fse.readJson(templateFile);
 		const moduleExpanded: string = Utility.expandModules(
 			data,
-			moduleToImageMap
+			moduleToImageMap,
 		);
 		const exceptStr = [
 			"$edgeHub",
@@ -207,10 +203,10 @@ export class ContainerManager {
 		const generatedDeployFile: string = Utility.expandEnv(
 			moduleExpanded,
 			{},
-			...exceptStr
+			...exceptStr,
 		);
 		const dpManifest = Utility.convertCreateOptions(
-			Utility.updateSchema(JSON.parse(generatedDeployFile))
+			Utility.updateSchema(JSON.parse(generatedDeployFile)),
 		);
 		const templateSchemaVersion = dpManifest[Constants.SchemaTemplate];
 		delete dpManifest[Constants.SchemaTemplate];
@@ -219,7 +215,7 @@ export class ContainerManager {
 		const templateFileName = path.basename(templateFile);
 		const deploymentFileName = this.getDeployFileName(
 			templateFileName,
-			templateSchemaVersion
+			templateSchemaVersion,
 		);
 		const deployFile = path.join(configPath, deploymentFileName);
 		await fse.remove(deployFile);
@@ -234,7 +230,7 @@ export class ContainerManager {
 
 	private getDeployFileName(
 		templateFileName: string,
-		templateSchemaVersion: string
+		templateSchemaVersion: string,
 	): string {
 		const platform =
 			templateSchemaVersion > "0.0.1"
@@ -245,7 +241,7 @@ export class ContainerManager {
 		if (templateFileName.endsWith(Constants.tson)) {
 			name = templateFileName.substr(
 				0,
-				tempLength - Constants.tson.length
+				tempLength - Constants.tson.length,
 			);
 		} else if (templateFileName.endsWith(".json")) {
 			name = templateFileName.substr(0, tempLength - ".json".length);
@@ -255,7 +251,7 @@ export class ContainerManager {
 
 	private getBuildMapFromDeployment(
 		manifestObj: any,
-		imageToBuildSettings: Map<string, BuildSettings>
+		imageToBuildSettings: Map<string, BuildSettings>,
 	): Map<string, BuildSettings> {
 		try {
 			const buildMap: Map<string, any> = new Map<string, any>();
@@ -284,9 +280,9 @@ export class ContainerManager {
 
 	private constructBuildCmd(
 		imageName: string,
-		buildSettings: BuildSettings
+		buildSettings: BuildSettings,
 	): string {
-		let optionString: string = "";
+		let optionString = "";
 		if (buildSettings.options !== undefined) {
 			const filteredOption = buildSettings.options.filter(
 				(value, index) => {
@@ -295,17 +291,17 @@ export class ContainerManager {
 					return (
 						parsedOption.length > 0 &&
 						["--rm", "--tag", "-t", "--file", "-f"].indexOf(
-							parsedOption[0]
+							parsedOption[0],
 						) < 0
 					);
-				}
+				},
 			);
 			optionString = filteredOption.join(" ");
 		}
 		return `docker build ${optionString} --rm -f \"${Utility.adjustFilePath(
-			buildSettings.dockerFile
+			buildSettings.dockerFile,
 		)}\" -t ${imageName} \"${Utility.adjustFilePath(
-			buildSettings.contextPath
+			buildSettings.contextPath,
 		)}\"`;
 	}
 

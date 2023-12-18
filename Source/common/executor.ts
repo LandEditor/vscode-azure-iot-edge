@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-"use strict";
 import {
 	ChildProcess,
-	execSync,
 	ExecSyncOptions,
-	spawn,
 	SpawnOptions,
+	execSync,
+	spawn,
 } from "child_process";
 import * as vscode from "vscode";
 import { CommandError } from "./CommandError";
@@ -17,7 +16,7 @@ import { Constants } from "./constants";
 export class Executor {
 	public static runInTerminal(
 		command: string,
-		terminal: string = Constants.edgeDisplayName
+		terminal: string = Constants.edgeDisplayName,
 	): void {
 		if (this.terminals[terminal] === undefined) {
 			this.terminals[terminal] = Executor.createTerminal(terminal);
@@ -49,16 +48,16 @@ export class Executor {
 		return await new Promise(
 			(
 				resolve: (output: string) => void,
-				reject: (e: Error) => void
+				reject: (e: Error) => void,
 			): void => {
 				Executor.show(outputPane);
 				Executor.appendLine(
 					`Executing ${command} ${args.join(" ")}`,
-					outputPane
+					outputPane,
 				);
 
-				let stderr: string = "";
-				let stdOutput: string = "";
+				let stderr = "";
+				let stdOutput = "";
 				const envVars = Executor.getEnvFromConfig();
 				if (envVars) {
 					options = options || {};
@@ -88,7 +87,7 @@ export class Executor {
 						resolve(stdOutput);
 					}
 				});
-			}
+			},
 		);
 	}
 
@@ -102,7 +101,7 @@ export class Executor {
 
 	private static append(
 		value: string,
-		outputPane: vscode.OutputChannel
+		outputPane: vscode.OutputChannel,
 	): void {
 		if (outputPane) {
 			outputPane.append(value);
@@ -111,7 +110,7 @@ export class Executor {
 
 	private static appendLine(
 		value: string,
-		outputPane: vscode.OutputChannel
+		outputPane: vscode.OutputChannel,
 	): void {
 		if (outputPane) {
 			outputPane.appendLine(value);

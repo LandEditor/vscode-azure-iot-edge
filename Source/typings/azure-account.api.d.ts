@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-/* tslint:disable */
-import { Event, Terminal, Progress, CancellationToken } from "vscode";
-import { ServiceClientCredentials } from "@azure/ms-rest-js";
-import { Subscription } from "@azure/arm-resources-subscriptions";
 import { ReadStream } from "fs";
+import { Subscription } from "@azure/arm-resources-subscriptions";
+import { ServiceClientCredentials } from "@azure/ms-rest-js";
+/* tslint:disable */
+import { CancellationToken, Event, Progress, Terminal } from "vscode";
 
 export type AzureLoginStatus =
 	| "Initializing"
@@ -264,6 +264,6 @@ export interface CloudShell {
 	readonly uploadFile: (
 		filename: string,
 		stream: ReadStream,
-		options?: UploadOptions
+		options?: UploadOptions,
 	) => Promise<void>;
 }

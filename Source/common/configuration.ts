@@ -1,4 +1,3 @@
-"use strict";
 import * as vscode from "vscode";
 import { Utility } from "./utility";
 
@@ -13,14 +12,14 @@ export class Configuration {
 
 	public static async setGlobalConfigurationProperty(
 		id: string,
-		value: any
+		value: any,
 	): Promise<void> {
 		await Configuration.getConfiguration().update(id, value, true);
 	}
 
 	public static async setWorkspaceConfigurationProperty(
 		id: string,
-		value: any
+		value: any,
 	): Promise<void> {
 		await Configuration.getConfiguration().update(id, value, false);
 	}

@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-"use strict";
-
 export class Constants {
 	public static ExtensionId = "vsciot-vscode.azure-iot-edge";
 	public static deploymentFile = "deployment.json";
@@ -31,13 +29,13 @@ export class Constants {
 	public static repositoryPlaceholder = "%REPOSITORY%";
 	public static dllPlaceholder = "%DLLNAME%";
 	public static externalModulePlaceholderPattern: RegExp = new RegExp(
-		/\${MODULEDIR<(.+)>(\..+)?}/g
+		/\${MODULEDIR<(.+)>(\..+)?}/g,
 	);
 	public static imagePlaceholderPattern: RegExp = new RegExp(
-		/\${MODULES\..+}|\${MODULEDIR<(.+)>(\..+)?}/g
+		/\${MODULES\..+}|\${MODULEDIR<(.+)>(\..+)?}/g,
 	);
 	public static versionPlaceholderPattern: RegExp = new RegExp(
-		/\${VERSION\..+}/g
+		/\${VERSION\..+}/g,
 	);
 	public static assetsFolder = "assets";
 	public static solutionFolder = "solution";
@@ -266,7 +264,7 @@ export class Constants {
 	public static acrRegistryDesc = "Azure Container Registry";
 	public static amlWorkspaceDesc = "Azure Machine Learning Workspace";
 	public static asaJobDesc = "Azure Stream Analytics Job";
-	public static amlApiVersion: string = "2018-03-01-preview";
+	public static amlApiVersion = "2018-03-01-preview";
 
 	public static needSimulatorInstalledMsg =
 		"You must have the 'iotedgehubdev' tool installed for IoT Edge Simulator.";
@@ -353,15 +351,15 @@ export class Constants {
 }
 
 export enum ContainerState {
-	Running,
-	NotRunning,
-	NotFound,
+	Running = 0,
+	NotRunning = 1,
+	NotFound = 2,
 }
 
 export enum DockerState {
-	NotInstalled,
-	NotRunning,
-	PermissionDenied,
-	Running,
-	Unknown,
+	NotInstalled = 0,
+	NotRunning = 1,
+	PermissionDenied = 2,
+	Running = 3,
+	Unknown = 4,
 }
