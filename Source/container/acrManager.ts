@@ -24,7 +24,7 @@ export class AcrManager {
 	constructor() {
 		this.azureAccount = vscode.extensions.getExtension<AzureAccount>(
 			"ms-vscode.azure-account",
-		)!.exports;
+		)?.exports;
 	}
 
 	public async selectAcrImage(): Promise<string> {
@@ -106,8 +106,7 @@ export class AcrManager {
 	private async loadAcrRegistryItems(): Promise<AcrRegistryQuickPickItem[]> {
 		try {
 			await this.azureAccount.waitForFilters();
-			const registryPromises: Array<Promise<AcrRegistryQuickPickItem[]>> =
-				[];
+			const registryPromises: Promise<AcrRegistryQuickPickItem[]>[] = [];
 			for (const azureSubscription of this.azureAccount.filters) {
 				const tokenCredentials = await Utility.aquireTokenCredentials(
 					azureSubscription.session,

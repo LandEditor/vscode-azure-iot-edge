@@ -21,12 +21,7 @@ export class ErrorData {
 		} else if (typeof error === "object" && error !== null) {
 			this.errorType = (error as object).constructor.name;
 			this.message = JSON.stringify(error);
-		} else if (
-			error !== undefined &&
-			error !== null &&
-			error.toString &&
-			error.toString().trim() !== ""
-		) {
+		} else if (error?.toString && error.toString().trim() !== "") {
 			this.errorType = typeof error;
 			this.message = error.toString();
 		} else {

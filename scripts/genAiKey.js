@@ -14,7 +14,7 @@ if (process.env.BUILD_SOURCEBRANCH) {
 	}
 	fs.writeFileSync(
 		"package.json",
-		JSON.stringify(packageJson, null, 2) + "\n",
+		`${JSON.stringify(packageJson, null, 2)}\n`,
 	);
 } else {
 	console.log("Skipping genAiKey");

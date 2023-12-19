@@ -103,7 +103,7 @@ export class EdgeManager {
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(
 				vscode.Uri.file(templateFile),
 			);
-			if (!workspaceFolder || !(await fse.pathExists(templateFile))) {
+			if (!(workspaceFolder && (await fse.pathExists(templateFile)))) {
 				vscode.window.showInformationMessage(
 					Constants.noSolutionFileWithModulesFolder,
 				);
@@ -204,7 +204,7 @@ export class EdgeManager {
 					repositoryName,
 				);
 
-				const copyPromises: Array<Promise<void>> = [];
+				const copyPromises: Promise<void>[] = [];
 				srcFiles.forEach((srcFile) => {
 					if (srcFile === Constants.moduleManifest) {
 						copyPromises.push(
@@ -627,7 +627,7 @@ export class EdgeManager {
 				break;
 			case Constants.CSHARP_FUNCTION:
 				break;
-			case Constants.LANGUAGE_NODE:
+			case Constants.LANGUAGE_NODE: {
 				debugCreateOptions = {
 					ExposedPorts: { "9229/tcp": {} },
 					HostConfig: {
@@ -635,17 +635,20 @@ export class EdgeManager {
 					},
 				};
 				break;
-			case Constants.LANGUAGE_C:
+			}
+			case Constants.LANGUAGE_C: {
 				debugCreateOptions = { HostConfig: { Privileged: true } };
 				break;
-			case Constants.LANGUAGE_JAVA:
+			}
+			case Constants.LANGUAGE_JAVA: {
 				debugCreateOptions = {
 					HostConfig: {
 						PortBindings: { "5005/tcp": [{ HostPort: "5005" }] },
 					},
 				};
 				break;
-			case Constants.LANGUAGE_PYTHON:
+			}
+			case Constants.LANGUAGE_PYTHON: {
 				debugCreateOptions = {
 					ExposedPorts: { "5678/tcp": {} },
 					HostConfig: {
@@ -653,6 +656,7 @@ export class EdgeManager {
 					},
 				};
 				break;
+			}
 			default:
 				break;
 		}
@@ -677,7 +681,7 @@ export class EdgeManager {
 		let launchFile: string;
 		let isFunction = false;
 		switch (language) {
-			case Constants.LANGUAGE_CSHARP:
+			case Constants.LANGUAGE_CSHARP: {
 				launchFile = Constants.launchCSharp;
 				mapObj.set(Constants.appFolder, "/app");
 				const csprojPath: string = path.join(
@@ -698,29 +702,35 @@ export class EdgeManager {
 					targetFramework,
 				);
 				break;
-			case Constants.CSHARP_FUNCTION:
+			}
+			case Constants.CSHARP_FUNCTION: {
 				launchFile = Constants.launchCSharp;
 				mapObj.set(Constants.appFolder, "/app");
 				isFunction = true;
 				break;
-			case Constants.LANGUAGE_NODE:
+			}
+			case Constants.LANGUAGE_NODE: {
 				launchFile = Constants.launchNode;
 				break;
-			case Constants.LANGUAGE_C:
+			}
+			case Constants.LANGUAGE_C: {
 				launchFile = Constants.launchC;
 				mapObj.set(Constants.appFolder, "/app");
 				break;
-			case Constants.LANGUAGE_JAVA:
+			}
+			case Constants.LANGUAGE_JAVA: {
 				launchFile = Constants.launchJava;
 				mapObj.set(
 					Constants.groupIDPlaceholder,
 					extraProps.get(Constants.groupId),
 				);
 				break;
-			case Constants.LANGUAGE_PYTHON:
+			}
+			case Constants.LANGUAGE_PYTHON: {
 				launchFile = Constants.launchPython;
 				mapObj.set(Constants.appFolder, "/app");
 				break;
+			}
 			default:
 				break;
 		}
@@ -1137,7 +1147,7 @@ export class EdgeManager {
 						"https://aka.ms/edge-java-module-prerequisites",
 					);
 				}
-			default:
+			default: {
 				const thirdPartyModuleTemplate =
 					this.get3rdPartyModuleTemplateByName(template);
 				if (thirdPartyModuleTemplate) {
@@ -1166,6 +1176,7 @@ export class EdgeManager {
 					projCreated = false;
 				}
 				break;
+			}
 		}
 		return projCreated;
 	}
@@ -1262,8 +1273,7 @@ export class EdgeManager {
 			repositoryName = Utility.getRepositoryNameFromImageName(imageName);
 		} else if (thirdPartyModuleTemplate) {
 			if (
-				thirdPartyModuleTemplate.command &&
-				thirdPartyModuleTemplate.command.includes(
+				thirdPartyModuleTemplate.command?.includes(
 					Constants.repositoryNameSubstitution,
 				)
 			) {
@@ -1585,46 +1595,51 @@ export class EdgeManager {
 			//    1- when creating a new edge solution and the first add module is called, or
 			//    2- when working with an existing solution and the user wishes to incorporate a dev container
 			case Constants.LANGUAGE_C:
-			case Constants.CONTAINER_C:
+			case Constants.CONTAINER_C: {
 				containerSource = path.join(
 					sourceContainersPath,
 					Constants.CONTAINER_C,
 				);
 				break;
+			}
 			case Constants.LANGUAGE_CSHARP:
 			case Constants.CSHARP_FUNCTION:
-			case Constants.CONTAINER_CSHARP:
+			case Constants.CONTAINER_CSHARP: {
 				containerSource = path.join(
 					sourceContainersPath,
 					Constants.CONTAINER_CSHARP,
 				);
 				break;
+			}
 			case Constants.LANGUAGE_JAVA:
-			case Constants.CONTAINER_JAVA:
+			case Constants.CONTAINER_JAVA: {
 				containerSource = path.join(
 					sourceContainersPath,
 					Constants.CONTAINER_JAVA,
 				);
 				break;
+			}
 			case Constants.LANGUAGE_NODE:
-			case Constants.CONTAINER_NODE:
+			case Constants.CONTAINER_NODE: {
 				containerSource = path.join(
 					sourceContainersPath,
 					Constants.CONTAINER_NODE,
 				);
 				break;
+			}
 			case Constants.LANGUAGE_PYTHON:
-			case Constants.CONTAINER_PYTHON:
+			case Constants.CONTAINER_PYTHON: {
 				containerSource = path.join(
 					sourceContainersPath,
 					Constants.CONTAINER_PYTHON,
 				);
 				break;
+			}
 			default:
 				// if we are on path 1, we don't define a dev container since the language
 				//  choice is not known nor is it relevant.
 				vscode.window.showInformationMessage(
-					"New module for '" + template + "'",
+					`New module for '${template}'`,
 				);
 		}
 

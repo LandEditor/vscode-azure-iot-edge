@@ -86,17 +86,19 @@ export class Utility {
 	}
 
 	public static combineCommands(commands: string[]): string {
-		const isPowerShell: boolean = this.isUsingPowershell();
+		const isPowerShell: boolean = Utility.isUsingPowershell();
 		if (isPowerShell) {
 			let command = "";
 			for (let i = 0; i < commands.length; i++) {
 				switch (i) {
-					case 0:
+					case 0: {
 						command = commands[0];
 						break;
-					case 1:
+					}
+					case 1: {
 						command = `${command} ; if ($?) { ${commands[1]}`;
 						break;
+					}
 					default:
 						command = `${command} } if ($?) { ${commands[i]}`;
 				}
@@ -177,8 +179,9 @@ export class Utility {
 		rootFolder: vscode.Uri,
 	): string {
 		if (folder.fsPath.startsWith(rootFolder.fsPath)) {
-			const relativePath: string =
-				"." + folder.fsPath.substr(rootFolder.fsPath.length);
+			const relativePath: string = `.${folder.fsPath.substr(
+				rootFolder.fsPath.length,
+			)}`;
 
 			return relativePath.replace(/\\/g, "/");
 		}
@@ -382,7 +385,7 @@ export class Utility {
 		contextPath?: string,
 	): BuildSettings {
 		const optionArray =
-			buildOptions && buildOptions instanceof Array
+			buildOptions && Array.isArray(buildOptions)
 				? buildOptions
 				: undefined;
 		const context = contextPath
@@ -467,7 +470,7 @@ export class Utility {
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(
 				vscode.Uri.file(envFilePath),
 			);
-			if (!workspaceFolder || !(await fse.pathExists(envFilePath))) {
+			if (!(workspaceFolder && (await fse.pathExists(envFilePath)))) {
 				return {};
 			}
 
@@ -495,16 +498,18 @@ export class Utility {
 					return;
 				}
 				switch (Utility.getLocalRegistryState()) {
-					case ContainerState.NotFound:
+					case ContainerState.NotFound: {
 						TelemetryClient.sendEvent("createLocalRegistry");
 						Executor.runInTerminal(
 							`docker run -d -p ${port}:5000 --restart always --name registry registry:2`,
 						);
 						break;
-					case ContainerState.NotRunning:
+					}
+					case ContainerState.NotRunning: {
 						TelemetryClient.sendEvent("startLocalRegistry");
-						Executor.runInTerminal(`docker start registry`);
+						Executor.runInTerminal("docker start registry");
 						break;
+					}
 				}
 			}
 		} catch (error) {}
@@ -678,9 +683,9 @@ export class Utility {
 	// Temp utility to solve the compatible issue because of the schema change in IoT Hub Service.
 	// moduleContent -> modulesContent
 	public static updateSchema(deployment: any): any {
-		if (deployment && deployment.moduleContent) {
+		if (deployment?.moduleContent) {
 			deployment.modulesContent = deployment.moduleContent;
-			delete deployment.moduleContent;
+			deployment.moduleContent = undefined;
 		}
 		return deployment;
 	}
@@ -738,7 +743,7 @@ export class Utility {
 	}
 
 	public static async awaitPromiseArray<T extends vscode.QuickPickItem>(
-		promises: Array<Promise<T[]>>,
+		promises: Promise<T[]>[],
 		description: string,
 	): Promise<T[]> {
 		const items: T[] = ([] as T[]).concat(...(await Promise.all(promises)));
@@ -802,7 +807,7 @@ export class Utility {
 
 		// if host name do not contain ":.", then it would be treated as repository name
 		if (hostName && !/[:.]/.test(hostName)) {
-			repositoryName = hostName + "/" + repositoryName;
+			repositoryName = `${hostName}/${repositoryName}`;
 			hostName = null;
 		}
 
@@ -989,7 +994,7 @@ export class Utility {
 			let helpUrl: string;
 			let items: vscode.MessageItem[];
 			switch (state) {
-				case DockerState.NotInstalled:
+				case DockerState.NotInstalled: {
 					items = [install, cancel];
 					input = await vscode.window.showWarningMessage(
 						Constants.dockerNotInstalledErrorMsg,
@@ -999,8 +1004,9 @@ export class Utility {
 						helpUrl = Constants.installDockerUrl;
 					}
 					break;
+				}
 				case DockerState.NotRunning:
-				case DockerState.Unknown:
+				case DockerState.Unknown: {
 					items = [troubleshooting, cancel];
 					input = await vscode.window.showWarningMessage(
 						Constants.dockerNotRunningErrorMsg,
@@ -1010,6 +1016,7 @@ export class Utility {
 						helpUrl = Constants.troubleShootingDockerUrl;
 					}
 					break;
+				}
 			}
 
 			if (input === troubleshooting || input === install) {
@@ -1074,7 +1081,7 @@ export class Utility {
 		templateFilePath: string,
 	): Promise<string[]> {
 		const modules = [];
-		if (!templateFilePath || !(await fse.pathExists(templateFilePath))) {
+		if (!(templateFilePath && (await fse.pathExists(templateFilePath)))) {
 			return modules;
 		}
 
@@ -1158,7 +1165,7 @@ export class Utility {
 		for (const key in modules) {
 			if (modules.hasOwnProperty(key)) {
 				const moduleVar = modules[key];
-				if (moduleVar.settings && moduleVar.settings.createOptions) {
+				if (moduleVar.settings?.createOptions) {
 					moduleVar.settings = Utility.serializeCreateOptions(
 						moduleVar.settings,
 						moduleVar.settings.createOptions,

@@ -17,7 +17,7 @@ export class AmlManager {
 	constructor() {
 		this.azureAccount = vscode.extensions.getExtension<AzureAccount>(
 			"ms-vscode.azure-account",
-		)!.exports;
+		)?.exports;
 	}
 
 	public async selectAmlImage(): Promise<string> {
@@ -53,9 +53,8 @@ export class AmlManager {
 	private async loadWorkspaceItems(): Promise<AmlWorkspaceQuickPickItem[]> {
 		try {
 			await this.azureAccount.waitForFilters();
-			const workspacePromises: Array<
-				Promise<AmlWorkspaceQuickPickItem[]>
-			> = [];
+			const workspacePromises: Promise<AmlWorkspaceQuickPickItem[]>[] =
+				[];
 			for (const azureSubscription of this.azureAccount.filters) {
 				const tokenCredentials = await Utility.aquireTokenCredentials(
 					azureSubscription.session,

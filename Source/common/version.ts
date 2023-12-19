@@ -155,17 +155,13 @@ export class Versions {
 			const imageName: string = input.split(":")[0];
 			switch (imageName) {
 				case "mcr.microsoft.com/azureiotedge-agent":
-					return (
-						imageName +
-						":" +
-						versionMap.get(Constants.edgeAgentVerPlaceHolder)
-					);
+					return `${imageName}:${versionMap.get(
+						Constants.edgeAgentVerPlaceHolder,
+					)}`;
 				case "mcr.microsoft.com/azureiotedge-hub":
-					return (
-						imageName +
-						":" +
-						versionMap.get(Constants.edgeHubVerPlaceHolder)
-					);
+					return `${imageName}:${versionMap.get(
+						Constants.edgeHubVerPlaceHolder,
+					)}`;
 				default:
 					return input;
 			}

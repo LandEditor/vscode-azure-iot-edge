@@ -21,7 +21,7 @@ export class RetryPolicy {
 					outputChannel.appendLine(
 						`Task failed with error: ${err.message}, wait ${retryInterval} milliseconds and retry (${retries})...`,
 					);
-					await this.sleep(retryInterval);
+					await RetryPolicy.sleep(retryInterval);
 					continue;
 				}
 				throw err;

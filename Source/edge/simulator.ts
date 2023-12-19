@@ -265,7 +265,7 @@ export class Simulator {
 		return await this.callWithInstallationCheck(outputChannel, async () => {
 			Executor.runInTerminal(
 				Simulator.adjustTerminalCommand(
-					this.getAdjustedSimulatorExecutorPath() + ` stop`,
+					`${this.getAdjustedSimulatorExecutorPath()} stop`,
 				),
 			);
 			return;
@@ -447,16 +447,14 @@ export class Simulator {
 							.on("error", (e) =>
 								reject(
 									new Error(
-										"Cannot extract simulator binaries from zip file: " +
-											e.message,
+										`Cannot extract simulator binaries from zip file: ${e.message}`,
 									),
 								),
 							);
 					} else {
 						reject(
 							new Error(
-								"Cannot download simulator with status code: " +
-									res.status,
+								`Cannot download simulator with status code: ${res.status}`,
 							),
 						);
 					}
@@ -586,7 +584,7 @@ export class Simulator {
 	}
 
 	private getRunCmdTerminalTitle(): string {
-		return Constants.edgeDisplayName + " Solution Status";
+		return `${Constants.edgeDisplayName} Solution Status`;
 	}
 
 	private async inputInputNames(): Promise<string> {
@@ -642,12 +640,13 @@ export class Simulator {
 				await vscode.window.showErrorMessage(
 					Constants.installStandaloneSimulatorFailedMsg,
 				);
-			case InstallReturn.NotSupported:
+			case InstallReturn.NotSupported: {
 				outputChannel.appendLine(Constants.outputNoSimulatorMsg);
 				throw new LearnMoreError(
 					Constants.installManuallyMsg,
 					Simulator.learnMoreUrl,
 				);
+			}
 			case InstallReturn.IsInstalling:
 				outputChannel.appendLine(
 					Constants.outputSimulatorIsInstallingMsg,

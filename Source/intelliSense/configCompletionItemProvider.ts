@@ -35,23 +35,13 @@ export class ConfigCompletionItemProvider
 				document.getWordRangeAtPosition(position);
 			moduleCompletionItem.insertText = new vscode.SnippetString(
 				[
-					'"${1:' + Constants.moduleNameDft + '}": {',
+					`"\${1:${Constants.moduleNameDft}}": {`,
 					'\t"version": "${2:1.0}",',
-					'\t"type": "' + Constants.moduleTypes.join(",") + '",',
-					'\t"status": "${3|' +
-						Constants.moduleStatuses.join(",") +
-						'|}",',
-					'\t"restartPolicy": "${4|' +
-						Constants.moduleRestartPolicies.join(",") +
-						'|}",',
+					`\t"type": "${Constants.moduleTypes.join(",")}",`,
+					`\t"status": "${3|${Constants.moduleStatuses.join(",")}|}",`,
+					`\t"restartPolicy": "${4|${Constants.moduleRestartPolicies.join(",")}|}",`,
 					'\t"settings": {',
-					'\t\t"image": "${5:' +
-						Constants.registryPlaceholder +
-						"}/${6:" +
-						Constants.repoNamePlaceholder +
-						"}:${7:" +
-						Constants.tagPlaceholder +
-						'}",',
+					`\t\t"image": "\${5:${Constants.registryPlaceholder}}/\${6:${Constants.repoNamePlaceholder}}:\${7:${Constants.tagPlaceholder}}",`,
 					'\t\t"createOptions": {$8}',
 					"\t}",
 					"}",
@@ -102,11 +92,8 @@ export class ConfigCompletionItemProvider
 		) {
 			const json = parser.parse(document.getText());
 			const modules: any =
-				(
-					(json.modulesContent.$edgeAgent || {})[
-						"properties.desired"
-					] || {}
-				).modules || {};
+				json.modulesContent.$edgeAgent?.["properties.desired"]
+					?.modules || {};
 			const moduleIds: string[] = Object.keys(modules);
 
 			const routeCompletionItem: vscode.CompletionItem =
@@ -147,7 +134,7 @@ export class ConfigCompletionItemProvider
 
 		const completionItems: vscode.CompletionItem[] = [];
 		for (const value of values) {
-			const label = '"${' + value + '}"';
+			const label = `"\${${value}}"`;
 			const completionItem: vscode.CompletionItem =
 				new vscode.CompletionItem(label);
 			completionItem.range = overwriteRange;
@@ -253,9 +240,9 @@ export class ConfigCompletionItemProvider
 			"/messages/modules/*",
 		];
 		if (moduleIds.length === 0) {
-			sources.push(`/messages/modules/{moduleId}/*`);
-			sources.push(`/messages/modules/{moduleId}/outputs/*`);
-			sources.push(`/messages/modules/{moduleId}/outputs/{output}`);
+			sources.push("/messages/modules/{moduleId}/*");
+			sources.push("/messages/modules/{moduleId}/outputs/*");
+			sources.push("/messages/modules/{moduleId}/outputs/{output}");
 		} else {
 			for (const moduleId of moduleIds) {
 				sources.push(`/messages/modules/${moduleId}/*`);
@@ -268,7 +255,7 @@ export class ConfigCompletionItemProvider
 			}
 		}
 
-		snippet.push(sources.join(",") + "|}");
+		snippet.push(`${sources.join(",")}|}`);
 		snippet.push("WHERE ${3:<condition>} INTO");
 
 		const sinks: string[] = ["${4|$upstream"];
@@ -284,7 +271,7 @@ export class ConfigCompletionItemProvider
 			}
 		}
 
-		snippet.push(sinks.join(",") + '|}"');
+		snippet.push(`${sinks.join(",")}|}"`);
 
 		return snippet.join(" ");
 	}

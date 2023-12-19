@@ -42,7 +42,7 @@ export class Gallery {
 			this.panel.webview.onDidReceiveMessage(
 				async (message) => {
 					switch (message.command) {
-						case "openSample":
+						case "openSample": {
 							if (message.name && message.url) {
 								await vscode.commands.executeCommand(
 									"azure-iot-edge.initializeSample",
@@ -52,7 +52,8 @@ export class Gallery {
 								);
 							}
 							break;
-						case "openLink":
+						}
+						case "openLink": {
 							if (message.url) {
 								TelemetryClient.sendEvent(
 									Constants.openSampleUrlEvent,
@@ -64,6 +65,7 @@ export class Gallery {
 								);
 							}
 							break;
+						}
 					}
 				},
 				undefined,
@@ -137,7 +139,7 @@ export class Gallery {
 			);
 
 			channel.appendLine(
-				`Sample project downloaded successfully and will be opened now.`,
+				"Sample project downloaded successfully and will be opened now.",
 			);
 			TelemetryClient.sendEvent(Constants.openSampleEvent, {
 				Result: "Success",
@@ -168,13 +170,12 @@ export class Gallery {
 		html = html.replace(
 			/(<link.*?\shref="|<script.*?\ssrc="|<img.*?\ssrc=")(.+?)"/g,
 			(m, $1, $2) => {
-				return (
+				return `${
 					$1 +
 					vscode.Uri.file(path.join(dirPath, $2))
 						.with({ scheme: "vscode-resource" })
-						.toString(true) +
-					'"'
-				);
+						.toString(true)
+				}"`;
 			},
 		);
 		return html;

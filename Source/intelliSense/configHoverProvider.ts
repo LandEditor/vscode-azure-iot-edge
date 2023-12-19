@@ -15,7 +15,7 @@ export class ConfigHoverProvider implements vscode.HoverProvider {
 				document,
 				position,
 			);
-		if (dockerfileInfo && dockerfileInfo.dockerfile) {
+		if (dockerfileInfo?.dockerfile) {
 			const dockerfileContent: string = await fse.readFile(
 				dockerfileInfo.dockerfile,
 				"utf-8",

@@ -108,10 +108,7 @@ const app = new Vue({
 			vscode.postMessage({
 				id: this.selectedModule.id,
 				moduleName: this.moduleName,
-				imageName:
-					this.selectedModule.metadata.repository +
-					":" +
-					this.selectedTag,
+				imageName: `${this.selectedModule.metadata.repository}:${this.selectedTag}`,
 				createOptions,
 				routes: this.selectedModule.metadata.routes,
 				twins,

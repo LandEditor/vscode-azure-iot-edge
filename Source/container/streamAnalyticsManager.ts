@@ -41,7 +41,7 @@ export class StreamAnalyticsManager {
 	private constructor() {
 		this.azureAccount = vscode.extensions.getExtension<AzureAccount>(
 			"ms-vscode.azure-account",
-		)!.exports;
+		)?.exports;
 		this.asaUpdateStatus = ASAUpdateStatus.Idle;
 	}
 
@@ -214,7 +214,6 @@ export class StreamAnalyticsManager {
 				if (jobInfoResult.status === 202) {
 					if (retryTimes < this.MaximumRetryCount) {
 						retryTimes++;
-						continue;
 					} else {
 						throw new Error(Constants.queryASAJobInfoFailedMsg);
 					}
@@ -228,7 +227,7 @@ export class StreamAnalyticsManager {
 					}
 				} else {
 					throw new Error(
-						"http status code: " + jobInfoResult.status,
+						`http status code: ${jobInfoResult.status}`,
 					);
 				}
 			}
@@ -268,8 +267,7 @@ export class StreamAnalyticsManager {
 			return ASAInfo;
 		} catch (err) {
 			throw new Error(
-				"Cannot parse Stream Analytics Job information from module twin: " +
-					err.message,
+				`Cannot parse Stream Analytics Job information from module twin: ${err.message}`,
 			);
 		}
 	}
@@ -277,7 +275,7 @@ export class StreamAnalyticsManager {
 	private async loadAllStreamingJobs(): Promise<StreamAnalyticsPickItem[]> {
 		try {
 			await this.azureAccount.waitForFilters();
-			const jobPromises: Array<Promise<StreamAnalyticsPickItem[]>> = [];
+			const jobPromises: Promise<StreamAnalyticsPickItem[]>[] = [];
 			for (const azureSubscription of this.azureAccount.filters) {
 				const tokenCredentials = await Utility.aquireTokenCredentials(
 					azureSubscription.session,

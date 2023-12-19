@@ -158,7 +158,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.languages.registerCodeLensProvider(
 			{
-				pattern: `**/{deployment.*.template.json,deployment.template.json}`,
+				pattern:
+					"**/{deployment.*.template.json,deployment.template.json}",
 			},
 			new ASAModuleUpdateCodeLensProvider(),
 		),
@@ -314,10 +315,9 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.setDefaultPlatform",
 		async (): Promise<void> => {
 			await edgeManager.selectDefaultPlatform(outputChannel);
-			const document =
-				vscode.window && vscode.window.activeTextEditor
-					? vscode.window.activeTextEditor.document
-					: null;
+			const document = vscode.window?.activeTextEditor
+				? vscode.window.activeTextEditor.document
+				: null;
 			return configDiagnosticProvider.updateDiagnostics(
 				document,
 				diagCollection,
@@ -331,10 +331,9 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.setDefaultEdgeRuntimeVersion",
 		async (): Promise<void> => {
 			await edgeManager.selectDefaultEdgeRuntimeVersion(outputChannel);
-			const document =
-				vscode.window && vscode.window.activeTextEditor
-					? vscode.window.activeTextEditor.document
-					: null;
+			const document = vscode.window?.activeTextEditor
+				? vscode.window.activeTextEditor.document
+				: null;
 			return configDiagnosticProvider.updateDiagnostics(
 				document,
 				diagCollection,
@@ -421,7 +420,7 @@ function resolveDebugConfiguration(
 }
 
 function formatStatusBarText(platform?: string): string {
-	return platform ? `$(circuit-board) ${platform}` : `$(circuit-board) amd64`;
+	return platform ? `$(circuit-board) ${platform}` : "$(circuit-board) amd64";
 }
 
 function initCommand(
@@ -488,7 +487,7 @@ function initCommandAsync(
 			let errorData: ErrorData | undefined;
 			const properties: { [key: string]: string } = {};
 			properties.result = "Succeeded";
-			properties.fromCommandPalette = (!args || !args[0]).toString();
+			properties.fromCommandPalette = (!args?.[0]).toString();
 
 			TelemetryClient.sendEvent(`${commandId}.start`);
 			outputChannel.appendLine(`${commandId}: `);

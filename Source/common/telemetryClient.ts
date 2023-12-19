@@ -16,17 +16,17 @@ export class TelemetryClient {
 		eventName: string,
 		properties?: { [key: string]: string },
 	): void {
-		this.stampInternalProperty(properties);
-		this._client.sendTelemetryEvent(eventName, properties);
+		TelemetryClient.stampInternalProperty(properties);
+		TelemetryClient._client.sendTelemetryEvent(eventName, properties);
 	}
 
 	public static sendErrorEvent(
 		eventName: string,
 		properties?: { [key: string]: string },
 	): void {
-		this.stampInternalProperty(properties);
+		TelemetryClient.stampInternalProperty(properties);
 		const errorProperties = Object.values(Constants.errorProperties);
-		this._client.sendTelemetryErrorEvent(
+		TelemetryClient._client.sendTelemetryErrorEvent(
 			eventName,
 			properties,
 			null,
@@ -55,11 +55,11 @@ export class TelemetryClient {
 	}) {
 		if (properties) {
 			properties[Constants.isInternalPropertyName] =
-				this._isInternal === true ? "true" : "false";
+				TelemetryClient._isInternal === true ? "true" : "false";
 		} else {
 			properties = {
 				[Constants.isInternalPropertyName]:
-					this._isInternal === true ? "true" : "false",
+					TelemetryClient._isInternal === true ? "true" : "false",
 			};
 		}
 	}

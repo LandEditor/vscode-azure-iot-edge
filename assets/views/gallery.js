@@ -9,13 +9,13 @@
 
 		static fromObject(obj, allDevices) {
 			if (!obj.deviceId) {
-				throw Error(`The device id missing`);
+				throw Error("The device id missing");
 			}
 			if (!obj.platform) {
-				throw Error(`The platform missing`);
+				throw Error("The platform missing");
 			}
 			const name = allDevices.find((d) => d.id === obj.deviceId).name;
-			return new this(obj.deviceId, obj.platform, name);
+			return new LogicalDevice(obj.deviceId, obj.platform, name);
 		}
 
 		equals(b) {
@@ -80,7 +80,7 @@
 							j++
 						) {
 							const device = examples[i].supportDevices[j];
-							if (!device.deviceId || !device.platform) {
+							if (!(device.deviceId && device.platform)) {
 								throw Error(
 									`Missing property deviceId or platform for sample ${examples[i].name}`,
 								);
@@ -143,7 +143,7 @@
 					return project_name;
 				}
 
-				return "example_" + new Date().getTime();
+				return `example_${new Date().getTime()}`;
 			},
 			openSample: function (sample, url, boardId, event) {
 				let platform = null;
@@ -167,7 +167,9 @@
 				}
 
 				const name = this.getProjectName(sample);
-				if (!vscode) vscode = acquireVsCodeApi();
+				if (!vscode) {
+					vscode = acquireVsCodeApi();
+				}
 				vscode.postMessage({
 					command: "openSample",
 					name,
@@ -182,7 +184,9 @@
 				if (!url) {
 					return;
 				}
-				if (!vscode) vscode = acquireVsCodeApi();
+				if (!vscode) {
+					vscode = acquireVsCodeApi();
+				}
 				vscode.postMessage({
 					command: "openLink",
 					url,
@@ -242,11 +246,16 @@
 			},
 			selectedExamples: {
 				get: function () {
-					if (!this.selectedLogicalDevice) return this.examples;
+					if (!this.selectedLogicalDevice) {
+						return this.examples;
+					}
 					return this.examples.filter((e) => {
 						for (const device of e.supportDevices) {
-							if (device.equals(this.selectedLogicalDevice.value))
+							if (
+								device.equals(this.selectedLogicalDevice.value)
+							) {
 								return true;
+							}
 						}
 						return false;
 					});

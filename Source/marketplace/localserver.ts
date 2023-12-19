@@ -29,7 +29,7 @@ export class LocalServer {
 		const port = (this.server.listen(0).address() as AddressInfo).port;
 		this.serverPort = port;
 		// tslint:disable-next-line:no-console
-		console.log("serverPort:" + this.serverPort);
+		console.log(`serverPort:${this.serverPort}`);
 	}
 
 	public stopServer(): void {
@@ -125,7 +125,7 @@ export class LocalServer {
 					}
 
 					const iconFileUris = item.iconFileUris;
-					if (iconFileUris && iconFileUris.small) {
+					if (iconFileUris?.small) {
 						item.icon = iconFileUris.small;
 					} else {
 						item.icon = null;

@@ -18,11 +18,11 @@ export class Executor {
 		command: string,
 		terminal: string = Constants.edgeDisplayName,
 	): void {
-		if (this.terminals[terminal] === undefined) {
-			this.terminals[terminal] = Executor.createTerminal(terminal);
+		if (Executor.terminals[terminal] === undefined) {
+			Executor.terminals[terminal] = Executor.createTerminal(terminal);
 		}
-		this.terminals[terminal].show();
-		this.terminals[terminal].sendText(command);
+		Executor.terminals[terminal].show();
+		Executor.terminals[terminal].sendText(command);
 	}
 
 	public static execSync(command: string) {
@@ -36,7 +36,7 @@ export class Executor {
 	}
 
 	public static onDidCloseTerminal(closedTerminal: vscode.Terminal): void {
-		delete this.terminals[closedTerminal.name];
+		delete Executor.terminals[closedTerminal.name];
 	}
 
 	public static async executeCMD(
