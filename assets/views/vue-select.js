@@ -1509,7 +1509,7 @@
 			const R = Object[V];
 			const z = "function" === typeof L;
 			const H = o.QObject;
-			let G = !(H?.[V] && H[V].findChild);
+			let G = !H[V]?.findChild;
 			const J =
 				i &&
 				l(
