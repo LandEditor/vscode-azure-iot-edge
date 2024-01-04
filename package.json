@@ -533,7 +533,7 @@
 		"@azure/arm-machinelearningservices": "4.1.1",
 		"@azure/arm-streamanalytics": "4.1.0",
 		"@vscode/extension-telemetry": "0.9.2",
-		"axios": "1.6.3",
+		"axios": "1.6.4",
 		"body-parser": "1.20.2",
 		"dotenv": "16.3.1",
 		"download-git-repo": "3.0.2",
@@ -570,7 +570,7 @@
 		"sinon": "17.0.1",
 		"ts-loader": "9.5.1",
 		"typescript": "5.3.3",
-		"typescript-esbuild": "0.3.3",
+		"typescript-esbuild": "0.3.4",
 		"vscode-test": "1.6.1",
 		"webpack": "5.89.0",
 		"webpack-cli": "5.1.4"
