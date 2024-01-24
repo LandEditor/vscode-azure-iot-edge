@@ -2,12 +2,12 @@
 // Licensed under the MIT license.
 
 import {
-	ChildProcess,
-	ExecSyncOptions,
-	SpawnOptions,
+	type ChildProcess,
+	type ExecSyncOptions,
+	type SpawnOptions,
 	execSync,
 	spawn,
-} from "child_process";
+} from "node:child_process";
 import * as vscode from "vscode";
 import { CommandError } from "./CommandError";
 import { Configuration } from "./configuration";

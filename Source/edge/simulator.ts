@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as os from "os";
-import * as path from "path";
+import * as os from "node:os";
+import * as path from "node:path";
 import axios from "axios";
 import * as dotenv from "dotenv";
 import * as fse from "fs-extra";
@@ -20,7 +20,7 @@ import { RetryPolicy } from "../common/retryPolicy";
 import { TelemetryClient } from "../common/telemetryClient";
 import { Utility } from "../common/utility";
 import { Versions } from "../common/version";
-import { IDeviceItem } from "../typings/IDeviceItem";
+import type { IDeviceItem } from "../typings/IDeviceItem";
 import { InstallResult, InstallReturn } from "./InstallResult";
 
 enum SimulatorType {
@@ -195,9 +195,9 @@ export class Simulator {
 				outputChannel,
 			);
 			if (deviceItem) {
-				let commandStr =
-					this.getAdjustedSimulatorExecutorPath() +
-					` setup -c "${deviceItem.connectionString}"`;
+				let commandStr = `${this.getAdjustedSimulatorExecutorPath()} setup -c "${
+					deviceItem.connectionString
+				}"`;
 				if (await this.isModuleTwinSupported()) {
 					const iotHubConnectionStr =
 						await Configuration.getIotHubConnectionString();
@@ -222,8 +222,7 @@ export class Simulator {
 			await this.setModuleCred(outputChannel);
 			await Executor.runInTerminal(
 				Simulator.adjustTerminalCommand(
-					this.getAdjustedSimulatorExecutorPath() +
-						` start -er "${imgVersion}" -i "${inputs}"`,
+					`${this.getAdjustedSimulatorExecutorPath()} start -er "${imgVersion}" -i "${inputs}"`,
 				),
 			);
 		});
@@ -578,8 +577,7 @@ export class Simulator {
 
 	private constructRunCmd(deployFile: string): string {
 		return Simulator.adjustTerminalCommand(
-			this.getAdjustedSimulatorExecutorPath() +
-				` start -d "${deployFile}" -v`,
+			`${this.getAdjustedSimulatorExecutorPath()} start -d "${deployFile}" -v`,
 		);
 	}
 

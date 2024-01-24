@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as tls from "tls";
+import * as tls from "node:tls";
 import * as vscode from "vscode";
 import { ConfigNotSetError } from "./common/ConfigNotSetError";
 import { ErrorData } from "./common/ErrorData";
@@ -9,7 +9,7 @@ import { LearnMoreError } from "./common/LearnMoreError";
 import { UserCancelledError } from "./common/UserCancelledError";
 import { Constants } from "./common/constants";
 import { Executor } from "./common/executor";
-import { ModuleInfo } from "./common/moduleInfo";
+import type { ModuleInfo } from "./common/moduleInfo";
 import { NSAT } from "./common/nsat";
 import { Platform } from "./common/platform";
 import { TelemetryClient } from "./common/telemetryClient";
@@ -23,7 +23,7 @@ import { ConfigCompletionItemProvider } from "./intelliSense/configCompletionIte
 import { ConfigDefinitionProvider } from "./intelliSense/configDefinitionProvider";
 import { ConfigDiagnosticProvider } from "./intelliSense/configDiagnosticProvider";
 import { ConfigHoverProvider } from "./intelliSense/configHoverProvider";
-import { IDeviceItem } from "./typings/IDeviceItem";
+import type { IDeviceItem } from "./typings/IDeviceItem";
 
 // Work around TLS issue in Node.js >= 8.6.0
 // https://github.com/nodejs/node/issues/16196

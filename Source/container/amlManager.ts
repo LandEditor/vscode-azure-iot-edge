@@ -2,14 +2,14 @@
 // Licensed under the MIT license.
 
 import { AzureMachineLearningWorkspaces } from "@azure/arm-machinelearningservices";
-import { Workspace } from "@azure/arm-machinelearningservices/esm/models";
-import { Workspaces } from "@azure/arm-machinelearningservices/esm/operations";
-import { HttpOperationResponse, ServiceClient } from "@azure/ms-rest-js";
+import type { Workspace } from "@azure/arm-machinelearningservices/esm/models";
+import type { Workspaces } from "@azure/arm-machinelearningservices/esm/operations";
+import { type HttpOperationResponse, ServiceClient } from "@azure/ms-rest-js";
 import * as vscode from "vscode";
 import { UserCancelledError } from "../common/UserCancelledError";
 import { Constants } from "../common/constants";
 import { Utility } from "../common/utility";
-import { AzureAccount, AzureSession } from "../typings/azure-account.api";
+import type { AzureAccount, AzureSession } from "../typings/azure-account.api";
 import { AmlWorkspaceQuickPickItem } from "./models/amlWorkspaceQuickPickItem";
 
 export class AmlManager {

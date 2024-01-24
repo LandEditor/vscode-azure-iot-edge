@@ -79,7 +79,7 @@
 	 * Check if val is a valid array index.
 	 */
 	function isValidArrayIndex(val) {
-		const n = parseFloat(String(val));
+		const n = Number.parseFloat(String(val));
 		return n >= 0 && Math.floor(n) === n && Number.isFinite(val);
 	}
 
@@ -99,7 +99,7 @@
 	 * If the conversion fails, return original string.
 	 */
 	function toNumber(val) {
-		const n = parseFloat(val);
+		const n = Number.parseFloat(val);
 		return Number.isNaN(n) ? val : n;
 	}
 
@@ -2388,18 +2388,15 @@
 						if (res.delay === 0) {
 							factory.loading = true;
 						} else {
-							setTimeout(
-								() => {
-									if (
-										isUndef(factory.resolved) &&
-										isUndef(factory.error)
-									) {
-										factory.loading = true;
-										forceRender();
-									}
-								},
-								res.delay || 200,
-							);
+							setTimeout(() => {
+								if (
+									isUndef(factory.resolved) &&
+									isUndef(factory.error)
+								) {
+									factory.loading = true;
+									forceRender();
+								}
+							}, res.delay || 200);
 						}
 					}
 
@@ -5084,7 +5081,7 @@
 					cache[key] = vnode;
 					keys.push(key);
 					// prune oldest entry
-					if (this.max && keys.length > parseInt(this.max)) {
+					if (this.max && keys.length > Number.parseInt(this.max)) {
 						pruneCacheEntry(cache, keys[0], keys, this._vnode);
 					}
 				}
@@ -10521,7 +10518,7 @@
 	}
 
 	function genFilterCode(key) {
-		const keyVal = parseInt(key, 10);
+		const keyVal = Number.parseInt(key, 10);
 		if (keyVal) {
 			return `$event.keyCode!==${keyVal}`;
 		}
@@ -11295,21 +11292,20 @@
 	// `createCompilerCreator` allows creating compilers that use alternative
 	// parser/optimizer/codegen, e.g the SSR optimizing compiler.
 	// Here we just export a default compiler using the default parts.
-	const createCompiler = createCompilerCreator(function baseCompile(
-		template,
-		options,
-	) {
-		const ast = parse(template.trim(), options);
-		if (options.optimize !== false) {
-			optimize(ast, options);
-		}
-		const code = generate(ast, options);
-		return {
-			ast: ast,
-			render: code.render,
-			staticRenderFns: code.staticRenderFns,
-		};
-	});
+	const createCompiler = createCompilerCreator(
+		function baseCompile(template, options) {
+			const ast = parse(template.trim(), options);
+			if (options.optimize !== false) {
+				optimize(ast, options);
+			}
+			const code = generate(ast, options);
+			return {
+				ast: ast,
+				render: code.render,
+				staticRenderFns: code.staticRenderFns,
+			};
+		},
+	);
 
 	/*  */
 

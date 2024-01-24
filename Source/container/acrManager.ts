@@ -3,9 +3,9 @@
 
 import {
 	ContainerRegistryManagementClient,
-	Registries,
+	type Registries,
 } from "@azure/arm-containerregistry";
-import {
+import type {
 	Registry,
 	RegistryListCredentialsResult,
 } from "@azure/arm-containerregistry/esm/models";
@@ -14,7 +14,7 @@ import * as vscode from "vscode";
 import { UserCancelledError } from "../common/UserCancelledError";
 import { Constants } from "../common/constants";
 import { Utility } from "../common/utility";
-import { AzureAccount, AzureSession } from "../typings/azure-account.api";
+import type { AzureAccount, AzureSession } from "../typings/azure-account.api";
 import { AcrRegistryQuickPickItem } from "./models/acrRegistryQuickPickItem";
 
 export class AcrManager {

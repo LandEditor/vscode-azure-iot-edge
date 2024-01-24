@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as os from "os";
-import * as path from "path";
+import * as os from "node:os";
+import * as path from "node:path";
 import * as download from "download-git-repo";
 import * as fse from "fs-extra";
 import * as stripJsonComments from "strip-json-comments";
@@ -873,9 +873,8 @@ export class EdgeManager {
 			}
 		} else {
 			const newModuleToUpstream = `${moduleInfo.moduleName}ToIoTHub`;
-			routes[
-				newModuleToUpstream
-			] = `FROM /messages/modules/${moduleInfo.moduleName}/outputs/* INTO $upstream`;
+			routes[newModuleToUpstream] =
+				`FROM /messages/modules/${moduleInfo.moduleName}/outputs/* INTO $upstream`;
 		}
 
 		if (isTempsensorNeeded) {
@@ -891,9 +890,8 @@ export class EdgeManager {
 			};
 			modules.SimulatedTemperatureSensor = tempSensor;
 			const tempSensorToModule = `sensorTo${moduleInfo.moduleName}`;
-			routes[
-				tempSensorToModule
-			] = `FROM /messages/modules/SimulatedTemperatureSensor/outputs/temperatureOutput INTO BrokeredEndpoint(\"/modules/${moduleInfo.moduleName}/inputs/input1\")`;
+			routes[tempSensorToModule] =
+				`FROM /messages/modules/SimulatedTemperatureSensor/outputs/temperatureOutput INTO BrokeredEndpoint(\"/modules/${moduleInfo.moduleName}/inputs/input1\")`;
 		}
 		await fse.writeFile(
 			templateFile,

@@ -3,16 +3,16 @@
 
 import {
 	StreamAnalyticsManagementClient,
-	StreamingJobs,
+	type StreamingJobs,
 } from "@azure/arm-streamanalytics";
-import { StreamingJob } from "@azure/arm-streamanalytics/esm/models";
+import type { StreamingJob } from "@azure/arm-streamanalytics/esm/models";
 import axios from "axios";
 import * as fse from "fs-extra";
 import * as vscode from "vscode";
 import { UserCancelledError } from "../common/UserCancelledError";
 import { Constants } from "../common/constants";
 import { Utility } from "../common/utility";
-import {
+import type {
 	AzureAccount,
 	AzureSession,
 	AzureSubscription,

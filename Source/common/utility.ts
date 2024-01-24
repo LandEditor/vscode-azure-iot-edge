@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as os from "os";
-import * as path from "path";
+import * as os from "node:os";
+import * as path from "node:path";
 import { TokenCredentials } from "@azure/ms-rest-js";
 import * as dotenv from "dotenv";
 import * as fse from "fs-extra";
 import * as isPortReachable from "is-port-reachable";
 import * as vscode from "vscode";
-import { IDeviceItem } from "../typings/IDeviceItem";
-import { AzureAccount, AzureSession } from "../typings/azure-account.api";
+import type { IDeviceItem } from "../typings/IDeviceItem";
+import type { AzureAccount, AzureSession } from "../typings/azure-account.api";
 import { UserCancelledError } from "./UserCancelledError";
 import { BuildSettings } from "./buildSettings";
 import { Configuration } from "./configuration";
@@ -1037,7 +1037,8 @@ export class Utility {
 	private static getDefaultWindowsShell(): string {
 		if (!Utility._TERMINAL_DEFAULT_SHELL_WINDOWS) {
 			const isAtLeastWindows10 =
-				os.platform() === "win32" && parseFloat(os.release()) >= 10;
+				os.platform() === "win32" &&
+				Number.parseFloat(os.release()) >= 10;
 			const is32ProcessOn64Windows = process.env.hasOwnProperty(
 				"PROCESSOR_ARCHITEW6432",
 			);

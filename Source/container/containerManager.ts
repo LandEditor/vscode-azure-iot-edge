@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as path from "path";
+import * as path from "node:path";
 import * as fse from "fs-extra";
 import * as vscode from "vscode";
-import { BuildSettings } from "../common/buildSettings";
+import type { BuildSettings } from "../common/buildSettings";
 import { Constants } from "../common/constants";
 import { Executor } from "../common/executor";
 import { Platform } from "../common/platform";
 import { Utility } from "../common/utility";
-import { Simulator } from "../edge/simulator";
+import type { Simulator } from "../edge/simulator";
 
 export class ContainerManager {
 	constructor(private simulator: Simulator) {}

@@ -3,7 +3,7 @@
 
 import * as parser from "jsonc-parser";
 import * as vscode from "vscode";
-import { BuildSettings } from "../common/buildSettings";
+import type { BuildSettings } from "../common/buildSettings";
 import { Constants } from "../common/constants";
 import { Utility } from "../common/utility";
 

@@ -136,10 +136,12 @@ export class Constants {
 	public static registryPlaceholder = "<registry>";
 	public static repoNamePlaceholder = "<repo-name>";
 	public static tagPlaceholder = "<tag>";
-	public static repositoryPattern = `${Constants.registryPlaceholder}/${Constants.repoNamePlaceholder}`;
+	public static repositoryPattern =
+		`${Constants.registryPlaceholder}/${Constants.repoNamePlaceholder}`;
 	public static repositoryPrompt =
 		"Provide Docker Image Repository for the Module";
-	public static imagePattern = `${Constants.registryPlaceholder}/${Constants.repoNamePlaceholder}:${Constants.tagPlaceholder}`;
+	public static imagePattern =
+		`${Constants.registryPlaceholder}/${Constants.repoNamePlaceholder}:${Constants.tagPlaceholder}`;
 	public static imagePrompt = "Provide Docker Image for the Module";
 	public static selectTemplate = "Select Module Template";
 	public static selectDevContainer = "Select Dev Container Type";

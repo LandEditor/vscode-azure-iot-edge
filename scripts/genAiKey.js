@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("node:fs");
 
 if (process.env.BUILD_SOURCEBRANCH) {
 	const ISPROD = new RegExp(process.env.ISPRODTAG).test(

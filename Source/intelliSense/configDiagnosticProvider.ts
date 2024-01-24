@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as path from "path";
+import * as path from "node:path";
 import * as fse from "fs-extra";
 import * as parser from "jsonc-parser";
 import * as vscode from "vscode";

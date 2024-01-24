@@ -1873,7 +1873,7 @@
 																	],
 																	null,
 																	"object" ===
-																	typeof e
+																		typeof e
 																		? e
 																		: ((o =
 																				{}),
@@ -2228,7 +2228,7 @@
 																				],
 																				null,
 																				"object" ===
-																				typeof e
+																					typeof e
 																					? e
 																					: ((r =
 																							{}),

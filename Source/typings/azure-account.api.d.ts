@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ReadStream } from "fs";
-import { Subscription } from "@azure/arm-resources-subscriptions";
-import { ServiceClientCredentials } from "@azure/ms-rest-js";
+import type { ReadStream } from "node:fs";
+import type { Subscription } from "@azure/arm-resources-subscriptions";
+import type { ServiceClientCredentials } from "@azure/ms-rest-js";
 /* tslint:disable */
-import { CancellationToken, Event, Progress, Terminal } from "vscode";
+import type { CancellationToken, Event, Progress, Terminal } from "vscode";
 
 export type AzureLoginStatus =
 	| "Initializing"

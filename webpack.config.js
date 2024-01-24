@@ -6,7 +6,7 @@
 //@ts-check
 
 const failOnErrorsPlugin = require("fail-on-errors-webpack-plugin");
-const path = require("path");
+const path = require("node:path");
 const webpack = require("webpack");
 const TerserPlugin = require("terser-webpack-plugin");
 
