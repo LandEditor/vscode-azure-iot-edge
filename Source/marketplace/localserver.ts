@@ -1,5 +1,5 @@
-import * as http from "node:http";
-import type { AddressInfo } from "node:net";
+import * as http from "http";
+import type { AddressInfo } from "net";
 import axios from "axios";
 import * as bodyParser from "body-parser";
 import * as express from "express";

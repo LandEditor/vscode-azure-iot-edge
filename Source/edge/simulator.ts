@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as os from "node:os";
-import * as path from "node:path";
+import * as os from "os";
+import * as path from "path";
 import axios from "axios";
 import * as dotenv from "dotenv";
 import * as fse from "fs-extra";

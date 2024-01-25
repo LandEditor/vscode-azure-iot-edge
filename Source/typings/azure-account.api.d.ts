@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import type { ReadStream } from "node:fs";
+import type { ReadStream } from "fs";
 import type { Subscription } from "@azure/arm-resources-subscriptions";
 import type { ServiceClientCredentials } from "@azure/ms-rest-js";
 /* tslint:disable */

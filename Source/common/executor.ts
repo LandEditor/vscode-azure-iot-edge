@@ -7,7 +7,7 @@ import {
 	type SpawnOptions,
 	execSync,
 	spawn,
-} from "node:child_process";
+} from "child_process";
 import * as vscode from "vscode";
 import { CommandError } from "./CommandError";
 import { Configuration } from "./configuration";

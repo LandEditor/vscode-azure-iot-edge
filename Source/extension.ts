@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as tls from "node:tls";
+import * as tls from "tls";
 import * as vscode from "vscode";
 import { ConfigNotSetError } from "./common/ConfigNotSetError";
 import { ErrorData } from "./common/ErrorData";
