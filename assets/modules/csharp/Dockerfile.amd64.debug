@@ -1,8 +1,8 @@
 FROM microsoft/dotnet:2.0-runtime-stretch AS base
 
 RUN apt-get update && \
-	apt-get install -y --no-install-recommends unzip procps && \
-	rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends unzip procps && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN useradd -ms /bin/bash moduleuser
 USER moduleuser
