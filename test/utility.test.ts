@@ -15,9 +15,9 @@ suite("utility tests", () => {
 		const input: string = await fse.readFile(
 			path.resolve(
 				__dirname,
-				"../../testResources/deployment.template.json",
+				"../../testResources/deployment.template.json"
 			),
-			"utf8",
+			"utf8"
 		);
 		// const mapObj: Map<string, string> = new Map<string, string>();
 		// mapObj.set("MODULES.SampleModule.amd64", "test.az.io/filter:0.0.1-amd64");
@@ -30,7 +30,7 @@ suite("utility tests", () => {
 		assert.equal(
 			generatedObj.modulesContent.$edgeAgent["properties.desired"].modules
 				.SimulatedTemperatureSensor.settings.image,
-			imageString,
+			imageString
 		);
 	}).timeout(60 * 1000);
 
@@ -38,20 +38,20 @@ suite("utility tests", () => {
 		const input = await fse.readJson(
 			path.resolve(
 				__dirname,
-				"../../testResources/deployment.template.json",
-			),
+				"../../testResources/deployment.template.json"
+			)
 		);
 		const mapObj: Map<string, string> = new Map<string, string>();
 		mapObj.set(
 			"MODULES.SampleModule.amd64",
-			"test.az.io/filter:0.0.1-amd64",
+			"test.az.io/filter:0.0.1-amd64"
 		);
 		const generated: string = Utility.expandModules(input, mapObj);
 		const generatedObj = JSON.parse(generated);
 		assert.equal(
 			generatedObj.modulesContent.$edgeAgent["properties.desired"].modules
 				.samplemodule.settings.image,
-			"test.az.io/filter:0.0.1-amd64",
+			"test.az.io/filter:0.0.1-amd64"
 		);
 	}).timeout(60 * 1000);
 
@@ -59,9 +59,9 @@ suite("utility tests", () => {
 		const input: string = await fse.readFile(
 			path.resolve(
 				__dirname,
-				"../../testResources/deployment.template.json",
+				"../../testResources/deployment.template.json"
 			),
-			"utf8",
+			"utf8"
 		);
 		let deployment = JSON.parse(input);
 		const oldOptionObj =
@@ -73,7 +73,7 @@ suite("utility tests", () => {
 			deployment.modulesContent.$edgeAgent["properties.desired"]
 				.systemModules.edgeAgent.settings.createOptions,
 			deployment.modulesContent.$edgeAgent["properties.desired"]
-				.systemModules.edgeHub.settings.createOptions,
+				.systemModules.edgeHub.settings.createOptions
 		);
 
 		const settings =
@@ -96,7 +96,7 @@ suite("utility tests", () => {
 		assert.equal(optionObj.Env.length, oldOptionObj.Env.length);
 		assert.equal(
 			JSON.stringify(optionObj.Env),
-			JSON.stringify(oldOptionObj.Env),
+			JSON.stringify(oldOptionObj.Env)
 		);
 	}).timeout(60 * 1000);
 
@@ -177,7 +177,7 @@ suite("utility tests", () => {
 		});
 		const moduleDir = path.resolve(
 			__dirname,
-			"../../testResources/module1",
+			"../../testResources/module1"
 		);
 		const moduleToImageMap: Map<string, string> = new Map();
 		const imageToBuildSettings: Map<string, BuildSettings> = new Map();
@@ -185,22 +185,22 @@ suite("utility tests", () => {
 			moduleDir,
 			Constants.subModuleKeyPrefixTemplate(path.basename(moduleDir)),
 			moduleToImageMap,
-			imageToBuildSettings,
+			imageToBuildSettings
 		);
 		assert.equal(moduleToImageMap.size, 7);
 		assert.equal(
 			moduleToImageMap.get("MODULES.module1"),
-			"localhost:5000/samplemodule:0.0.1-arm32v7",
+			"localhost:5000/samplemodule:0.0.1-arm32v7"
 		);
 		assert.equal(
 			moduleToImageMap.get("MODULES.module1.debug"),
-			"localhost:5000/samplemodule:0.0.1-arm32v7.debug",
+			"localhost:5000/samplemodule:0.0.1-arm32v7.debug"
 		);
 		assert.equal(imageToBuildSettings.size, 5);
 		assert.equal(
 			imageToBuildSettings.get("localhost:5000/samplemodule:0.0.1-amd64")
 				.options.length,
-			8,
+			8
 		);
 		sinon.restore();
 	}).timeout(60 * 1000);
@@ -216,22 +216,22 @@ suite("utility tests", () => {
 		await Utility.setSlnModulesMap(
 			templateFile,
 			moduleToImageMap,
-			imageToBuildSettings,
+			imageToBuildSettings
 		);
 		assert.equal(moduleToImageMap.size, 7);
 		assert.equal(
 			moduleToImageMap.get("MODULEDIR<./module1>"),
-			"localhost:5000/samplemodule:0.0.1-arm32v7",
+			"localhost:5000/samplemodule:0.0.1-arm32v7"
 		);
 		assert.equal(
 			moduleToImageMap.get("MODULEDIR<./module1>.debug"),
-			"localhost:5000/samplemodule:0.0.1-arm32v7.debug",
+			"localhost:5000/samplemodule:0.0.1-arm32v7.debug"
 		);
 		assert.equal(imageToBuildSettings.size, 5);
 		assert.equal(
 			imageToBuildSettings.get("localhost:5000/samplemodule:0.0.1-amd64")
 				.options.length,
-			8,
+			8
 		);
 		sinon.restore();
 	}).timeout(60 * 1000);
@@ -278,7 +278,7 @@ suite("utility tests", () => {
 		mapObj.set(Constants.moduleNamePlaceholder, moduleName);
 		mapObj.set(
 			Constants.moduleImagePlaceholder,
-			`\${MODULES.${moduleName}.amd64}`,
+			`\${MODULES.${moduleName}.amd64}`
 		);
 		const generated: string = Utility.replaceAll(input, mapObj);
 		const expected: string =
@@ -338,16 +338,16 @@ suite("utility tests", () => {
 		assert.equal(
 			Utility.getResourceGroupFromId(
 				"/subscriptions/00000000-0000-0000-0000-000000000000/" +
-					"resourceGroups/fangzh-aml/providers/Microsoft.MachineLearningServices/workspaces/fangzh-aml",
+					"resourceGroups/fangzh-aml/providers/Microsoft.MachineLearningServices/workspaces/fangzh-aml"
 			),
-			"fangzh-aml",
+			"fangzh-aml"
 		);
 		assert.equal(
 			Utility.getResourceGroupFromId(
 				"/subscriptions/00000000-0000-0000-0000-000000000000/" +
-					"resourcegroups/fangzh-AML/providers/Microsoft.MachineLearningServices/workspaces/fangzh-aml",
+					"resourcegroups/fangzh-AML/providers/Microsoft.MachineLearningServices/workspaces/fangzh-aml"
 			),
-			"fangzh-AML",
+			"fangzh-AML"
 		);
 	});
 });
