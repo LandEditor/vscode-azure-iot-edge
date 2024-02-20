@@ -569,7 +569,7 @@
     "sinon": "17.0.1",
     "ts-loader": "9.5.1",
     "typescript": "5.3.3",
-    "typescript-esbuild": "0.3.6",
+    "typescript-esbuild": "0.3.9",
     "vscode-test": "1.6.1",
     "webpack": "5.90.3",
     "webpack-cli": "5.1.4"
