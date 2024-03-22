@@ -1,32 +1,32 @@
 {
-	"activationEvents": [
-		"onCommand:azure-iot-edge.buildSolution",
-		"onCommand:azure-iot-edge.buildAndPushSolution",
-		"onCommand:azure-iot-edge.buildAndRunSolution",
-		"onCommand:azure-iot-edge.runSolution",
-		"onCommand:azure-iot-edge.buildModuleImage",
-		"onCommand:azure-iot-edge.buildAndPushModuleImage",
-		"onCommand:azure-iot-edge.newSolution",
-		"onCommand:azure-iot-edge.generateDeployment",
-		"onCommand:azure-iot-edge.addModule",
-		"onCommand:azure-iot-edge.stopSolution",
-		"onCommand:azure-iot-edge.setupIotedgehubdev",
-		"onCommand:azure-iot-edge.setDefaultEdgeRuntimeVersion",
-		"onCommand:azure-iot-edge.startEdgeHubSingle",
-		"onCommand:azure-iot-edge.setModuleCred",
-		"onCommand:azure-iot-edge.setDefaultPlatform",
-		"onCommand:azure-iot-edge.showGallery",
-		"onCommand:azure-iot-edge.addDevContainer",
-		"workspaceContains:**/deployment.template.json"
-	],
-	"aiKey": "95b20d64-f54f-4de3-8ad5-165a75a6c6fe",
-	"author": {
-		"email": "Hello@Playform.Cloud",
-		"name": "Playform",
-		"url": "https://playform.cloud"
-	},
+	"name": "azure-iot-edge",
+	"displayName": "Azure IoT Edge",
+	"version": "0.0.1",
+	"private": false,
+	"description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
+	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
 	"bugs": {
 		"url": "https://github.com/CodeEditorLand/Foundation/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
+	},
+	"license": "SEE LICENSE IN LICENSE",
+	"author": {
+		"name": "Playform",
+		"email": "Hello@Playform.Cloud",
+		"url": "https://playform.cloud"
+	},
+	"type": "module",
+	"main": "./dist/extension",
+	"scripts": {
+		"compile": "tsc -p ./",
+		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
+		"tslint": "tslint -t verbose src/**/*.ts",
+		"vscode:prepublish": "webpack --mode production",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch"
 	},
 	"contributes": {
 		"commands": [
@@ -506,6 +506,26 @@
 			]
 		}
 	},
+	"activationEvents": [
+		"onCommand:azure-iot-edge.buildSolution",
+		"onCommand:azure-iot-edge.buildAndPushSolution",
+		"onCommand:azure-iot-edge.buildAndRunSolution",
+		"onCommand:azure-iot-edge.runSolution",
+		"onCommand:azure-iot-edge.buildModuleImage",
+		"onCommand:azure-iot-edge.buildAndPushModuleImage",
+		"onCommand:azure-iot-edge.newSolution",
+		"onCommand:azure-iot-edge.generateDeployment",
+		"onCommand:azure-iot-edge.addModule",
+		"onCommand:azure-iot-edge.stopSolution",
+		"onCommand:azure-iot-edge.setupIotedgehubdev",
+		"onCommand:azure-iot-edge.setDefaultEdgeRuntimeVersion",
+		"onCommand:azure-iot-edge.startEdgeHubSingle",
+		"onCommand:azure-iot-edge.setModuleCred",
+		"onCommand:azure-iot-edge.setDefaultPlatform",
+		"onCommand:azure-iot-edge.showGallery",
+		"onCommand:azure-iot-edge.addDevContainer",
+		"workspaceContains:**/deployment.template.json"
+	],
 	"dependencies": {
 		"@azure/arm-containerregistry": "^8.1.1",
 		"@azure/arm-machinelearningservices": "^4.1.1",
@@ -526,7 +546,6 @@
 		"tmp": "0.0.33",
 		"unzipper": "^0.10.5"
 	},
-	"description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
 	"devDependencies": {
 		"@azure/arm-resources": "^4.2.2",
 		"@azure/arm-resources-subscriptions": "^2.0.0-beta.1",
@@ -549,37 +568,18 @@
 		"sinon": "^11.1.2",
 		"ts-loader": "^9.2.6",
 		"typescript": "^4.4.4",
-		"typescript-esbuild": "",
+		"typescript-esbuild": "0.4.5",
 		"vscode-test": "^1.6.1",
 		"webpack": "^5.51.1",
 		"webpack-cli": "^4.8.0"
 	},
-	"displayName": "Azure IoT Edge",
 	"extensionDependencies": [
 		"ms-vscode.azure-account",
 		"vsciot-vscode.azure-iot-toolkit"
 	],
-	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
-	"icon": "logo.png",
-	"license": "SEE LICENSE IN LICENSE",
-	"main": "./dist/extension",
-	"name": "azure-iot-edge",
-	"private": false,
 	"publishConfig": {
 		"access": "public"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
-	},
-	"scripts": {
-		"compile": "tsc -p ./",
-		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
-		"tslint": "tslint -t verbose src/**/*.ts",
-		"vscode:prepublish": "webpack --mode production",
-		"webpack": "webpack --mode development",
-		"webpack-dev": "webpack --mode development --watch"
-	},
-	"type": "module",
-	"version": "0.0.1"
+	"icon": "logo.png",
+	"aiKey": "95b20d64-f54f-4de3-8ad5-165a75a6c6fe"
 }
