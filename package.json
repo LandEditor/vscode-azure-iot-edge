@@ -4,27 +4,29 @@
 	"version": "0.0.1",
 	"private": false,
 	"description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
-	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
+	"keywords": [
+		"land"
+	],
+	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/LandAzureIOTEdge#readme",
 	"bugs": {
-		"url": "https://github.com/CodeEditorLand/Foundation/issues"
+		"url": "HTTPS://GitHub.Com/CodeEditorLand/LandAzureIOTEdge/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
+		"url": "git+HTTPS://github.com/CodeEditorLand/LandAzureIOTEdge.git"
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
-		"name": "Playform",
-		"email": "Hello@Playform.Cloud",
-		"url": "https://playform.cloud"
+		"name": "🌆 — Land —",
+		"email": "Land@PlayForm.Cloud",
+		"url": "HTTPS://Land.PlayForm.Cloud"
 	},
 	"type": "module",
 	"main": "./dist/extension",
 	"scripts": {
+		"Document": "Document 'Source/**/*.ts'",
 		"compile": "tsc -p ./",
-		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
-		"tslint": "tslint -t verbose src/**/*.ts",
-		"vscode:prepublish": "webpack --mode production",
+		"prepublishOnly": "Build 'Source/**/*.ts'",
 		"webpack": "webpack --mode development",
 		"webpack-dev": "webpack --mode development --watch"
 	},
@@ -527,51 +529,36 @@
 		"workspaceContains:**/deployment.template.json"
 	],
 	"dependencies": {
-		"@azure/arm-containerregistry": "^8.1.1",
-		"@azure/arm-machinelearningservices": "^4.1.1",
-		"@azure/arm-streamanalytics": "^2.1.1",
-		"@vscode/extension-telemetry": "^0.4.6",
-		"axios": "0.24.0",
-		"body-parser": "^1.18.2",
-		"dotenv": "^5.0.1",
-		"download-git-repo": "^1.0.2",
-		"express": "^4.16.3",
-		"fs-extra": "^4.0.2",
-		"is-port-reachable": "^2.0.0",
-		"json-source-map": "^0.6.1",
-		"jsonc-parser": "^1.0.1",
-		"qs": "6.10.2",
-		"semver": "^5.6.0",
-		"strip-json-comments": "^2.0.1",
-		"tmp": "0.0.33",
-		"unzipper": "^0.10.5"
+		"axios": "1.6.8",
+		"body-parser": "1.20.2",
+		"dotenv": "16.4.5",
+		"download-git-repo": "3.0.2",
+		"fs-extra": "11.2.0",
+		"is-port-reachable": "4.0.0",
+		"json-source-map": "0.6.1",
+		"jsonc-parser": "3.2.1",
+		"qs": "6.12.1",
+		"semver": "7.6.0",
+		"strip-json-comments": "5.0.1",
+		"tmp": "0.2.3",
+		"unzipper": "0.11.4"
 	},
 	"devDependencies": {
-		"@azure/arm-resources": "^4.2.2",
-		"@azure/arm-resources-subscriptions": "^2.0.0-beta.1",
-		"@types/body-parser": "^1.16.8",
-		"@types/dotenv": "^4.0.3",
-		"@types/express": "^4.11.1",
-		"@types/fs-extra": "^4.0.3",
-		"@types/mocha": "^9.0.0",
-		"@types/node": "^16.11.6",
-		"@types/semver": "^5.5.0",
-		"@types/sinon": "^7.0.13",
+		"@playform/build": "0.0.7",
+		"@playform/document": "0.0.6",
+		"@types/body-parser": "1.19.5",
+		"@types/dotenv": "6.1.1",
+		"@types/fs-extra": "11.0.4",
+		"@types/node": "20.12.7",
+		"@types/semver": "7.5.8",
+		"@types/sinon": "17.0.3",
 		"@types/strip-json-comments": "0.0.30",
-		"@types/tmp": "0.0.33",
-		"@types/unzipper": "^0.10.0",
-		"@types/vscode": "^1.40.0",
-		"fail-on-errors-webpack-plugin": "^3.0.0",
-		"glob": "^7.1.7",
-		"minimist": "^1.2.6",
-		"mocha": "^9.0.0",
-		"sinon": "^11.1.2",
-		"ts-loader": "^9.2.6",
-		"typescript": "^4.4.4",
-		"typescript-esbuild": "0.4.5",
-		"vscode-test": "^1.6.1",
-		"webpack": "^5.51.1",
-		"webpack-cli": "^4.8.0"
+		"@types/tmp": "0.2.6",
+		"@types/unzipper": "0.10.9",
+		"glob": "10.3.12",
+		"minimist": "1.2.8",
+		"sinon": "17.0.1",
+		"ts-loader": "9.5.1"
 	},
 	"extensionDependencies": [
 		"ms-vscode.azure-account",
