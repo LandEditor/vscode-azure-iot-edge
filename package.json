@@ -1,27 +1,7 @@
 {
 	"name": "azure-iot-edge",
 	"displayName": "Azure IoT Edge",
-	"version": "0.0.1",
-	"private": false,
 	"description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
-	"keywords": [
-		"land"
-	],
-	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/LandAzureIOTEdge#readme",
-	"bugs": {
-		"url": "HTTPS://GitHub.Com/CodeEditorLand/LandAzureIOTEdge/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+HTTPS://github.com/CodeEditorLand/LandAzureIOTEdge.git"
-	},
-	"license": "SEE LICENSE IN LICENSE",
-	"author": {
-		"name": "🛬 Land —",
-		"email": "Land@PlayForm.Cloud",
-		"url": "HTTPS://Land.PlayForm.Cloud"
-	},
-	"type": "module",
 	"main": "./dist/extension",
 	"scripts": {
 		"Document": "Document 'Source/**/*.ts'",
@@ -545,7 +525,6 @@
 	},
 	"devDependencies": {
 		"@playform/build": "0.0.7",
-		"@playform/document": "0.0.6",
 		"@types/body-parser": "1.19.5",
 		"@types/dotenv": "6.1.1",
 		"@types/fs-extra": "11.0.4",
@@ -564,9 +543,6 @@
 		"ms-vscode.azure-account",
 		"vsciot-vscode.azure-iot-toolkit"
 	],
-	"publishConfig": {
-		"access": "public"
-	},
 	"icon": "logo.png",
 	"aiKey": "95b20d64-f54f-4de3-8ad5-165a75a6c6fe"
 }
