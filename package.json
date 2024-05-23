@@ -507,7 +507,7 @@
 		"workspaceContains:**/deployment.template.json"
 	],
 	"dependencies": {
-		"axios": "1.7.1",
+		"axios": "1.7.2",
 		"body-parser": "1.20.2",
 		"dotenv": "16.4.5",
 		"download-git-repo": "3.0.2",
@@ -531,7 +531,7 @@
 		"@types/strip-json-comments": "0.0.30",
 		"@types/tmp": "0.2.6",
 		"@types/unzipper": "0.10.9",
-		"glob": "10.3.15",
+		"glob": "10.3.16",
 		"minimist": "1.2.8",
 		"sinon": "18.0.0",
 		"ts-loader": "9.5.1"
