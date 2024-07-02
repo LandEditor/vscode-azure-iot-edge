@@ -515,7 +515,7 @@
 		"is-port-reachable": "4.0.0",
 		"json-source-map": "0.6.1",
 		"jsonc-parser": "3.3.1",
-		"qs": "6.12.1",
+		"qs": "6.12.2",
 		"semver": "7.6.2",
 		"strip-json-comments": "5.0.1",
 		"tmp": "0.2.3",
