@@ -1,13 +1,25 @@
 {
-	"name": "azure-iot-edge",
-	"displayName": "Azure IoT Edge",
-	"description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
-	"main": "./dist/extension",
-	"scripts": {
-		"compile": "tsc -p ./",
-		"webpack": "webpack --mode development",
-		"webpack-dev": "webpack --mode development --watch"
-	},
+	"activationEvents": [
+		"onCommand:azure-iot-edge.buildSolution",
+		"onCommand:azure-iot-edge.buildAndPushSolution",
+		"onCommand:azure-iot-edge.buildAndRunSolution",
+		"onCommand:azure-iot-edge.runSolution",
+		"onCommand:azure-iot-edge.buildModuleImage",
+		"onCommand:azure-iot-edge.buildAndPushModuleImage",
+		"onCommand:azure-iot-edge.newSolution",
+		"onCommand:azure-iot-edge.generateDeployment",
+		"onCommand:azure-iot-edge.addModule",
+		"onCommand:azure-iot-edge.stopSolution",
+		"onCommand:azure-iot-edge.setupIotedgehubdev",
+		"onCommand:azure-iot-edge.setDefaultEdgeRuntimeVersion",
+		"onCommand:azure-iot-edge.startEdgeHubSingle",
+		"onCommand:azure-iot-edge.setModuleCred",
+		"onCommand:azure-iot-edge.setDefaultPlatform",
+		"onCommand:azure-iot-edge.showGallery",
+		"onCommand:azure-iot-edge.addDevContainer",
+		"workspaceContains:**/deployment.template.json"
+	],
+	"aiKey": "95b20d64-f54f-4de3-8ad5-165a75a6c6fe",
 	"contributes": {
 		"commands": [
 			{
@@ -486,26 +498,6 @@
 			]
 		}
 	},
-	"activationEvents": [
-		"onCommand:azure-iot-edge.buildSolution",
-		"onCommand:azure-iot-edge.buildAndPushSolution",
-		"onCommand:azure-iot-edge.buildAndRunSolution",
-		"onCommand:azure-iot-edge.runSolution",
-		"onCommand:azure-iot-edge.buildModuleImage",
-		"onCommand:azure-iot-edge.buildAndPushModuleImage",
-		"onCommand:azure-iot-edge.newSolution",
-		"onCommand:azure-iot-edge.generateDeployment",
-		"onCommand:azure-iot-edge.addModule",
-		"onCommand:azure-iot-edge.stopSolution",
-		"onCommand:azure-iot-edge.setupIotedgehubdev",
-		"onCommand:azure-iot-edge.setDefaultEdgeRuntimeVersion",
-		"onCommand:azure-iot-edge.startEdgeHubSingle",
-		"onCommand:azure-iot-edge.setModuleCred",
-		"onCommand:azure-iot-edge.setDefaultPlatform",
-		"onCommand:azure-iot-edge.showGallery",
-		"onCommand:azure-iot-edge.addDevContainer",
-		"workspaceContains:**/deployment.template.json"
-	],
 	"dependencies": {
 		"axios": "0.24.0",
 		"body-parser": "^1.18.2",
@@ -521,6 +513,7 @@
 		"tmp": "0.0.33",
 		"unzipper": "^0.10.5"
 	},
+	"description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
 	"devDependencies": {
 		"@types/body-parser": "^1.16.8",
 		"@types/dotenv": "^4.0.3",
@@ -536,10 +529,17 @@
 		"sinon": "^11.1.2",
 		"ts-loader": "^9.2.6"
 	},
+	"displayName": "Azure IoT Edge",
 	"extensionDependencies": [
 		"ms-vscode.azure-account",
 		"vsciot-vscode.azure-iot-toolkit"
 	],
 	"icon": "logo.png",
-	"aiKey": "95b20d64-f54f-4de3-8ad5-165a75a6c6fe"
+	"main": "./dist/extension",
+	"name": "azure-iot-edge",
+	"scripts": {
+		"compile": "tsc -p ./",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch"
+	}
 }
