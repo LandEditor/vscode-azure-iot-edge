@@ -525,7 +525,7 @@
 		"@types/body-parser": "1.19.5",
 		"@types/dotenv": "6.1.1",
 		"@types/fs-extra": "11.0.4",
-		"@types/node": "20.14.11",
+		"@types/node": "20.14.12",
 		"@types/semver": "7.5.8",
 		"@types/sinon": "17.0.3",
 		"@types/strip-json-comments": "0.0.30",
