@@ -516,9 +516,9 @@
 	"description": "This extension is now in maintenance mode. See announcement https://github.com/microsoft/vscode-azure-iot-edge/issues/639#issue-1359146049 and latest documentation here: https://learn.microsoft.com/en-us/azure/iot-edge/how-to-vs-code-develop-module.",
 	"devDependencies": {
 		"@types/body-parser": "1.19.5",
-		"@types/dotenv": "8.2.0",
+		"@types/dotenv": "8.2.3",
 		"@types/fs-extra": "11.0.4",
-		"@types/node": "22.7.7",
+		"@types/node": "22.7.9",
 		"@types/semver": "7.5.8",
 		"@types/sinon": "17.0.3",
 		"@types/strip-json-comments": "3.0.0",
