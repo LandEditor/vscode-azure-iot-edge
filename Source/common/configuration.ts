@@ -31,11 +31,13 @@ export class Configuration {
 		string | undefined
 	> {
 		const toolkit = Utility.getToolkit();
+
 		try {
 			return toolkit.exports.azureIoTExplorer.getIotHubConnectionString();
 		} catch (error) {
 			const toolkitConfig: vscode.WorkspaceConfiguration =
 				vscode.workspace.getConfiguration("azure-iot-toolkit");
+
 			return toolkitConfig
 				? toolkitConfig.get("iotHubConnectionString")
 				: undefined;

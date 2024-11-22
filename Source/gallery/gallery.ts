@@ -53,6 +53,7 @@ export class Gallery {
 								);
 							}
 							break;
+
 						case "openLink":
 							if (message.url) {
 								TelemetryClient.sendEvent(
@@ -93,10 +94,12 @@ export class Gallery {
 			}
 
 			await fse.ensureDir(parentPath);
+
 			const sampleName: string = await Utility.inputSolutionName(
 				parentPath,
 				name,
 			);
+
 			const samplePath: string = path.join(parentPath, sampleName);
 
 			channel.show();
@@ -108,6 +111,7 @@ export class Gallery {
 			const defaultPlatformKey = Utility.getVscodeSettingKey(
 				Constants.defPlatformConfig,
 			);
+
 			let vscodeSettingJson =
 				await Utility.getUserSettingJsonFromSolutionPath(samplePath);
 
@@ -161,6 +165,7 @@ export class Gallery {
 
 	public async getWebViewContent(templatePath: string): Promise<string> {
 		const dirPath = path.dirname(templatePath);
+
 		let html = await fse.readFile(templatePath, "utf-8");
 
 		const extensionVersion = vscode.extensions.getExtension(
@@ -180,6 +185,7 @@ export class Gallery {
 				);
 			},
 		);
+
 		return html;
 	}
 

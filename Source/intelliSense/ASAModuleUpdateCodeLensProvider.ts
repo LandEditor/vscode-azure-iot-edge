@@ -18,14 +18,19 @@ export class ASAModuleUpdateCodeLensProvider
 	): Promise<vscode.CodeLens[]> {
 		const deploymentJsonString = document.getText();
 		this.templateFilePath = document.uri.fsPath;
+
 		return Promise.resolve(this.generateCodeLens(deploymentJsonString));
 	}
 
 	public generateCodeLens(deploymentJsonString: string): vscode.CodeLens[] {
 		const codeLensArr: vscode.CodeLens[] = [];
+
 		const result = jsonMap.parse(deploymentJsonString);
+
 		const deploymentJson = result.data;
+
 		const ASAModuleNamesArr = [];
+
 		for (const name in deploymentJson.modulesContent) {
 			if (
 				deploymentJson.modulesContent[name]["properties.desired"]
@@ -38,7 +43,9 @@ export class ASAModuleUpdateCodeLensProvider
 		for (const name of ASAModuleNamesArr) {
 			const lineNum =
 				result.pointers[this.ASAModuleTwinPathRoot + name].key.line;
+
 			const range = new vscode.Range(lineNum, 0, lineNum, 100);
+
 			const cmd: vscode.Command = {
 				title: "Check Configurations Update for ASA Job",
 				command: "azure-iot-edge.internal.checkUpdateForASAModule",

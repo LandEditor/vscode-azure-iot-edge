@@ -55,7 +55,9 @@ export class Simulator {
 			return null;
 		}
 		const pattern: RegExp = new RegExp(/version\s+([^\s]+)/g);
+
 		const matchRes = output.match(pattern);
+
 		if (matchRes !== null) {
 			return matchRes[0].replace(/version\s+/g, "");
 		}
@@ -71,6 +73,7 @@ export class Simulator {
 					{ shell: true },
 					"--version",
 				);
+
 				return true;
 			}
 		} catch (error) {}
@@ -93,6 +96,7 @@ export class Simulator {
 			const installedVersion: string = this.context.globalState.get(
 				Simulator.simulatorVersionKey,
 			);
+
 			if (installedVersion) {
 				this.simulatorExecutablePath = path.join(
 					Simulator.WindowsStandaloneSimulatorFolder,
@@ -109,19 +113,25 @@ export class Simulator {
 		outputChannel: vscode.OutputChannel = null,
 	): Promise<void> {
 		let message: string;
+
 		let type: string = "";
+
 		const telemetryName = "simulatorUpdated";
+
 		try {
 			const simulatorType = await this.simulatorInstalled();
+
 			if (simulatorType === SimulatorType.NotInstalled) {
 				message = Constants.needSimulatorInstalledMsg;
 				type = "install";
 			} else {
 				const version: string | null =
 					await this.getCurrentSimulatorVersion();
+
 				if (version && semver.valid(version)) {
 					const desiredVersion: string | undefined =
 						await this.getDesiredSimulatorVersion(outputChannel);
+
 					if (desiredVersion && semver.neq(desiredVersion, version)) {
 						message = `${Constants.updateSimulatorMsg} (${version} to ${desiredVersion})`;
 					} else {
@@ -158,6 +168,7 @@ export class Simulator {
 				const learnMore: vscode.MessageItem = {
 					title: Constants.learnMore,
 				};
+
 				if (
 					(await vscode.window.showWarningMessage(
 						message,
@@ -193,13 +204,16 @@ export class Simulator {
 				deviceItem,
 				outputChannel,
 			);
+
 			if (deviceItem) {
 				let commandStr =
 					this.getAdjustedSimulatorExecutorPath() +
 					` setup -c "${deviceItem.connectionString}"`;
+
 				if (await this.isModuleTwinSupported()) {
 					const iotHubConnectionStr =
 						await Configuration.getIotHubConnectionString();
+
 					if (iotHubConnectionStr) {
 						commandStr = `${commandStr} -i "${iotHubConnectionStr}"`;
 					}
@@ -216,7 +230,9 @@ export class Simulator {
 	): Promise<void> {
 		return await this.callWithInstallationCheck(outputChannel, async () => {
 			await this.checkIoTedgehubdevConnectionString(outputChannel);
+
 			const inputs = await this.inputInputNames();
+
 			const imgVersion = Versions.edgeHubVersion();
 			await this.setModuleCred(outputChannel);
 			await Executor.runInTerminal(
@@ -233,11 +249,14 @@ export class Simulator {
 	): Promise<void> {
 		return await this.callWithInstallationCheck(outputChannel, async () => {
 			await this.checkIoTedgehubdevConnectionString(outputChannel);
+
 			let storagePath = this.context.storagePath;
+
 			if (!storagePath) {
 				storagePath = path.resolve(os.tmpdir(), "vscodeedge");
 			}
 			await fse.ensureDir(storagePath);
+
 			const outputFile = path.join(storagePath, "module.env");
 			await Executor.executeCMD(
 				outputChannel,
@@ -267,6 +286,7 @@ export class Simulator {
 					this.getAdjustedSimulatorExecutorPath() + ` stop`,
 				),
 			);
+
 			return;
 		});
 	}
@@ -278,9 +298,12 @@ export class Simulator {
 	): Promise<void> {
 		return await this.callWithInstallationCheck(outputChannel, async () => {
 			await this.checkIoTedgehubdevConnectionString(outputChannel);
+
 			const pattern =
 				"{**/deployment.*.json,**/deployment.json,**/deployment.*.debug.json,**/config/*.json}";
+
 			const excludePattern = `{${Constants.tsonPattern}}`;
+
 			const deployFile: string = await Utility.getInputFilePath(
 				deployFileUri,
 				pattern,
@@ -288,6 +311,7 @@ export class Simulator {
 				`${Constants.runSolutionEvent}.selectDeploymentFile`,
 				excludePattern,
 			);
+
 			if (!deployFile) {
 				return;
 			}
@@ -297,6 +321,7 @@ export class Simulator {
 				Utility.combineCommands(commands),
 				this.getRunCmdTerminalTitle(),
 			);
+
 			return;
 		});
 	}
@@ -309,12 +334,16 @@ export class Simulator {
 				outputChannel,
 				async () => {
 					let version = Simulator.iotedgehubdevDefaultVersion;
+
 					const pipResponse = await axios.get(
 						Simulator.iotedgehubdevVersionUrl,
 					);
+
 					const releases = pipResponse.data.releases;
+
 					const lockVersion =
 						process.env[Simulator.iotedgehubdevLockVersionKey];
+
 					if (
 						lockVersion !== undefined &&
 						lockVersion.trim() !== ""
@@ -331,6 +360,7 @@ export class Simulator {
 					outputChannel.appendLine(
 						`The specified iotedgehubdev version is: ${version}`,
 					);
+
 					const standaloneDownloadUrl = `https://github.com/Azure/iotedgehubdev/releases/download/v${version}/iotedgehubdev-v${version}-win32-ia32.zip`;
 					this.desiredSimulatorInfo = new SimulatorInfo(
 						version,
@@ -351,6 +381,7 @@ export class Simulator {
 		try {
 			const info: SimulatorInfo =
 				await this.getDesiredSimulatorInfo(outputChannel);
+
 			return info.version;
 		} catch (error) {
 			return undefined;
@@ -364,7 +395,9 @@ export class Simulator {
 			{ shell: true },
 			"--version",
 		);
+
 		const version: string | null = Simulator.extractVersion(output);
+
 		return version;
 	}
 
@@ -372,6 +405,7 @@ export class Simulator {
 		const exist = await Simulator.checkCmdExist(
 			this.getAdjustedSimulatorExecutorPath(true),
 		);
+
 		if (exist) {
 			return Simulator.currentPlatform === "win32"
 				? SimulatorType.Standalone
@@ -388,6 +422,7 @@ export class Simulator {
 
 		if (!forceUseCmd) {
 			executorPath = `"${Utility.adjustFilePath(this.simulatorExecutablePath)}"`;
+
 			if (Utility.isUsingPowershell()) {
 				executorPath = `& ${executorPath}`;
 			}
@@ -403,6 +438,7 @@ export class Simulator {
 	) {
 		const info: SimulatorInfo =
 			await this.getDesiredSimulatorInfo(outputChannel);
+
 		const version: string = info.version;
 
 		await vscode.window.withProgress(
@@ -423,7 +459,9 @@ export class Simulator {
 	) {
 		const info: SimulatorInfo =
 			await this.getDesiredSimulatorInfo(outputChannel);
+
 		const binariesZipUrl: string = info.standaloneDownloadUrl;
+
 		const version: string = info.version;
 
 		await RetryPolicy.retry(
@@ -504,8 +542,11 @@ export class Simulator {
 
 		if (!this.isInstalling) {
 			this.isInstalling = true;
+
 			let ret: InstallReturn = InstallReturn.Success;
+
 			let errMsg: string;
+
 			try {
 				await this.downloadStandaloneSimulatorWithProgress(
 					outputChannel,
@@ -521,6 +562,7 @@ export class Simulator {
 			}
 
 			this.isInstalling = false;
+
 			return new InstallResult(ret, errMsg);
 		} else {
 			return new InstallResult(InstallReturn.IsInstalling);
@@ -540,6 +582,7 @@ export class Simulator {
 				);
 			} catch (error) {
 				let errorMsg = error.message;
+
 				if (
 					error.errorCode === 2 &&
 					Simulator.currentPlatform === "win32"
@@ -562,6 +605,7 @@ export class Simulator {
 
 	private async isSupported(supportedVersion: string): Promise<boolean> {
 		let isSupported = false;
+
 		try {
 			const output = await Executor.executeCMD(
 				undefined,
@@ -569,7 +613,9 @@ export class Simulator {
 				{ shell: true },
 				"--version",
 			);
+
 			const version: string | null = Simulator.extractVersion(output);
+
 			if (version && semver.valid(version)) {
 				isSupported = semver.gte(version, supportedVersion);
 			}
@@ -601,8 +647,10 @@ export class Simulator {
 		outputChannel: vscode.OutputChannel = null,
 	): Promise<InstallReturn> {
 		const telemetryName = "simulatorInstalled";
+
 		if ((await this.simulatorInstalled()) === SimulatorType.NotInstalled) {
 			TelemetryClient.sendEvent(`${telemetryName}.install`);
+
 			const installResult =
 				await this.autoInstallSimulator(outputChannel);
 
@@ -633,20 +681,25 @@ export class Simulator {
 		switch (installReturn) {
 			case InstallReturn.Success:
 				return await callback();
+
 			case InstallReturn.Failed:
 				await vscode.window.showErrorMessage(
 					Constants.installStandaloneSimulatorFailedMsg,
 				);
+
 			case InstallReturn.NotSupported:
 				outputChannel.appendLine(Constants.outputNoSimulatorMsg);
+
 				throw new LearnMoreError(
 					Constants.installManuallyMsg,
 					Simulator.learnMoreUrl,
 				);
+
 			case InstallReturn.IsInstalling:
 				outputChannel.appendLine(
 					Constants.outputSimulatorIsInstallingMsg,
 				);
+
 			default:
 				throw new UserCancelledError();
 		}

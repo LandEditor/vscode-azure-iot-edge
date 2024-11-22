@@ -37,6 +37,7 @@ export class Marketplace {
 		modules: string[],
 	): Promise<any> {
 		this.setStatus(templateFile, isNewSolution, modules);
+
 		if (!this.panel) {
 			this.localServer.startServer();
 			this.panel = vscode.window.createWebviewPanel(
@@ -82,9 +83,11 @@ export class Marketplace {
 					moduleId: message.id,
 				});
 				this.panel.dispose();
+
 				const repositoryName = Utility.getRepositoryNameFromImageName(
 					message.imageName,
 				);
+
 				const moduleInfo = new ModuleInfo(
 					message.moduleName,
 					repositoryName,

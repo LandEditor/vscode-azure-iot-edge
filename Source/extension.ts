@@ -34,12 +34,17 @@ import { IDeviceItem } from "./typings/IDeviceItem";
 
 export function activate(context: vscode.ExtensionContext) {
 	TelemetryClient.sendEvent("extensionActivated");
+
 	const outputChannel: vscode.OutputChannel =
 		vscode.window.createOutputChannel(Constants.edgeDisplayName);
+
 	const edgeManager = new EdgeManager(context);
+
 	const gallery = new Gallery(context);
+
 	const simulator = new Simulator(context);
 	simulator.validateSimulatorUpdated(outputChannel);
+
 	const containerManager = new ContainerManager(simulator);
 	Utility.checkDockerState(outputChannel);
 
@@ -106,8 +111,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const diagCollection: vscode.DiagnosticCollection =
 		vscode.languages.createDiagnosticCollection(Constants.edgeDisplayName);
+
 	const configDiagnosticProvider: ConfigDiagnosticProvider =
 		new ConfigDiagnosticProvider();
+
 	if (vscode.window.activeTextEditor) {
 		configDiagnosticProvider.updateDiagnostics(
 			vscode.window.activeTextEditor.document,
@@ -317,10 +324,12 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.setDefaultPlatform",
 		async (): Promise<void> => {
 			await edgeManager.selectDefaultPlatform(outputChannel);
+
 			const document =
 				vscode.window && vscode.window.activeTextEditor
 					? vscode.window.activeTextEditor.document
 					: null;
+
 			return configDiagnosticProvider.updateDiagnostics(
 				document,
 				diagCollection,
@@ -334,10 +343,12 @@ export function activate(context: vscode.ExtensionContext) {
 		"azure-iot-edge.setDefaultEdgeRuntimeVersion",
 		async (): Promise<void> => {
 			await edgeManager.selectDefaultEdgeRuntimeVersion(outputChannel);
+
 			const document =
 				vscode.window && vscode.window.activeTextEditor
 					? vscode.window.activeTextEditor.document
 					: null;
+
 			return configDiagnosticProvider.updateDiagnostics(
 				document,
 				diagCollection,
@@ -408,6 +419,7 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	const folders = vscode.workspace.workspaceFolders;
+
 	if (folders && folders.length > 0) {
 		folders.forEach((value) => edgeManager.checkRegistryEnv(value));
 	}
@@ -440,7 +452,9 @@ function initCommand(
 
 async function showLearnMoreError(error: LearnMoreError): Promise<void> {
 	const learnMore: vscode.MessageItem = { title: Constants.learnMore };
+
 	const items: vscode.MessageItem[] = [learnMore];
+
 	if (
 		(await vscode.window.showErrorMessage(error.message, ...items)) ===
 		learnMore
@@ -456,12 +470,16 @@ async function guideUserToSetupIotedgehubdev(
 	outputChannel: vscode.OutputChannel,
 ) {
 	const setup: vscode.MessageItem = { title: Constants.Setup };
+
 	const cancel: vscode.MessageItem = { title: Constants.Cancel };
+
 	const items: vscode.MessageItem[] = [setup, cancel];
+
 	const input = await vscode.window.showWarningMessage(
 		Constants.needSetupSimulatorMsg,
 		...items,
 	);
+
 	const telemetryName = "guideUserSetupConnectionString";
 
 	if (input === setup) {
@@ -488,13 +506,16 @@ function initCommandAsync(
 	context.subscriptions.push(
 		vscode.commands.registerCommand(commandId, async (...args: any[]) => {
 			const start: number = Date.now();
+
 			let errorData: ErrorData | undefined;
+
 			const properties: { [key: string]: string } = {};
 			properties.result = "Succeeded";
 			properties.fromCommandPalette = (!args || !args[0]).toString();
 
 			TelemetryClient.sendEvent(`${commandId}.start`);
 			outputChannel.appendLine(`${commandId}: `);
+
 			try {
 				return await callback(...args);
 			} catch (error) {
@@ -505,6 +526,7 @@ function initCommandAsync(
 					properties.result = "Failed";
 					errorData = new ErrorData(error);
 					outputChannel.appendLine(`Error: ${errorData.message}`);
+
 					if (error instanceof LearnMoreError) {
 						showLearnMoreError(error);
 					} else if (error instanceof ConfigNotSetError) {
@@ -516,6 +538,7 @@ function initCommandAsync(
 			} finally {
 				const end: number = Date.now();
 				properties.duration = ((end - start) / 1000).toString();
+
 				if (errorData) {
 					properties[Constants.errorProperties.error] =
 						errorData.errorType;

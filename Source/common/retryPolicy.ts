@@ -11,10 +11,12 @@ export class RetryPolicy {
 		func: () => Promise<void>,
 	) {
 		let retries: number = 0;
+
 		while (true) {
 			try {
 				retries++;
 				await func();
+
 				break;
 			} catch (err) {
 				if (retries <= maxRetryTimes) {
@@ -22,6 +24,7 @@ export class RetryPolicy {
 						`Task failed with error: ${err.message}, wait ${retryInterval} milliseconds and retry (${retries})...`,
 					);
 					await this.sleep(retryInterval);
+
 					continue;
 				}
 				throw err;

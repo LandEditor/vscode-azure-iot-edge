@@ -61,6 +61,7 @@ export class ConfigCompletionItemProvider
 					"}",
 				].join("\n"),
 			);
+
 			return [moduleCompletionItem];
 		}
 
@@ -90,6 +91,7 @@ export class ConfigCompletionItemProvider
 				document.uri.fsPath,
 				moduleToImageMap,
 			);
+
 			return this.getCompletionItems(
 				Array.from(moduleToImageMap.keys()),
 				document,
@@ -105,12 +107,14 @@ export class ConfigCompletionItemProvider
 			)
 		) {
 			const json = parser.parse(document.getText());
+
 			const modules: any =
 				(
 					(json.modulesContent.$edgeAgent || {})[
 						"properties.desired"
 					] || {}
 				).modules || {};
+
 			const moduleIds: string[] = Object.keys(modules);
 
 			const routeCompletionItem: vscode.CompletionItem =
@@ -123,6 +127,7 @@ export class ConfigCompletionItemProvider
 			routeCompletionItem.insertText = new vscode.SnippetString(
 				this.getRouteSnippetString(moduleIds),
 			);
+
 			return [routeCompletionItem];
 		}
 	}
@@ -134,6 +139,7 @@ export class ConfigCompletionItemProvider
 		location: parser.Location,
 	): vscode.CompletionItem[] {
 		const offset: number = document.offsetAt(position);
+
 		const node: parser.Node = location.previousNode;
 
 		const overwriteRange: vscode.Range = this.getOverwriteRange(
@@ -142,6 +148,7 @@ export class ConfigCompletionItemProvider
 			offset,
 			node,
 		);
+
 		const separator: string = this.evaluateSeparatorAfter(
 			document,
 			position,
@@ -150,8 +157,10 @@ export class ConfigCompletionItemProvider
 		);
 
 		const completionItems: vscode.CompletionItem[] = [];
+
 		for (const value of values) {
 			const label = '"${' + value + '}"';
+
 			const completionItem: vscode.CompletionItem =
 				new vscode.CompletionItem(label);
 			completionItem.range = overwriteRange;
@@ -173,6 +182,7 @@ export class ConfigCompletionItemProvider
 		node: parser.Node,
 	): vscode.Range {
 		let overwriteRange: vscode.Range;
+
 		if (
 			node &&
 			node.offset <= offset &&
@@ -205,7 +215,9 @@ export class ConfigCompletionItemProvider
 		position: vscode.Position,
 	): string {
 		let i: number = position.character - 1;
+
 		const text: string = document.lineAt(position.line).text;
+
 		while (i >= 0 && ' \t\n\r\v":{[,'.indexOf(text.charAt(i)) === -1) {
 			i--;
 		}
@@ -235,7 +247,9 @@ export class ConfigCompletionItemProvider
 			true,
 		);
 		scanner.setPosition(offset);
+
 		const token: parser.SyntaxKind = scanner.scan();
+
 		switch (token) {
 			// do not append a comma when next token is comma or other close tokens
 			case parser.SyntaxKind.CommaToken:
@@ -243,6 +257,7 @@ export class ConfigCompletionItemProvider
 			case parser.SyntaxKind.CloseBracketToken:
 			case parser.SyntaxKind.EOF:
 				return "";
+
 			default:
 				return ",";
 		}
@@ -256,6 +271,7 @@ export class ConfigCompletionItemProvider
 			"/messages/*",
 			"/messages/modules/*",
 		];
+
 		if (moduleIds.length === 0) {
 			sources.push(`/messages/modules/{moduleId}/*`);
 			sources.push(`/messages/modules/{moduleId}/outputs/*`);
@@ -276,6 +292,7 @@ export class ConfigCompletionItemProvider
 		snippet.push("WHERE ${3:<condition>} INTO");
 
 		const sinks: string[] = ["${4|$upstream"];
+
 		if (moduleIds.length === 0) {
 			sinks.push(
 				`BrokeredEndpoint(\\"/modules/{moduleId}/inputs/{input}\\")`,

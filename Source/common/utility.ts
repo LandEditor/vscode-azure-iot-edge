@@ -27,6 +27,7 @@ export class Utility {
 	): boolean {
 		if (!vscode.workspace.workspaceFolders) {
 			vscode.window.showErrorMessage(message);
+
 			return false;
 		}
 
@@ -36,8 +37,10 @@ export class Utility {
 	public static adjustFilePath(filePath: string): string {
 		if (os.platform() === "win32") {
 			const windowsShell = Utility.getWindowsShell();
+
 			const terminalRoot =
 				Configuration.getConfiguration().get<string>("terminalRoot");
+
 			if (windowsShell && terminalRoot) {
 				filePath = filePath
 					.replace(
@@ -76,8 +79,10 @@ export class Utility {
 
 	public static isUsingPowershell(): boolean {
 		let isPowerShell: boolean = false;
+
 		if (os.platform() === "win32") {
 			const windowsShell = Utility.getWindowsShell();
+
 			if (
 				windowsShell &&
 				windowsShell.toLowerCase().indexOf("powershell") > -1
@@ -90,16 +95,22 @@ export class Utility {
 
 	public static combineCommands(commands: string[]): string {
 		const isPowerShell: boolean = this.isUsingPowershell();
+
 		if (isPowerShell) {
 			let command: string = "";
+
 			for (let i = 0; i < commands.length; i++) {
 				switch (i) {
 					case 0:
 						command = commands[0];
+
 						break;
+
 					case 1:
 						command = `${command} ; if ($?) { ${commands[1]}`;
+
 						break;
+
 					default:
 						command = `${command} } if ($?) { ${commands[i]}`;
 				}
@@ -126,26 +137,32 @@ export class Utility {
 
 		if (inputFileFromContextMenu) {
 			TelemetryClient.sendEvent(eventName, { entry: "contextMenu" });
+
 			return inputFileFromContextMenu.fsPath;
 		} else {
 			TelemetryClient.sendEvent(eventName, { entry: "commandPalette" });
+
 			const fileList: vscode.Uri[] = await vscode.workspace.findFiles(
 				filePattern,
 				excludeFilePattern,
 			);
+
 			if (!fileList || fileList.length === 0) {
 				vscode.window.showErrorMessage(
 					`No ${fileDescription} can be found under this workspace.`,
 				);
+
 				return null;
 			}
 
 			const fileItemList: vscode.QuickPickItem[] =
 				Utility.getQuickPickItemsFromUris(fileList);
+
 			const fileItem: vscode.QuickPickItem =
 				await vscode.window.showQuickPick(fileItemList, {
 					placeHolder: `Select ${fileDescription}`,
 				});
+
 			if (fileItem) {
 				return fileItem.detail;
 			} else {
@@ -196,12 +213,16 @@ export class Utility {
 		mapObj: Map<string, string>,
 	) {
 		const srcFile: string = path.join(srcPath, fileName);
+
 		const srcFileContent: string = await fse.readFile(srcFile, "utf8");
+
 		const fileContentGenerated: string = Utility.replaceAll(
 			srcFileContent,
 			mapObj,
 		);
+
 		const jsonFormat = JSON.parse(fileContentGenerated);
+
 		const targetFile: string = path.join(targetPath, fileName);
 		await fse.writeFile(targetFile, JSON.stringify(jsonFormat, null, 2), {
 			encoding: "utf8",
@@ -214,12 +235,15 @@ export class Utility {
 		caseInSensitive: boolean = false,
 	): string {
 		let modifier = "g";
+
 		if (caseInSensitive) {
 			modifier = "ig";
 		}
 
 		const keys = Array.from(mapObj.keys());
+
 		const pattern: RegExp = new RegExp(keys.join("|"), modifier);
+
 		return str.replace(pattern, (matched) => {
 			return mapObj.get(matched);
 		});
@@ -231,7 +255,9 @@ export class Utility {
 		...exceptKeys: string[]
 	): string {
 		const pattern: RegExp = new RegExp(/\$(\w+)|\${(\w+)}/g);
+
 		const exceptSet: Set<string> = new Set(exceptKeys);
+
 		if (!overrideKVs) {
 			overrideKVs = {};
 		}
@@ -240,6 +266,7 @@ export class Utility {
 				return matched;
 			}
 			const key: string = matched.replace(/\$|{|}/g, "");
+
 			return overrideKVs[key] || process.env[key] || matched;
 		});
 	}
@@ -250,11 +277,13 @@ export class Utility {
 		...exceptKeys: string[]
 	): Promise<any> {
 		const content: string = await fse.readFile(filePath, "utf8");
+
 		const expandedContent = Utility.expandEnv(
 			content,
 			overrideKVs,
 			...exceptKeys,
 		);
+
 		return JSON.parse(expandedContent);
 	}
 
@@ -263,6 +292,7 @@ export class Utility {
 		moduleMap: Map<string, string>,
 	): string {
 		const input = JSON.stringify(inputJSON, null, 2);
+
 		return Utility.expandPlacesHolders(
 			Constants.imagePlaceholderPattern,
 			input,
@@ -285,21 +315,26 @@ export class Utility {
 		parentPath: string,
 	): Promise<string[]> {
 		const filesAndDirs = await fse.readdir(parentPath);
+
 		const directories = [];
 		await Promise.all(
 			filesAndDirs.map(async (name) => {
 				const subPath = path.join(parentPath, name);
+
 				const stat: fse.Stats = await fse.stat(subPath);
+
 				if (stat.isDirectory()) {
 					directories.push(subPath);
 				}
 			}),
 		);
+
 		return directories;
 	}
 
 	public static getValidModuleName(moduleFolderName: string): string {
 		const pattern: RegExp = new RegExp(/( +|-)/g);
+
 		return moduleFolderName.replace(pattern, "_");
 	}
 
@@ -332,6 +367,7 @@ export class Utility {
 
 		const result: string | undefined =
 			await vscode.window.showInputBox(options);
+
 		if (!result) {
 			throw new UserCancelledError();
 		} else {
@@ -345,6 +381,7 @@ export class Utility {
 		imageToBuildSettings?: Map<string, BuildSettings>,
 	): Promise<void> {
 		const slnPath: string = path.dirname(templateFilePath);
+
 		const moduleDirs: string[] = await Utility.getSubModules(slnPath);
 		await Promise.all(
 			moduleDirs.map(async (modulePath) => {
@@ -359,12 +396,14 @@ export class Utility {
 				);
 			}),
 		);
+
 		const externalModuleDirs: string[] =
 			await Utility.getExternalModules(templateFilePath);
 		await Promise.all(
 			externalModuleDirs.map(async (module) => {
 				if (module) {
 					const moduleFullPath = path.resolve(slnPath, module);
+
 					const keyPrefix =
 						Constants.extModuleKeyPrefixTemplate(module);
 					await Utility.setModuleMap(
@@ -388,9 +427,11 @@ export class Utility {
 			buildOptions && buildOptions instanceof Array
 				? buildOptions
 				: undefined;
+
 		const context = contextPath
 			? path.resolve(modulePath, contextPath)
 			: path.dirname(dockerFilePath);
+
 		return new BuildSettings(dockerFilePath, context, optionArray);
 	}
 
@@ -401,22 +442,28 @@ export class Utility {
 		imageToBuildSettings?: Map<string, BuildSettings>,
 	): Promise<void> {
 		const moduleFile = path.join(moduleFullPath, Constants.moduleManifest);
+
 		if (await fse.pathExists(moduleFile)) {
 			const overrideEnvs = await Utility.parseEnv(
 				path.join(moduleFullPath, Constants.envFile),
 			);
+
 			const module = await Utility.readJsonAndExpandEnv(
 				moduleFile,
 				overrideEnvs,
 				Constants.moduleSchemaVersion,
 			);
+
 			const platformKeys: string[] = Object.keys(
 				module.image.tag.platforms,
 			);
+
 			const repo: string = module.image.repository;
+
 			const version: string = module.image.tag.version;
 			platformKeys.map((platform) => {
 				const image: string = Utility.getImage(repo, version, platform);
+
 				const imageKeys: string[] = Utility.getModuleKeyFromPlatform(
 					moduleKeyPrefix,
 					platform,
@@ -424,6 +471,7 @@ export class Utility {
 				imageKeys.map((key) => {
 					moduleToImageMap.set(key, image);
 				});
+
 				if (imageToBuildSettings !== undefined) {
 					const dockerFilePath = path.resolve(
 						moduleFullPath,
@@ -446,6 +494,7 @@ export class Utility {
 	// Escape JSON string and remove the wrapping "${" and "}" of a image placeholder
 	public static unwrapImagePlaceholder(imagePlaceholder: string): string {
 		imagePlaceholder = JSON.stringify(imagePlaceholder).slice(1, -1);
+
 		if (
 			imagePlaceholder.search(Constants.imagePlaceholderPattern) === 0 &&
 			imagePlaceholder.endsWith("}")
@@ -458,6 +507,7 @@ export class Utility {
 
 	public static async loadEnv(envFilePath: string) {
 		const envConfig = await Utility.parseEnv(envFilePath);
+
 		for (const k of Object.keys(envConfig)) {
 			process.env[k] = envConfig[k];
 		}
@@ -470,12 +520,15 @@ export class Utility {
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(
 				vscode.Uri.file(envFilePath),
 			);
+
 			if (!workspaceFolder || !(await fse.pathExists(envFilePath))) {
 				return {};
 			}
 
 			TelemetryClient.sendEvent("envFileDetected");
+
 			const envConfig = dotenv.parse(await fse.readFile(envFilePath));
+
 			return envConfig;
 		} catch (error) {
 			return {};
@@ -485,15 +538,19 @@ export class Utility {
 	public static async initLocalRegistry(images: string[]) {
 		try {
 			let port;
+
 			for (const image of images) {
 				const matches = /^localhost:(\d+)\/.+$/.exec(image);
+
 				if (matches) {
 					port = matches[1];
+
 					break;
 				}
 			}
 			if (port) {
 				TelemetryClient.sendEvent("localRegistryDetected");
+
 				if (await isPortReachable(port)) {
 					return;
 				}
@@ -503,10 +560,13 @@ export class Utility {
 						Executor.runInTerminal(
 							`docker run -d -p ${port}:5000 --restart always --name registry registry:2`,
 						);
+
 						break;
+
 					case ContainerState.NotRunning:
 						TelemetryClient.sendEvent("startLocalRegistry");
 						Executor.runInTerminal(`docker start registry`);
+
 						break;
 				}
 			}
@@ -515,7 +575,9 @@ export class Utility {
 
 	public static getAddressKey(address: string, keySet: Set<string>): string {
 		let key = address;
+
 		let index = address.indexOf(".");
+
 		if (index === -1) {
 			index = address.indexOf(":");
 		}
@@ -524,7 +586,9 @@ export class Utility {
 		}
 
 		let suffix = 1;
+
 		const keyPrefix: string = key;
+
 		while (keySet.has(key)) {
 			key = `${keyPrefix}_${suffix}`;
 			suffix += 1;
@@ -535,11 +599,15 @@ export class Utility {
 
 	public static getRegistryAddress(repositoryName: string) {
 		const defaultHostname = "docker.io";
+
 		const legacyDefaultHostname = "index.docker.io";
+
 		const index = repositoryName.indexOf("/");
 
 		let name: string;
+
 		let hostname: string;
+
 		if (index !== -1) {
 			name = repositoryName.substring(0, index).toLocaleLowerCase();
 		}
@@ -562,6 +630,7 @@ export class Utility {
 
 	public static getRepositoryNameFromImageName(imageName: string): string {
 		const index = imageName.lastIndexOf(":");
+
 		if (index === -1) {
 			return imageName;
 		} else {
@@ -586,6 +655,7 @@ export class Utility {
 			undefined,
 			outputChannel,
 		);
+
 		return deviceItem;
 	}
 
@@ -593,6 +663,7 @@ export class Utility {
 		const toolkit = vscode.extensions.getExtension(
 			"vsciot-vscode.azure-iot-toolkit",
 		);
+
 		if (toolkit === undefined) {
 			throw new Error("Error loading Azure IoT Toolkit extension");
 		}
@@ -617,6 +688,7 @@ export class Utility {
 		return new Promise<{ aadAccessToken: string; aadRefreshToken: string }>(
 			(resolve, reject) => {
 				const credentials: any = session.credentials;
+
 				const environment: any = session.environment;
 				credentials.context.acquireToken(
 					environment.activeDirectoryResourceId,
@@ -652,6 +724,7 @@ export class Utility {
 		}
 
 		const res: string[] = id.match(/\/resourceGroups\/([^\/]+)(\/)?/i);
+
 		if (res.length < 2) {
 			return undefined;
 		} else {
@@ -663,12 +736,15 @@ export class Utility {
 		if (deployment) {
 			const moduleProperties =
 				deployment.modulesContent.$edgeAgent["properties.desired"];
+
 			const systemModules = moduleProperties.systemModules;
+
 			if (systemModules) {
 				moduleProperties.systemModules =
 					Utility.serializeCreateOptionsForEachModule(systemModules);
 			}
 			const modules = moduleProperties.modules;
+
 			if (modules) {
 				moduleProperties.modules =
 					Utility.serializeCreateOptionsForEachModule(modules);
@@ -693,6 +769,7 @@ export class Utility {
 		createOptions: any,
 	): any {
 		let optionStr: string;
+
 		if (typeof createOptions === "string") {
 			optionStr = createOptions;
 		} else {
@@ -702,7 +779,9 @@ export class Utility {
 			`(.|[\r\n]){1,${Constants.TwinValueMaxSize}}`,
 			"g",
 		);
+
 		const options = optionStr.match(re);
+
 		if (options.length > Constants.TwinValueMaxChunks) {
 			throw new Error(
 				`Size of createOptions of ${settings.image} is too big. The maximum size of createOptions is 4K`,
@@ -713,6 +792,7 @@ export class Utility {
 				settings.createOptions = value;
 			} else {
 				const formattedNumber = `0${index}`.slice(-2);
+
 				settings[`createOptions${formattedNumber}`] = value;
 			}
 		});
@@ -729,6 +809,7 @@ export class Utility {
 		) => Promise<IAzureResourceListResult<T>>,
 	): Promise<T[]> {
 		const all: T[] = [];
+
 		for (
 			let list = await first;
 			list !== undefined;
@@ -764,14 +845,19 @@ export class Utility {
 		solutionPath: string,
 	) {
 		await fse.mkdirp(path.join(solutionPath, Constants.vscodeFolder));
+
 		const vscodeSettingPath =
 			Utility.getVscodeSolutionSettingPath(solutionPath);
+
 		let vscodeSettingJson = {};
+
 		const vscodeSettingExists = await fse.pathExists(vscodeSettingPath);
+
 		if (!vscodeSettingExists) {
 			return undefined;
 		}
 		vscodeSettingJson = await fse.readJson(vscodeSettingPath);
+
 		return vscodeSettingJson;
 	}
 
@@ -793,12 +879,15 @@ export class Utility {
 		const match: RegExpMatchArray = repositoryUrl.match(
 			/^(?:([^\/]+)\/)?([^:]+)(?::(.+))?$/,
 		);
+
 		if (!match) {
 			return "Repository url is not valid";
 		}
 
 		let hostName: string = match[1];
+
 		let repositoryName: string = match[2];
+
 		const tag: string = match[3];
 
 		// if host name do not contain ":.", then it would be treated as repository name
@@ -809,6 +898,7 @@ export class Utility {
 
 		if (hostName) {
 			const hostNameWithoutEnv = hostName.replace(/\$\w+|\${\w+}/g, "");
+
 			if (/[^\w.-:]/.test(hostNameWithoutEnv)) {
 				return "Repository host name can only contain alphanumeric characters or .-:, and ${} are also supported for environment variables";
 			}
@@ -818,12 +908,14 @@ export class Utility {
 			/\$\w+|\${\w+}/g,
 			"",
 		);
+
 		if (/[^a-z0-9._\-\/]+/.test(repositoryNameWithoutEnv)) {
 			return "Repository name can only contain lowercase letters, digits or ._-/, and ${} are also supported for environment variables";
 		}
 
 		if (tag) {
 			const tagWithoutEnv = tag.replace(/\$\w+|\${\w+}/g, "");
+
 			if (tagWithoutEnv.length > 128) {
 				return "The maximum length of tag is 128";
 			}
@@ -851,6 +943,7 @@ export class Utility {
 		}
 		if (parentPath) {
 			const folderPath = path.join(parentPath, name);
+
 			if (await fse.pathExists(folderPath)) {
 				return `${name} already exists under ${parentPath}`;
 			}
@@ -870,10 +963,12 @@ export class Utility {
 
 	public static async getSolutionParentFolder(): Promise<string | undefined> {
 		const workspaceFolders = vscode.workspace.workspaceFolders;
+
 		const defaultFolder: vscode.Uri | undefined =
 			workspaceFolders && workspaceFolders.length > 0
 				? workspaceFolders[0].uri
 				: undefined;
+
 		const selectedUri: vscode.Uri[] | undefined =
 			await vscode.window.showOpenDialog({
 				defaultUri: defaultFolder,
@@ -897,6 +992,7 @@ export class Utility {
 		const validateFunc = async (name: string): Promise<string> => {
 			return await Utility.validateSolutionName(name, parentPath);
 		};
+
 		return await Utility.showInputBox(
 			Constants.solutionName,
 			Constants.solutionNamePrompt,
@@ -915,6 +1011,7 @@ export class Utility {
 				Utility.validateModuleExistence(name, modules)
 			);
 		};
+
 		return await Utility.showInputBox(
 			Constants.moduleName,
 			Constants.moduleNamePrompt,
@@ -925,7 +1022,9 @@ export class Utility {
 
 	public static async checkDockerState(outputChannel: vscode.OutputChannel) {
 		let state: DockerState;
+
 		let errorMsg: any;
+
 		try {
 			await Executor.executeCMD(
 				outputChannel,
@@ -936,7 +1035,9 @@ export class Utility {
 			state = DockerState.Running;
 		} catch (error) {
 			errorMsg = error;
+
 			const platform: string = os.platform();
+
 			if (platform === "win32") {
 				if (
 					error.message.indexOf(
@@ -982,13 +1083,19 @@ export class Utility {
 			const install: vscode.MessageItem = {
 				title: Constants.InstallDocker,
 			};
+
 			const troubleshooting: vscode.MessageItem = {
 				title: Constants.TroubleShooting,
 			};
+
 			const cancel: vscode.MessageItem = { title: Constants.Cancel };
+
 			let input: vscode.MessageItem;
+
 			let helpUrl: string;
+
 			let items: vscode.MessageItem[];
+
 			switch (state) {
 				case DockerState.NotInstalled:
 					items = [install, cancel];
@@ -996,10 +1103,12 @@ export class Utility {
 						Constants.dockerNotInstalledErrorMsg,
 						...items,
 					);
+
 					if (input === install) {
 						helpUrl = Constants.installDockerUrl;
 					}
 					break;
+
 				case DockerState.NotRunning:
 				case DockerState.Unknown:
 					items = [troubleshooting, cancel];
@@ -1007,6 +1116,7 @@ export class Utility {
 						Constants.dockerNotRunningErrorMsg,
 						...items,
 					);
+
 					if (input === troubleshooting) {
 						helpUrl = Constants.troubleShootingDockerUrl;
 					}
@@ -1032,9 +1142,11 @@ export class Utility {
 		if (!Utility._TERMINAL_DEFAULT_SHELL_WINDOWS) {
 			const isAtLeastWindows10 =
 				os.platform() === "win32" && parseFloat(os.release()) >= 10;
+
 			const is32ProcessOn64Windows = process.env.hasOwnProperty(
 				"PROCESSOR_ARCHITEW6432",
 			);
+
 			const powerShellPath = `${process.env.windir}\\${is32ProcessOn64Windows ? "Sysnative" : "System32"}\\WindowsPowerShell\\v1.0\\powershell.exe`;
 			Utility._TERMINAL_DEFAULT_SHELL_WINDOWS = isAtLeastWindows10
 				? powerShellPath
@@ -1051,6 +1163,7 @@ export class Utility {
 		let windowsShell = vscode.workspace
 			.getConfiguration("terminal")
 			.get<string>("integrated.shell.windows");
+
 		if (!windowsShell) {
 			windowsShell = Utility.getDefaultWindowsShell();
 		}
@@ -1059,10 +1172,12 @@ export class Utility {
 
 	private static async getSubModules(slnPath: string): Promise<string[]> {
 		const modulesPath: string = path.join(slnPath, Constants.moduleFolder);
+
 		if (!(await fse.pathExists(modulesPath))) {
 			return [];
 		}
 		const stat: fse.Stats = await fse.lstat(modulesPath);
+
 		if (!stat.isDirectory()) {
 			return [];
 		}
@@ -1073,6 +1188,7 @@ export class Utility {
 		templateFilePath: string,
 	): Promise<string[]> {
 		const modules = [];
+
 		if (!templateFilePath || !(await fse.pathExists(templateFilePath))) {
 			return modules;
 		}
@@ -1082,6 +1198,7 @@ export class Utility {
 			null,
 			2,
 		);
+
 		const externalModules: string[] = input.match(
 			Constants.externalModulePlaceholderPattern,
 		);
@@ -1090,6 +1207,7 @@ export class Utility {
 			externalModules.map((placeholder) => {
 				if (placeholder) {
 					const start = "${MODULEDIR<".length;
+
 					const end = placeholder.lastIndexOf(">");
 					placeholder.substring(start, end);
 					modules.push(placeholder.substring(start, end).trim());
@@ -1104,7 +1222,9 @@ export class Utility {
 		platform: string,
 	): string[] {
 		const keys: string[] = [`${keyPrefix}.${platform}`];
+
 		const defaultPlatform: Platform = Platform.getDefaultPlatform();
+
 		if (
 			platform !== defaultPlatform.platform &&
 			platform !== `${defaultPlatform.platform}.debug`
@@ -1115,6 +1235,7 @@ export class Utility {
 		const isDebug: boolean =
 			platform === `${defaultPlatform.platform}.debug`;
 		keys.push(isDebug ? `${keyPrefix}.debug` : keyPrefix);
+
 		return keys;
 	}
 
@@ -1130,6 +1251,7 @@ export class Utility {
 		}
 		if (parentPath) {
 			const folderPath = path.join(parentPath, name);
+
 			if (await fse.pathExists(folderPath)) {
 				return `${name} already exists under ${parentPath}`;
 			}
@@ -1144,8 +1266,10 @@ export class Utility {
 	): string {
 		return input.replace(pattern, (matched) => {
 			const key: string = matched.replace(/\$|{|}/g, "");
+
 			if (valMap.has(key)) {
 				const value: string = valMap.get(key);
+
 				return value;
 			} else {
 				return matched;
@@ -1157,6 +1281,7 @@ export class Utility {
 		for (const key in modules) {
 			if (modules.hasOwnProperty(key)) {
 				const moduleVar = modules[key];
+
 				if (moduleVar.settings && moduleVar.settings.createOptions) {
 					moduleVar.settings = Utility.serializeCreateOptions(
 						moduleVar.settings,
@@ -1173,6 +1298,7 @@ export class Utility {
 			const isRunning = Executor.execSync(
 				"docker inspect registry --format='{{.State.Running}}'",
 			);
+
 			return isRunning.includes("true")
 				? ContainerState.Running
 				: ContainerState.NotRunning;

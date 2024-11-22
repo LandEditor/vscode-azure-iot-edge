@@ -29,7 +29,9 @@ export class ConfigDiagnosticProvider {
 		}
 
 		diagCollection.delete(document.uri);
+
 		let diags: vscode.Diagnostic[] = [];
+
 		if (
 			path.basename(document.uri.fsPath) ===
 				Constants.deploymentTemplate ||
@@ -60,6 +62,7 @@ export class ConfigDiagnosticProvider {
 			);
 
 			const rootNode: parser.Node = parser.parseTree(document.getText());
+
 			const moduleJsonPath: string[] =
 				Constants.moduleDeploymentManifestJsonPath.slice(0, -1); // remove the trailing "*" element
 			const modulesNode: parser.Node = parser.findNodeAtLocation(
@@ -85,6 +88,7 @@ export class ConfigDiagnosticProvider {
 				const imgPlaceholder: string = Utility.unwrapImagePlaceholder(
 					imageNode.value,
 				);
+
 				if (imgPlaceholder) {
 					if (!moduleToImageMap.has(imgPlaceholder)) {
 						const diag: vscode.Diagnostic = new vscode.Diagnostic(
@@ -113,6 +117,7 @@ export class ConfigDiagnosticProvider {
 		const diags: vscode.Diagnostic[] = [];
 
 		const rootNode: parser.Node = parser.parseTree(document.getText());
+
 		const platformJsonPath: string[] =
 			Constants.platformModuleManifestJsonPath.slice(0, -1); // remove the trailing "*" element
 		const platformsNode: parser.Node = parser.findNodeAtLocation(
@@ -126,7 +131,9 @@ export class ConfigDiagnosticProvider {
 				path.dirname(document.uri.fsPath),
 				dockerfilePath,
 			);
+
 			const exists: boolean = await fse.pathExists(dockerfileFullPath);
+
 			if (!exists) {
 				const diag: vscode.Diagnostic = new vscode.Diagnostic(
 					IntelliSenseUtility.getNodeRange(

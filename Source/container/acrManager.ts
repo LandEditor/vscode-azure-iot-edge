@@ -33,6 +33,7 @@ export class AcrManager {
 	public async selectAcrImage(): Promise<string> {
 		const acrRegistryItem: AcrRegistryQuickPickItem =
 			await this.selectAcrRegistry();
+
 		if (acrRegistryItem === undefined) {
 			throw new UserCancelledError();
 		}
@@ -43,6 +44,7 @@ export class AcrManager {
 			registryUrl,
 			acrRegistryItem.azureSubscription.session,
 		);
+
 		if (acrRepoItem === undefined) {
 			throw new UserCancelledError();
 		}
@@ -51,6 +53,7 @@ export class AcrManager {
 			registryUrl,
 			acrRepoItem.label,
 		);
+
 		if (acrTagItem === undefined) {
 			throw new UserCancelledError();
 		}
@@ -62,24 +65,31 @@ export class AcrManager {
 		address: string,
 	): Promise<{ username: string; password: string }> {
 		let username: string;
+
 		let password: string;
 
 		if (await this.azureAccount.waitForLogin()) {
 			const registriesItems = await this.loadAcrRegistryItems();
+
 			for (const registryItem of registriesItems) {
 				const registry = registryItem.registry;
+
 				if (
 					registry.loginServer === address &&
 					registry.adminUserEnabled
 				) {
 					const azureSubscription = registryItem.azureSubscription;
+
 					const registryName: string = registry.name;
+
 					const resourceGroup: string =
 						Utility.getResourceGroupFromId(registry.id);
+
 					const client = new ContainerRegistryManagementClient(
 						azureSubscription.session.credentials,
 						azureSubscription.subscription.subscriptionId!,
 					);
+
 					const creds: RegistryListCredentialsResult =
 						await client.registries.listCredentials(
 							resourceGroup,
@@ -87,6 +97,7 @@ export class AcrManager {
 						);
 					username = creds.username;
 					password = creds.passwords[0].value;
+
 					break;
 				}
 			}
@@ -103,18 +114,22 @@ export class AcrManager {
 				placeHolder: `Select ${Constants.acrRegistryDesc}`,
 				ignoreFocusOut: true,
 			});
+
 		return acrRegistryItem;
 	}
 
 	private async loadAcrRegistryItems(): Promise<AcrRegistryQuickPickItem[]> {
 		try {
 			await this.azureAccount.waitForFilters();
+
 			const registryPromises: Array<Promise<AcrRegistryQuickPickItem[]>> =
 				[];
+
 			for (const azureSubscription of this.azureAccount.filters) {
 				const tokenCredentials = await Utility.aquireTokenCredentials(
 					azureSubscription.session,
 				);
+
 				const client: Registries =
 					new ContainerRegistryManagementClient(
 						tokenCredentials,
@@ -141,9 +156,11 @@ export class AcrManager {
 					registryPromises,
 					"Azure Container Registry",
 				);
+
 			return registryItems;
 		} catch (error) {
 			error.message = `Error fetching registry list: ${error.message}`;
+
 			throw error;
 		}
 	}
@@ -157,6 +174,7 @@ export class AcrManager {
 				this.loadAcrRepoItems(registryUrl, session),
 				{ placeHolder: "Select Repository", ignoreFocusOut: true },
 			);
+
 		return acrRepoItem;
 	}
 
@@ -173,6 +191,7 @@ export class AcrManager {
 				aadRefreshToken,
 				aadAccessToken,
 			);
+
 			const acrAccessToken = await this.acquireAcrAccessToken(
 				registryUrl,
 				"registry:catalog:*",
@@ -185,6 +204,7 @@ export class AcrManager {
 			);
 
 			const repoItems: vscode.QuickPickItem[] = [];
+
 			const repos = catalogResponse.data.repositories;
 
 			if (!repos) {
@@ -192,6 +212,7 @@ export class AcrManager {
 					"There is no repository in the registry.",
 				);
 				error.statusCode = 404;
+
 				throw error;
 			}
 
@@ -202,6 +223,7 @@ export class AcrManager {
 				});
 			});
 			repoItems.sort((a, b) => a.label.localeCompare(b.label));
+
 			return repoItems;
 		} catch (error) {
 			error.message = `Error fetching repository list: ${error.message}`;
@@ -221,6 +243,7 @@ export class AcrManager {
 		aadAccessToken: string,
 	): Promise<string> {
 		const qs = require("qs");
+
 		const data = {
 			grant_type: "access_token_refresh_token",
 			service: registryUrl,
@@ -269,6 +292,7 @@ export class AcrManager {
 			this.loadAcrTagItems(registryUrl, repo),
 			{ placeHolder: "Select Tag", ignoreFocusOut: true },
 		);
+
 		return tag;
 	}
 
@@ -289,6 +313,7 @@ export class AcrManager {
 			);
 
 			const tagItems: vscode.QuickPickItem[] = [];
+
 			const tags = tagsResponse.data.tags;
 			tags.map((tag) => {
 				tagItems.push({
@@ -297,9 +322,11 @@ export class AcrManager {
 				});
 			});
 			tagItems.sort((a, b) => a.label.localeCompare(b.label));
+
 			return tagItems;
 		} catch (error) {
 			error.message = `Error fetching tag list: ${error.message}`;
+
 			throw error;
 		}
 	}

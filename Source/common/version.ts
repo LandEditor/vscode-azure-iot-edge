@@ -11,6 +11,7 @@ export class Versions {
 			Versions.edgeAgentVersion(),
 		);
 		verMap.set(Constants.edgeHubVerPlaceHolder, Versions.edgeHubVersion());
+
 		return verMap;
 	}
 
@@ -33,6 +34,7 @@ export class Versions {
 			Constants.edgeHubSchemaVerPlaceHolder,
 			edgeHubSchemaVerMap.get(Versions.edgeHubVersion()),
 		);
+
 		return verMap;
 	}
 
@@ -120,6 +122,7 @@ export class Versions {
 							moduleName,
 							versionMap,
 						);
+
 					case "edgeHub":
 						templateJson.modulesContent.$edgeHub[
 							"properties.desired"
@@ -153,6 +156,7 @@ export class Versions {
 	): string {
 		if (input !== undefined) {
 			const imageName: string = input.split(":")[0];
+
 			switch (imageName) {
 				case "mcr.microsoft.com/azureiotedge-agent":
 					return (
@@ -160,12 +164,14 @@ export class Versions {
 						":" +
 						versionMap.get(Constants.edgeAgentVerPlaceHolder)
 					);
+
 				case "mcr.microsoft.com/azureiotedge-hub":
 					return (
 						imageName +
 						":" +
 						versionMap.get(Constants.edgeHubVerPlaceHolder)
 					);
+
 				default:
 					return input;
 			}
@@ -182,10 +188,12 @@ export class Versions {
 					return versionMap.get(
 						Constants.edgeAgentSchemaVerPlaceHolder,
 					);
+
 				case "edgeHub":
 					return versionMap.get(
 						Constants.edgeHubSchemaVerPlaceHolder,
 					);
+
 				default:
 					return imageName;
 			}
@@ -197,6 +205,7 @@ export class Versions {
 		defaultVal: string | string[] | boolean = null,
 	): string | string[] | boolean {
 		const value = Configuration.getConfigurationProperty(key);
+
 		if (value === undefined || value === null) {
 			return defaultVal;
 		}

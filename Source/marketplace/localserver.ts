@@ -82,10 +82,12 @@ export class LocalServer {
 	) {
 		try {
 			const moduleName = req.params.module;
+
 			const errorMessage =
 				(await Utility.validateInputName(moduleName)) ||
 				Utility.validateModuleExistence(moduleName, this._modules) ||
 				"";
+
 			return res.status(200).send(errorMessage);
 		} catch (err) {
 			next(err);
@@ -100,8 +102,11 @@ export class LocalServer {
 		try {
 			let apiUrl =
 				"https://catalogapi.azure.com/offers/?api-version=2018-08-01-beta&$filter=categoryIds/any(c:%20c%20eq%20%27microsoft-iot-edge-module%27)";
+
 			let items = [];
+
 			const result = [];
+
 			while (apiUrl != null) {
 				const modulesList = (await axios.get(apiUrl)).data;
 				apiUrl = modulesList.nextPageLink;
@@ -118,6 +123,7 @@ export class LocalServer {
 										artifact.name ===
 										"iot-edge-metadata.json",
 								);
+
 								if (metaData !== undefined) {
 									plan.iotEdgeMetadataUrl = metaData.uri;
 								}
@@ -126,6 +132,7 @@ export class LocalServer {
 					}
 
 					const iconFileUris = item.iconFileUris;
+
 					if (iconFileUris && iconFileUris.small) {
 						item.icon = iconFileUris.small;
 					} else {

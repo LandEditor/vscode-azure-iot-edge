@@ -30,7 +30,9 @@ export class Executor {
 
 	public static execSync(command: string) {
 		const envVars = Executor.getEnvFromConfig();
+
 		const options: ExecSyncOptions = { encoding: "utf8" };
+
 		if (envVars) {
 			const processEnvs = JSON.parse(JSON.stringify(process.env));
 			options.env = Executor.mergeEnvs(envVars, processEnvs);
@@ -60,10 +62,14 @@ export class Executor {
 				);
 
 				let stderr: string = "";
+
 				let stdOutput: string = "";
+
 				const envVars = Executor.getEnvFromConfig();
+
 				if (envVars) {
 					options = options || {};
+
 					let processEnvs = JSON.parse(JSON.stringify(process.env));
 					processEnvs = Executor.mergeEnvs(envVars, processEnvs);
 					options.env = Executor.mergeEnvs(options.env, processEnvs);
@@ -122,7 +128,9 @@ export class Executor {
 
 	private static createTerminal(terminal: string): vscode.Terminal {
 		const envVars = Executor.getEnvFromConfig();
+
 		const options: vscode.TerminalOptions = { name: terminal };
+
 		if (envVars) {
 			options.env = envVars;
 		}
@@ -135,6 +143,7 @@ export class Executor {
 		}
 
 		envs = envs || {};
+
 		for (const key of Object.keys(overrideEnv)) {
 			envs[key] = overrideEnv[key];
 		}
@@ -143,6 +152,7 @@ export class Executor {
 
 	private static getEnvFromConfig() {
 		const envVars = Configuration.getConfigurationProperty("executor.env");
+
 		if (envVars && Object.keys(envVars).length > 0) {
 			return envVars;
 		} else {

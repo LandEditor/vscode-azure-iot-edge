@@ -11,7 +11,9 @@ import { Constants } from "./constants";
 const packageJSON = vscode.extensions.getExtension(
 	Constants.ExtensionId,
 ).packageJSON;
+
 const extensionVersion: string = packageJSON.version;
+
 const aiKey: string = packageJSON.aiKey;
 
 export class TelemetryClient {
@@ -28,6 +30,7 @@ export class TelemetryClient {
 		properties?: { [key: string]: string },
 	): void {
 		this.stampInternalProperty(properties);
+
 		const errorProperties = Object.values(Constants.errorProperties);
 		this._client.sendTelemetryErrorEvent(
 			eventName,
@@ -50,6 +53,7 @@ export class TelemetryClient {
 		const userDomain = process.env.USERDNSDOMAIN
 			? process.env.USERDNSDOMAIN.toLowerCase()
 			: "";
+
 		return userDomain.endsWith("microsoft.com");
 	}
 

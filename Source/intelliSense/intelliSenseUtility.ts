@@ -40,6 +40,7 @@ export class IntelliSenseUtility {
 			)
 		) {
 			const moduleToImageMap: Map<string, string> = new Map();
+
 			const imageToBuildSettingsMap: Map<string, BuildSettings> =
 				new Map();
 
@@ -51,15 +52,20 @@ export class IntelliSenseUtility {
 				);
 
 				const node: parser.Node = location.previousNode;
+
 				const imagePlaceholder: string = Utility.unwrapImagePlaceholder(
 					node.value,
 				);
+
 				const image = moduleToImageMap.get(imagePlaceholder);
+
 				if (image) {
 					const dockerfile: string =
 						imageToBuildSettingsMap.get(image).dockerFile;
+
 					const range: vscode.Range =
 						IntelliSenseUtility.getNodeRange(document, node);
+
 					return { dockerfile, range };
 				}
 			} catch {

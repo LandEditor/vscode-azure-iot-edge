@@ -17,8 +17,10 @@ export class ConfigDefinitionProvider implements vscode.DefinitionProvider {
 				document,
 				position,
 			);
+
 		if (dockerfileInfo && dockerfileInfo.dockerfile) {
 			const beginOfFile: vscode.Position = new vscode.Position(0, 0);
+
 			return new vscode.Location(
 				vscode.Uri.file(dockerfileInfo.dockerfile),
 				beginOfFile,

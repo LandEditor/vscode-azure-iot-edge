@@ -24,6 +24,7 @@ export class ContainerManager {
 		const event = pushImage
 			? Constants.buildAndPushModuleImageEvent
 			: Constants.buildModuleImageEvent;
+
 		const moduleConfigFilePath: string = await Utility.getInputFilePath(
 			fileUri,
 			Constants.moduleConfigFileNamePattern,
@@ -36,41 +37,51 @@ export class ContainerManager {
 			await Utility.loadEnv(
 				path.join(directory, "..", "..", Constants.envFile),
 			);
+
 			const overrideEnvs = await Utility.parseEnv(
 				path.join(directory, Constants.envFile),
 			);
+
 			const moduleConfig = await Utility.readJsonAndExpandEnv(
 				moduleConfigFilePath,
 				overrideEnvs,
 				Constants.moduleSchemaVersion,
 			);
+
 			const platforms = moduleConfig.image.tag.platforms;
+
 			const platform = await vscode.window.showQuickPick(
 				Object.keys(platforms),
 				{ placeHolder: Constants.selectPlatform, ignoreFocusOut: true },
 			);
+
 			if (platform) {
 				const dockerfilePath = path.resolve(
 					directory,
 					platforms[platform],
 				);
+
 				const imageName = Utility.getImage(
 					moduleConfig.image.repository,
 					moduleConfig.image.tag.version,
 					platform,
 				);
+
 				const buildSettings = Utility.getBuildSettings(
 					directory,
 					dockerfilePath,
 					moduleConfig.image.buildOptions,
 					moduleConfig.image.contextPath,
 				);
+
 				const buildCommand = this.constructBuildCmd(
 					imageName,
 					buildSettings,
 				);
+
 				if (pushImage) {
 					await Utility.initLocalRegistry([imageName]);
+
 					const pushCommand = this.constructPushCmd(imageName);
 					Executor.runInTerminal(
 						Utility.combineCommands([buildCommand, pushCommand]),
@@ -89,12 +100,14 @@ export class ContainerManager {
 		run: boolean = false,
 	): Promise<void> {
 		const pattern = `{${Constants.deploymentJsonPattern}}`;
+
 		const templateFile: string = await Utility.getInputFilePath(
 			templateUri,
 			pattern,
 			Constants.deploymentTemplateDesc,
 			`${Constants.buildSolutionEvent}.selectTemplate`,
 		);
+
 		if (!templateFile) {
 			return;
 		}
@@ -115,12 +128,14 @@ export class ContainerManager {
 		templateUri?: vscode.Uri,
 	): Promise<void> {
 		const pattern = `{${Constants.deploymentJsonPattern}}`;
+
 		const templateFile: string = await Utility.getInputFilePath(
 			templateUri,
 			pattern,
 			Constants.deploymentTemplateDesc,
 			`${Constants.generateDeploymentEvent}.selectTemplate`,
 		);
+
 		if (!templateFile) {
 			return;
 		}
@@ -142,7 +157,9 @@ export class ContainerManager {
 		run: boolean = false,
 	): Promise<string> {
 		const moduleToImageMap: Map<string, string> = new Map();
+
 		const imageToBuildSettings: Map<string, BuildSettings> = new Map();
+
 		const slnPath: string = path.dirname(templateFile);
 		await Utility.loadEnv(path.join(slnPath, Constants.envFile));
 		await Utility.setSlnModulesMap(
@@ -150,13 +167,17 @@ export class ContainerManager {
 			moduleToImageMap,
 			imageToBuildSettings,
 		);
+
 		const configPath: string = path.join(slnPath, Constants.outputConfig);
+
 		const deployment: any = await this.generateDeploymentInfo(
 			templateFile,
 			configPath,
 			moduleToImageMap,
 		);
+
 		const dpManifest: any = deployment.manifestObj;
+
 		const deployFile: string = deployment.manifestFile;
 
 		if (!build) {
@@ -168,10 +189,12 @@ export class ContainerManager {
 			dpManifest,
 			imageToBuildSettings,
 		);
+
 		const commands: string[] = [];
 		await Utility.initLocalRegistry([...buildMap.keys()]);
 		buildMap.forEach((buildSettings, image) => {
 			commands.push(this.constructBuildCmd(image, buildSettings));
+
 			if (push) {
 				commands.push(this.constructPushCmd(image));
 			}
@@ -183,10 +206,12 @@ export class ContainerManager {
 				vscode.Uri.file(deployFile),
 				commands,
 			);
+
 			return deployFile;
 		}
 
 		Executor.runInTerminal(Utility.combineCommands(commands));
+
 		return deployFile;
 	}
 
@@ -196,38 +221,47 @@ export class ContainerManager {
 		moduleToImageMap: Map<string, string>,
 	): Promise<any> {
 		const data: any = await fse.readJson(templateFile);
+
 		const moduleExpanded: string = Utility.expandModules(
 			data,
 			moduleToImageMap,
 		);
+
 		const exceptStr = [
 			"$edgeHub",
 			"$edgeAgent",
 			"$upstream",
 			Constants.SchemaTemplate,
 		];
+
 		const generatedDeployFile: string = Utility.expandEnv(
 			moduleExpanded,
 			{},
 			...exceptStr,
 		);
+
 		const dpManifest = Utility.convertCreateOptions(
 			Utility.updateSchema(JSON.parse(generatedDeployFile)),
 		);
+
 		const templateSchemaVersion = dpManifest[Constants.SchemaTemplate];
 		delete dpManifest[Constants.SchemaTemplate];
 		// generate config file
 		await fse.ensureDir(configPath);
+
 		const templateFileName = path.basename(templateFile);
+
 		const deploymentFileName = this.getDeployFileName(
 			templateFileName,
 			templateSchemaVersion,
 		);
+
 		const deployFile = path.join(configPath, deploymentFileName);
 		await fse.remove(deployFile);
 		await fse.writeFile(deployFile, JSON.stringify(dpManifest, null, 2), {
 			encoding: "utf8",
 		});
+
 		return {
 			manifestObj: dpManifest,
 			manifestFile: deployFile,
@@ -242,8 +276,11 @@ export class ContainerManager {
 			templateSchemaVersion > "0.0.1"
 				? `.${Platform.getDefaultPlatform().platform}`
 				: "";
+
 		let name: string = templateFileName;
+
 		const tempLength = templateFileName.length;
+
 		if (templateFileName.endsWith(Constants.tson)) {
 			name = templateFileName.substr(
 				0,
@@ -261,12 +298,15 @@ export class ContainerManager {
 	): Map<string, BuildSettings> {
 		try {
 			const buildMap: Map<string, any> = new Map<string, any>();
+
 			const modules =
 				manifestObj.modulesContent.$edgeAgent["properties.desired"]
 					.modules;
+
 			for (const m in modules) {
 				if (modules.hasOwnProperty(m)) {
 					let image: string;
+
 					try {
 						image = modules[m].settings.image;
 					} catch (e) {}
@@ -289,11 +329,14 @@ export class ContainerManager {
 		buildSettings: BuildSettings,
 	): string {
 		let optionString: string = "";
+
 		if (buildSettings.options !== undefined) {
 			const filteredOption = buildSettings.options.filter(
 				(value, index) => {
 					const trimmed = value.trim();
+
 					const parsedOption: string[] = trimmed.split(/\s+/g);
+
 					return (
 						parsedOption.length > 0 &&
 						["--rm", "--tag", "-t", "--file", "-f"].indexOf(

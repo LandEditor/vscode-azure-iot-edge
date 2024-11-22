@@ -13,6 +13,7 @@ export enum InstallReturn {
 export class InstallResult {
 	public readonly resultType: InstallReturn;
 	public readonly errMsg: string;
+
 	constructor(resultType: InstallReturn, errMsg: string = null) {
 		this.resultType = resultType;
 		this.errMsg = errMsg;

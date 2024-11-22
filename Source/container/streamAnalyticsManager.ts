@@ -48,11 +48,13 @@ export class StreamAnalyticsManager {
 
 	public async getJobInfo(): Promise<any> {
 		await Utility.waitForAzLogin(this.azureAccount);
+
 		const streamingJob: StreamAnalyticsPickItem =
 			await vscode.window.showQuickPick(this.loadAllStreamingJobs(), {
 				placeHolder: `Select ${Constants.asaJobDesc}`,
 				ignoreFocusOut: true,
 			});
+
 		if (!streamingJob) {
 			throw new UserCancelledError();
 		}
@@ -65,6 +67,7 @@ export class StreamAnalyticsManager {
 			},
 			async (progress, token): Promise<object> => {
 				const ASAJobResourceId: string = streamingJob.job.id;
+
 				return await this.publishAndQueryASAJobInfo(
 					ASAJobResourceId,
 					streamingJob.azureSubscription.session,
@@ -80,19 +83,24 @@ export class StreamAnalyticsManager {
 	) {
 		if (this.asaUpdateStatus === ASAUpdateStatus.Idle) {
 			await Utility.waitForAzLogin(this.azureAccount);
+
 			try {
 				this.asaUpdateStatus = ASAUpdateStatus.CheckingUpdate;
+
 				const isUpdateAvailable = await this.isASAJobUpdateAvailable(
 					templateFile,
 					moduleName,
 				);
 				this.asaUpdateStatus = ASAUpdateStatus.Idle;
+
 				if (isUpdateAvailable) {
 					const yesOption = "Yes";
+
 					const option = await vscode.window.showInformationMessage(
 						Constants.newASAJobAvailableMsg(moduleName),
 						yesOption,
 					);
+
 					if (option === yesOption) {
 						this.asaUpdateStatus = ASAUpdateStatus.Updating;
 						await this.updateASAJobInfoModuleTwin(
@@ -108,6 +116,7 @@ export class StreamAnalyticsManager {
 				}
 			} catch (err) {
 				this.asaUpdateStatus = ASAUpdateStatus.Idle;
+
 				throw err;
 			}
 		}
@@ -128,8 +137,11 @@ export class StreamAnalyticsManager {
 					templateFile,
 					moduleName,
 				);
+
 				const subscription = await this.getJobSubscription(ASAInfo);
+
 				const ASAJobResourceId: string = ASAInfo.ASAJobResourceId;
+
 				return await this.publishAndQueryASAJobInfo(
 					ASAJobResourceId,
 					subscription.session,
@@ -153,17 +165,23 @@ export class StreamAnalyticsManager {
 					templateFile,
 					moduleName,
 				);
+
 				const GetASAJobApiUrl: string = `https://management.azure.com${ASAInfo.ASAJobResourceId}?api-version=2019-06-01`;
+
 				const curEtag = ASAInfo.ASAJobEtag;
+
 				const subscription = await this.getJobSubscription(ASAInfo);
+
 				const { aadAccessToken } = await Utility.acquireAadToken(
 					subscription.session,
 				);
+
 				const jobInfo = await axios.get(GetASAJobApiUrl, {
 					headers: { Authorization: `bearer ${aadAccessToken}` },
 				});
 
 				const latestETag = jobInfo.headers.etag;
+
 				return latestETag !== curEtag;
 			},
 		);
@@ -174,7 +192,9 @@ export class StreamAnalyticsManager {
 		moduleName: string,
 	) {
 		const jobInfo = await this.updateJobInfo(templateFile, moduleName);
+
 		const moduleTwin = jobInfo.twin.content;
+
 		const templateJson = await fse.readJson(templateFile);
 		templateJson.modulesContent[moduleName] = moduleTwin;
 		await fse.writeFile(
@@ -191,6 +211,7 @@ export class StreamAnalyticsManager {
 	) {
 		try {
 			const apiUrl: string = `https://management.azure.com${resourceId}/publishedgepackage?api-version=2019-06-01`;
+
 			const { aadAccessToken } = await Utility.acquireAadToken(session);
 
 			const publishResponse = await axios.post(apiUrl, {
@@ -201,6 +222,7 @@ export class StreamAnalyticsManager {
 			const operationResultUrl = publishResponse.headers.location;
 
 			let retryTimes = 0;
+
 			while (true) {
 				await this.sleep(2000);
 
@@ -215,14 +237,17 @@ export class StreamAnalyticsManager {
 				if (jobInfoResult.status === 202) {
 					if (retryTimes < this.MaximumRetryCount) {
 						retryTimes++;
+
 						continue;
 					} else {
 						throw new Error(Constants.queryASAJobInfoFailedMsg);
 					}
 				} else if (jobInfoResult.status === 200) {
 					const result = jobInfoResult.data;
+
 					if (result.status === "Succeeded") {
 						const info = JSON.parse(result.manifest);
+
 						return info;
 					} else {
 						throw new Error(result.error.message);
@@ -253,6 +278,7 @@ export class StreamAnalyticsManager {
 		}
 
 		const ASAJobName: string = ASAInfo.ASAJobResourceId.split("/").pop();
+
 		throw new Error(
 			`Cannot find Stream Analytics Job '${ASAJobName}' in your Azure account, please make sure to login to the right acount.`,
 		);
@@ -264,8 +290,10 @@ export class StreamAnalyticsManager {
 	) {
 		try {
 			const templateJson = await fse.readJson(templateFile);
+
 			const ASAInfo =
 				templateJson.modulesContent[moduleName]["properties.desired"];
+
 			return ASAInfo;
 		} catch (err) {
 			throw new Error(
@@ -278,11 +306,14 @@ export class StreamAnalyticsManager {
 	private async loadAllStreamingJobs(): Promise<StreamAnalyticsPickItem[]> {
 		try {
 			await this.azureAccount.waitForFilters();
+
 			const jobPromises: Array<Promise<StreamAnalyticsPickItem[]>> = [];
+
 			for (const azureSubscription of this.azureAccount.filters) {
 				const tokenCredentials = await Utility.aquireTokenCredentials(
 					azureSubscription.session,
 				);
+
 				const client: StreamingJobs =
 					new StreamAnalyticsManagementClient(
 						tokenCredentials,
@@ -309,9 +340,11 @@ export class StreamAnalyticsManager {
 					jobPromises,
 					Constants.asaJobDesc,
 				);
+
 			return jobItems;
 		} catch (error) {
 			error.message = `Error fetching streaming job list: ${error.message}`;
+
 			throw error;
 		}
 	}

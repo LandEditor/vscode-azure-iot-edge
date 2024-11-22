@@ -6,12 +6,14 @@ export class Platform {
 		const defaultPlatform = Configuration.getConfigurationProperty(
 			Constants.defPlatformConfig,
 		);
+
 		if (!defaultPlatform) {
 			return new Platform("amd64", null);
 		}
 		const platform = defaultPlatform.platform
 			? defaultPlatform.platform
 			: "amd64";
+
 		return new Platform(platform, defaultPlatform.alias);
 	}
 
@@ -23,11 +25,15 @@ export class Platform {
 		const platformObjs = Configuration.getConfiguration().get<any>(
 			Constants.platformsConfig,
 		);
+
 		const platforms: Platform[] = [];
+
 		for (const key in platformObjs) {
 			if (platformObjs.hasOwnProperty(key)) {
 				platforms.push(new Platform(key, null));
+
 				const valArr: string[] = platformObjs[key];
+
 				if (valArr) {
 					valArr.map((alias) => {
 						if (alias !== key) {
