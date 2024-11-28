@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 "use strict";
+
 export enum InstallReturn {
 	Success = 0,
 	Failed,
