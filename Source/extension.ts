@@ -43,18 +43,24 @@ export function activate(context: vscode.ExtensionContext) {
 	const gallery = new Gallery(context);
 
 	const simulator = new Simulator(context);
+
 	simulator.validateSimulatorUpdated(outputChannel);
 
 	const containerManager = new ContainerManager(simulator);
+
 	Utility.checkDockerState(outputChannel);
 
 	const statusBar: vscode.StatusBarItem = vscode.window.createStatusBarItem(
 		vscode.StatusBarAlignment.Left,
 		-10000,
 	);
+
 	statusBar.command = "azure-iot-edge.setDefaultPlatform";
+
 	statusBar.text = formatStatusBarText(Platform.getDefaultPlatformStr());
+
 	statusBar.tooltip = Constants.platformStatusBarTooltip;
+
 	statusBar.show();
 
 	context.subscriptions.push(
@@ -70,6 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(statusBar);
+
 	context.subscriptions.push(
 		vscode.languages.registerCompletionItemProvider(
 			[
@@ -82,6 +89,7 @@ export function activate(context: vscode.ExtensionContext) {
 			":",
 		),
 	);
+
 	context.subscriptions.push(
 		vscode.languages.registerHoverProvider(
 			[
@@ -121,6 +129,7 @@ export function activate(context: vscode.ExtensionContext) {
 			diagCollection,
 		);
 	}
+
 	context.subscriptions.push(diagCollection);
 	// For files that are over 5MB in size, an undefined event will be created
 	// https://github.com/Microsoft/vscode/issues/27100
@@ -134,6 +143,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		}),
 	);
+
 	context.subscriptions.push(
 		vscode.workspace.onDidSaveTextDocument((document) =>
 			configDiagnosticProvider.updateDiagnostics(
@@ -142,11 +152,13 @@ export function activate(context: vscode.ExtensionContext) {
 			),
 		),
 	);
+
 	context.subscriptions.push(
 		vscode.workspace.onDidCloseTextDocument((document) =>
 			diagCollection.delete(document.uri),
 		),
 	);
+
 	context.subscriptions.push(outputChannel);
 
 	context.subscriptions.push(
@@ -154,11 +166,13 @@ export function activate(context: vscode.ExtensionContext) {
 			resolveDebugConfiguration,
 		}),
 	);
+
 	context.subscriptions.push(
 		vscode.debug.registerDebugConfigurationProvider("edge-node", {
 			resolveDebugConfiguration,
 		}),
 	);
+
 	context.subscriptions.push(
 		vscode.debug.registerDebugConfigurationProvider("edge-python", {
 			resolveDebugConfiguration,
@@ -486,6 +500,7 @@ async function guideUserToSetupIotedgehubdev(
 		TelemetryClient.sendEvent(
 			`${telemetryName}.${Constants.Setup.toLocaleLowerCase()}`,
 		);
+
 		await vscode.commands.executeCommand(
 			"azure-iot-edge.setupIotedgehubdev",
 			undefined,
@@ -510,10 +525,13 @@ function initCommandAsync(
 			let errorData: ErrorData | undefined;
 
 			const properties: { [key: string]: string } = {};
+
 			properties.result = "Succeeded";
+
 			properties.fromCommandPalette = (!args || !args[0]).toString();
 
 			TelemetryClient.sendEvent(`${commandId}.start`);
+
 			outputChannel.appendLine(`${commandId}: `);
 
 			try {
@@ -521,10 +539,13 @@ function initCommandAsync(
 			} catch (error) {
 				if (error instanceof UserCancelledError) {
 					properties.result = "Cancelled";
+
 					outputChannel.appendLine(Constants.userCancelled);
 				} else {
 					properties.result = "Failed";
+
 					errorData = new ErrorData(error);
+
 					outputChannel.appendLine(`Error: ${errorData.message}`);
 
 					if (error instanceof LearnMoreError) {
@@ -537,13 +558,16 @@ function initCommandAsync(
 				}
 			} finally {
 				const end: number = Date.now();
+
 				properties.duration = ((end - start) / 1000).toString();
 
 				if (errorData) {
 					properties[Constants.errorProperties.error] =
 						errorData.errorType;
+
 					properties[Constants.errorProperties.errorMessage] =
 						errorData.message;
+
 					TelemetryClient.sendErrorEvent(
 						`${commandId}.end`,
 						properties,
@@ -551,6 +575,7 @@ function initCommandAsync(
 				} else {
 					TelemetryClient.sendEvent(`${commandId}.end`, properties);
 				}
+
 				NSAT.takeSurvey(context);
 			}
 		}),

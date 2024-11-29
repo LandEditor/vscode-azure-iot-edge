@@ -34,6 +34,7 @@ export class ContainerManager {
 
 		if (moduleConfigFilePath) {
 			const directory = path.dirname(moduleConfigFilePath);
+
 			await Utility.loadEnv(
 				path.join(directory, "..", "..", Constants.envFile),
 			);
@@ -83,6 +84,7 @@ export class ContainerManager {
 					await Utility.initLocalRegistry([imageName]);
 
 					const pushCommand = this.constructPushCmd(imageName);
+
 					Executor.runInTerminal(
 						Utility.combineCommands([buildCommand, pushCommand]),
 					);
@@ -111,6 +113,7 @@ export class ContainerManager {
 		if (!templateFile) {
 			return;
 		}
+
 		const deployFile = await this.createDeploymentFile(
 			outputChannel,
 			templateFile,
@@ -118,6 +121,7 @@ export class ContainerManager {
 			push,
 			run,
 		);
+
 		vscode.window.showInformationMessage(
 			`Deployment manifest generated at ${deployFile}. Module images are being built`,
 		);
@@ -139,11 +143,13 @@ export class ContainerManager {
 		if (!templateFile) {
 			return;
 		}
+
 		const deployFile = await this.createDeploymentFile(
 			outputChannel,
 			templateFile,
 			false,
 		);
+
 		vscode.window.showInformationMessage(
 			`Deployment manifest generated at ${deployFile}.`,
 		);
@@ -161,7 +167,9 @@ export class ContainerManager {
 		const imageToBuildSettings: Map<string, BuildSettings> = new Map();
 
 		const slnPath: string = path.dirname(templateFile);
+
 		await Utility.loadEnv(path.join(slnPath, Constants.envFile));
+
 		await Utility.setSlnModulesMap(
 			templateFile,
 			moduleToImageMap,
@@ -191,7 +199,9 @@ export class ContainerManager {
 		);
 
 		const commands: string[] = [];
+
 		await Utility.initLocalRegistry([...buildMap.keys()]);
+
 		buildMap.forEach((buildSettings, image) => {
 			commands.push(this.constructBuildCmd(image, buildSettings));
 
@@ -245,6 +255,7 @@ export class ContainerManager {
 		);
 
 		const templateSchemaVersion = dpManifest[Constants.SchemaTemplate];
+
 		delete dpManifest[Constants.SchemaTemplate];
 		// generate config file
 		await fse.ensureDir(configPath);
@@ -257,7 +268,9 @@ export class ContainerManager {
 		);
 
 		const deployFile = path.join(configPath, deploymentFileName);
+
 		await fse.remove(deployFile);
+
 		await fse.writeFile(deployFile, JSON.stringify(dpManifest, null, 2), {
 			encoding: "utf8",
 		});
@@ -289,6 +302,7 @@ export class ContainerManager {
 		} else if (templateFileName.endsWith(".json")) {
 			name = templateFileName.substr(0, tempLength - ".json".length);
 		}
+
 		return `${name}${platform}.json`;
 	}
 
@@ -310,6 +324,7 @@ export class ContainerManager {
 					try {
 						image = modules[m].settings.image;
 					} catch (e) {}
+
 					if (
 						image &&
 						imageToBuildSettings.get(image) !== undefined
@@ -318,6 +333,7 @@ export class ContainerManager {
 					}
 				}
 			}
+
 			return buildMap;
 		} catch (err) {
 			throw new Error("Cannot parse deployment manifest");
@@ -345,8 +361,10 @@ export class ContainerManager {
 					);
 				},
 			);
+
 			optionString = filteredOption.join(" ");
 		}
+
 		return `docker build ${optionString} --rm -f \"${Utility.adjustFilePath(buildSettings.dockerFile)}\" -t ${imageName} \"${Utility.adjustFilePath(buildSettings.contextPath)}\"`;
 	}
 

@@ -74,6 +74,7 @@ export class Utility {
 					.replace(/\\/g, "/");
 			}
 		}
+
 		return filePath;
 	}
 
@@ -90,6 +91,7 @@ export class Utility {
 				isPowerShell = true;
 			}
 		}
+
 		return isPowerShell;
 	}
 
@@ -115,9 +117,11 @@ export class Utility {
 						command = `${command} } if ($?) { ${commands[i]}`;
 				}
 			}
+
 			if (commands.length > 1) {
 				command += " }";
 			}
+
 			return command;
 		} else {
 			return commands.join(" && ");
@@ -224,6 +228,7 @@ export class Utility {
 		const jsonFormat = JSON.parse(fileContentGenerated);
 
 		const targetFile: string = path.join(targetPath, fileName);
+
 		await fse.writeFile(targetFile, JSON.stringify(jsonFormat, null, 2), {
 			encoding: "utf8",
 		});
@@ -261,10 +266,12 @@ export class Utility {
 		if (!overrideKVs) {
 			overrideKVs = {};
 		}
+
 		return input.replace(pattern, (matched) => {
 			if (exceptKeys && exceptSet.has(matched)) {
 				return matched;
 			}
+
 			const key: string = matched.replace(/\$|{|}/g, "");
 
 			return overrideKVs[key] || process.env[key] || matched;
@@ -317,6 +324,7 @@ export class Utility {
 		const filesAndDirs = await fse.readdir(parentPath);
 
 		const directories = [];
+
 		await Promise.all(
 			filesAndDirs.map(async (name) => {
 				const subPath = path.join(parentPath, name);
@@ -383,11 +391,13 @@ export class Utility {
 		const slnPath: string = path.dirname(templateFilePath);
 
 		const moduleDirs: string[] = await Utility.getSubModules(slnPath);
+
 		await Promise.all(
 			moduleDirs.map(async (modulePath) => {
 				const keyPrefix = Constants.subModuleKeyPrefixTemplate(
 					path.basename(modulePath),
 				);
+
 				await Utility.setModuleMap(
 					modulePath,
 					keyPrefix,
@@ -399,6 +409,7 @@ export class Utility {
 
 		const externalModuleDirs: string[] =
 			await Utility.getExternalModules(templateFilePath);
+
 		await Promise.all(
 			externalModuleDirs.map(async (module) => {
 				if (module) {
@@ -406,6 +417,7 @@ export class Utility {
 
 					const keyPrefix =
 						Constants.extModuleKeyPrefixTemplate(module);
+
 					await Utility.setModuleMap(
 						moduleFullPath,
 						keyPrefix,
@@ -461,6 +473,7 @@ export class Utility {
 			const repo: string = module.image.repository;
 
 			const version: string = module.image.tag.version;
+
 			platformKeys.map((platform) => {
 				const image: string = Utility.getImage(repo, version, platform);
 
@@ -468,6 +481,7 @@ export class Utility {
 					moduleKeyPrefix,
 					platform,
 				);
+
 				imageKeys.map((key) => {
 					moduleToImageMap.set(key, image);
 				});
@@ -477,6 +491,7 @@ export class Utility {
 						moduleFullPath,
 						module.image.tag.platforms[platform],
 					);
+
 					imageToBuildSettings.set(
 						image,
 						Utility.getBuildSettings(
@@ -548,15 +563,18 @@ export class Utility {
 					break;
 				}
 			}
+
 			if (port) {
 				TelemetryClient.sendEvent("localRegistryDetected");
 
 				if (await isPortReachable(port)) {
 					return;
 				}
+
 				switch (Utility.getLocalRegistryState()) {
 					case ContainerState.NotFound:
 						TelemetryClient.sendEvent("createLocalRegistry");
+
 						Executor.runInTerminal(
 							`docker run -d -p ${port}:5000 --restart always --name registry registry:2`,
 						);
@@ -565,6 +583,7 @@ export class Utility {
 
 					case ContainerState.NotRunning:
 						TelemetryClient.sendEvent("startLocalRegistry");
+
 						Executor.runInTerminal(`docker start registry`);
 
 						break;
@@ -581,6 +600,7 @@ export class Utility {
 		if (index === -1) {
 			index = address.indexOf(":");
 		}
+
 		if (index !== -1) {
 			key = address.substring(0, index);
 		}
@@ -591,6 +611,7 @@ export class Utility {
 
 		while (keySet.has(key)) {
 			key = `${keyPrefix}_${suffix}`;
+
 			suffix += 1;
 		}
 
@@ -611,6 +632,7 @@ export class Utility {
 		if (index !== -1) {
 			name = repositoryName.substring(0, index).toLocaleLowerCase();
 		}
+
 		if (
 			name === undefined ||
 			(name !== "localhost" &&
@@ -667,6 +689,7 @@ export class Utility {
 		if (toolkit === undefined) {
 			throw new Error("Error loading Azure IoT Toolkit extension");
 		}
+
 		return toolkit;
 	}
 
@@ -690,6 +713,7 @@ export class Utility {
 				const credentials: any = session.credentials;
 
 				const environment: any = session.environment;
+
 				credentials.context.acquireToken(
 					environment.activeDirectoryResourceId,
 					credentials.username,
@@ -743,6 +767,7 @@ export class Utility {
 				moduleProperties.systemModules =
 					Utility.serializeCreateOptionsForEachModule(systemModules);
 			}
+
 			const modules = moduleProperties.modules;
 
 			if (modules) {
@@ -759,8 +784,10 @@ export class Utility {
 	public static updateSchema(deployment: any): any {
 		if (deployment && deployment.moduleContent) {
 			deployment.modulesContent = deployment.moduleContent;
+
 			delete deployment.moduleContent;
 		}
+
 		return deployment;
 	}
 
@@ -775,6 +802,7 @@ export class Utility {
 		} else {
 			optionStr = JSON.stringify(createOptions);
 		}
+
 		const re = new RegExp(
 			`(.|[\r\n]){1,${Constants.TwinValueMaxSize}}`,
 			"g",
@@ -787,6 +815,7 @@ export class Utility {
 				`Size of createOptions of ${settings.image} is too big. The maximum size of createOptions is 4K`,
 			);
 		}
+
 		options.map((value, index) => {
 			if (index === 0) {
 				settings.createOptions = value;
@@ -812,7 +841,9 @@ export class Utility {
 
 		for (
 			let list = await first;
+
 			list !== undefined;
+
 			list = list.nextLink ? await listNext(list.nextLink) : undefined
 		) {
 			all.push(...list);
@@ -826,6 +857,7 @@ export class Utility {
 		description: string,
 	): Promise<T[]> {
 		const items: T[] = ([] as T[]).concat(...(await Promise.all(promises)));
+
 		items.sort((a, b) => a.label.localeCompare(b.label));
 
 		if (items.length === 0) {
@@ -856,6 +888,7 @@ export class Utility {
 		if (!vscodeSettingExists) {
 			return undefined;
 		}
+
 		vscodeSettingJson = await fse.readJson(vscodeSettingPath);
 
 		return vscodeSettingJson;
@@ -893,6 +926,7 @@ export class Utility {
 		// if host name do not contain ":.", then it would be treated as repository name
 		if (hostName && !/[:.]/.test(hostName)) {
 			repositoryName = hostName + "/" + repositoryName;
+
 			hostName = null;
 		}
 
@@ -935,12 +969,15 @@ export class Utility {
 		if (!name) {
 			return "The name could not be empty";
 		}
+
 		if (name.startsWith("_") || name.endsWith("_")) {
 			return "The name must not start or end with the symbol _";
 		}
+
 		if (name.match(/[^a-zA-Z0-9\_]/)) {
 			return "The name must contain only alphanumeric characters or the symbol _";
 		}
+
 		if (parentPath) {
 			const folderPath = path.join(parentPath, name);
 
@@ -948,6 +985,7 @@ export class Utility {
 				return `${name} already exists under ${parentPath}`;
 			}
 		}
+
 		return undefined;
 	}
 
@@ -958,6 +996,7 @@ export class Utility {
 		if (modules && modules.indexOf(name) >= 0) {
 			return `${name} already exists in ${Constants.deploymentTemplate}`;
 		}
+
 		return undefined;
 	}
 
@@ -1032,6 +1071,7 @@ export class Utility {
 				{ shell: true },
 				"version",
 			);
+
 			state = DockerState.Running;
 		} catch (error) {
 			errorMsg = error;
@@ -1099,6 +1139,7 @@ export class Utility {
 			switch (state) {
 				case DockerState.NotInstalled:
 					items = [install, cancel];
+
 					input = await vscode.window.showWarningMessage(
 						Constants.dockerNotInstalledErrorMsg,
 						...items,
@@ -1107,11 +1148,13 @@ export class Utility {
 					if (input === install) {
 						helpUrl = Constants.installDockerUrl;
 					}
+
 					break;
 
 				case DockerState.NotRunning:
 				case DockerState.Unknown:
 					items = [troubleshooting, cancel];
+
 					input = await vscode.window.showWarningMessage(
 						Constants.dockerNotRunningErrorMsg,
 						...items,
@@ -1120,6 +1163,7 @@ export class Utility {
 					if (input === troubleshooting) {
 						helpUrl = Constants.troubleShootingDockerUrl;
 					}
+
 					break;
 			}
 
@@ -1138,6 +1182,7 @@ export class Utility {
     On Windows, determine the default shell.
     */
 	private static _TERMINAL_DEFAULT_SHELL_WINDOWS: string | null = null;
+
 	private static getDefaultWindowsShell(): string {
 		if (!Utility._TERMINAL_DEFAULT_SHELL_WINDOWS) {
 			const isAtLeastWindows10 =
@@ -1148,10 +1193,12 @@ export class Utility {
 			);
 
 			const powerShellPath = `${process.env.windir}\\${is32ProcessOn64Windows ? "Sysnative" : "System32"}\\WindowsPowerShell\\v1.0\\powershell.exe`;
+
 			Utility._TERMINAL_DEFAULT_SHELL_WINDOWS = isAtLeastWindows10
 				? powerShellPath
 				: Utility.getDefaultOldVerWindowsShell();
 		}
+
 		return Utility._TERMINAL_DEFAULT_SHELL_WINDOWS;
 	}
 
@@ -1167,6 +1214,7 @@ export class Utility {
 		if (!windowsShell) {
 			windowsShell = Utility.getDefaultWindowsShell();
 		}
+
 		return windowsShell;
 	}
 
@@ -1176,11 +1224,13 @@ export class Utility {
 		if (!(await fse.pathExists(modulesPath))) {
 			return [];
 		}
+
 		const stat: fse.Stats = await fse.lstat(modulesPath);
 
 		if (!stat.isDirectory()) {
 			return [];
 		}
+
 		return await Utility.getSubDirectories(modulesPath);
 	}
 
@@ -1209,11 +1259,14 @@ export class Utility {
 					const start = "${MODULEDIR<".length;
 
 					const end = placeholder.lastIndexOf(">");
+
 					placeholder.substring(start, end);
+
 					modules.push(placeholder.substring(start, end).trim());
 				}
 			});
 		}
+
 		return modules;
 	}
 
@@ -1234,6 +1287,7 @@ export class Utility {
 
 		const isDebug: boolean =
 			platform === `${defaultPlatform.platform}.debug`;
+
 		keys.push(isDebug ? `${keyPrefix}.debug` : keyPrefix);
 
 		return keys;
@@ -1246,9 +1300,11 @@ export class Utility {
 		if (!name || name.trim() === "") {
 			return "The name could not be empty";
 		}
+
 		if (name.match(/[/\\:*?\"<>|]/)) {
 			return "Solution name can't contain characters: /:*?<>|";
 		}
+
 		if (parentPath) {
 			const folderPath = path.join(parentPath, name);
 
@@ -1256,6 +1312,7 @@ export class Utility {
 				return `${name} already exists under ${parentPath}`;
 			}
 		}
+
 		return undefined;
 	}
 
@@ -1290,6 +1347,7 @@ export class Utility {
 				}
 			}
 		}
+
 		return modules;
 	}
 

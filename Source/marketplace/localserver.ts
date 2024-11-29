@@ -9,16 +9,24 @@ import { Utility } from "../common/utility";
 
 export class LocalServer {
 	private app: express.Express;
+
 	private server: http.Server;
+
 	private serverPort = 0;
+
 	private router: express.Router;
+
 	private context: vscode.ExtensionContext;
+
 	private _modules: string[];
 
 	constructor(context: vscode.ExtensionContext) {
 		this.initRouter();
+
 		this.initApp();
+
 		this.server = http.createServer(this.app);
+
 		this.context = context;
 	}
 
@@ -28,6 +36,7 @@ export class LocalServer {
 
 	public startServer(): void {
 		const port = (this.server.listen(0).address() as AddressInfo).port;
+
 		this.serverPort = port;
 		// tslint:disable-next-line:no-console
 		console.log("serverPort:" + this.serverPort);
@@ -43,10 +52,12 @@ export class LocalServer {
 
 	private initRouter() {
 		this.router = express.Router();
+
 		this.router.get(
 			"/api/v1/modules",
 			async (req, res, next) => await this.getModules(req, res, next),
 		);
+
 		this.router.get(
 			"/api/v1/modules/:module/status",
 			async (req, res, next) =>
@@ -56,16 +67,23 @@ export class LocalServer {
 
 	private initApp() {
 		this.app = express();
+
 		this.app.all("*", (req, res, next) => {
 			res.setHeader("Access-Control-Allow-Origin", "*");
+
 			next();
 		});
+
 		this.app.use(bodyParser.json());
+
 		this.app.use(bodyParser.urlencoded({ extended: true }));
+
 		this.app.use("/", this.router);
+
 		this.app.use("*", (req, res) => {
 			res.status(404).json({ error: "I don't have that" });
 		});
+
 		this.app.use("*", (err, req, res, next) => {
 			if (err) {
 				res.status(500).json({ error: err.toString() });
@@ -109,7 +127,9 @@ export class LocalServer {
 
 			while (apiUrl != null) {
 				const modulesList = (await axios.get(apiUrl)).data;
+
 				apiUrl = modulesList.nextPageLink;
+
 				items = items.concat(modulesList.items);
 			}
 

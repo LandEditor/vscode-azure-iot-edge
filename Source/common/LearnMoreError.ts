@@ -8,6 +8,7 @@ export class LearnMoreError extends Error {
 
 	constructor(msg: string, url: string) {
 		super(msg);
+
 		this.url = url;
 	}
 }

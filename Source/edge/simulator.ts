@@ -35,25 +35,33 @@ enum SimulatorType {
 export class Simulator {
 	private static iotedgehubdevVersionUrl: string =
 		"https://pypi.org/pypi/iotedgehubdev/json";
+
 	private static iotedgehubdevLockVersionKey = "IOTEDGEHUBDEV_VERSION";
+
 	private static iotedgehubdevDefaultVersion = "0.14.18";
+
 	private static learnMoreUrl: string = "https://aka.ms/AA3nuw8";
+
 	private static simulatorVersionKey: string = "SimulatorVersion";
+
 	private static simulatorExecutableName = "iotedgehubdev";
 
 	private static currentPlatform = os.platform();
+
 	private static WindowsStandaloneSimulatorFolder = path.join(
 		vscode.extensions.getExtension(Constants.ExtensionId).extensionPath,
 		Simulator.simulatorExecutableName,
 	);
 
 	private static maxRetryTimes: number = 3;
+
 	private static retryInterval: number = 5000;
 
 	private static extractVersion(output: string): string | null {
 		if (!output) {
 			return null;
 		}
+
 		const pattern: RegExp = new RegExp(/version\s+([^\s]+)/g);
 
 		const matchRes = output.match(pattern);
@@ -61,6 +69,7 @@ export class Simulator {
 		if (matchRes !== null) {
 			return matchRes[0].replace(/version\s+/g, "");
 		}
+
 		return null;
 	}
 
@@ -77,6 +86,7 @@ export class Simulator {
 				return true;
 			}
 		} catch (error) {}
+
 		return false;
 	}
 
@@ -88,7 +98,9 @@ export class Simulator {
 	}
 
 	private isInstalling: boolean = false;
+
 	private desiredSimulatorInfo: SimulatorInfo;
+
 	private simulatorExecutablePath: string;
 
 	constructor(private context: vscode.ExtensionContext) {
@@ -123,6 +135,7 @@ export class Simulator {
 
 			if (simulatorType === SimulatorType.NotInstalled) {
 				message = Constants.needSimulatorInstalledMsg;
+
 				type = "install";
 			} else {
 				const version: string | null =
@@ -187,7 +200,9 @@ export class Simulator {
 			}
 		} catch (err) {
 			type = "unexpectedError";
+
 			TelemetryClient.sendEvent(`${telemetryName}.${type}`);
+
 			outputChannel.appendLine(
 				Constants.unexpectedErrorWhenValidateSimulatorUpdate +
 					err.message,
@@ -218,6 +233,7 @@ export class Simulator {
 						commandStr = `${commandStr} -i "${iotHubConnectionStr}"`;
 					}
 				}
+
 				Executor.runInTerminal(
 					Simulator.adjustTerminalCommand(commandStr),
 				);
@@ -234,7 +250,9 @@ export class Simulator {
 			const inputs = await this.inputInputNames();
 
 			const imgVersion = Versions.edgeHubVersion();
+
 			await this.setModuleCred(outputChannel);
+
 			await Executor.runInTerminal(
 				Simulator.adjustTerminalCommand(
 					this.getAdjustedSimulatorExecutorPath() +
@@ -255,9 +273,11 @@ export class Simulator {
 			if (!storagePath) {
 				storagePath = path.resolve(os.tmpdir(), "vscodeedge");
 			}
+
 			await fse.ensureDir(storagePath);
 
 			const outputFile = path.join(storagePath, "module.env");
+
 			await Executor.executeCMD(
 				outputChannel,
 				this.getAdjustedSimulatorExecutorPath(true),
@@ -266,10 +286,12 @@ export class Simulator {
 			);
 
 			const moduleConfig = dotenv.parse(await fse.readFile(outputFile));
+
 			await Configuration.setGlobalConfigurationProperty(
 				"EdgeHubConnectionString",
 				moduleConfig.EdgeHubConnectionString,
 			);
+
 			await Configuration.setGlobalConfigurationProperty(
 				"EdgeModuleCACertificateFile",
 				moduleConfig.EdgeModuleCACertificateFile,
@@ -317,6 +339,7 @@ export class Simulator {
 			}
 
 			commands.push(this.constructRunCmd(deployFile));
+
 			Executor.runInTerminal(
 				Utility.combineCommands(commands),
 				this.getRunCmdTerminalTitle(),
@@ -357,11 +380,13 @@ export class Simulator {
 							);
 						}
 					}
+
 					outputChannel.appendLine(
 						`The specified iotedgehubdev version is: ${version}`,
 					);
 
 					const standaloneDownloadUrl = `https://github.com/Azure/iotedgehubdev/releases/download/v${version}/iotedgehubdev-v${version}-win32-ia32.zip`;
+
 					this.desiredSimulatorInfo = new SimulatorInfo(
 						version,
 						standaloneDownloadUrl,
@@ -472,6 +497,7 @@ export class Simulator {
 				const res = await axios.get(binariesZipUrl, {
 					responseType: "stream",
 				});
+
 				await new Promise<void>((resolve, reject) => {
 					if (res.status === 200) {
 						res.data
@@ -519,10 +545,12 @@ export class Simulator {
 						version,
 					),
 				);
+
 				this.context.globalState.update(
 					Simulator.simulatorVersionKey,
 					version,
 				);
+
 				this.simulatorExecutablePath = path.join(
 					Simulator.WindowsStandaloneSimulatorFolder,
 					version,
@@ -557,7 +585,9 @@ export class Simulator {
 						`${Constants.failedInstallSimulator} ${error.message}`,
 					);
 				}
+
 				ret = InstallReturn.Failed;
+
 				errMsg = error.message;
 			}
 
@@ -590,6 +620,7 @@ export class Simulator {
 					errorMsg =
 						Constants.connectionStringNotSetErrorMsgOnWindows;
 				}
+
 				throw new ConfigNotSetError(errorMsg);
 			}
 		}
@@ -620,6 +651,7 @@ export class Simulator {
 				isSupported = semver.gte(version, supportedVersion);
 			}
 		} catch (err) {}
+
 		return isSupported;
 	}
 

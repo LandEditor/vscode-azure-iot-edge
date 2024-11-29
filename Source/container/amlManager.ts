@@ -169,6 +169,7 @@ export class AmlManager {
 		workspaces: Workspace[],
 	): Map<string, number> {
 		const counts: Map<string, number> = new Map<string, number>();
+
 		workspaces.forEach((workspace: Workspace) => {
 			counts.set(
 				workspace.name,
@@ -218,14 +219,20 @@ export class AmlManager {
 
 interface IImage {
 	imageLocation: string;
+
 	name: string;
 }
 
 interface IEndPoints {
 	catalog: string;
+
 	experimentation: string;
+
 	gallery: string;
+
 	history: string;
+
 	hyperdrive: string;
+
 	modelmanagement: string;
 }

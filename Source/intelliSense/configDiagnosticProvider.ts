@@ -99,7 +99,9 @@ export class ConfigDiagnosticProvider {
 							"Invalid image placeholder",
 							vscode.DiagnosticSeverity.Error,
 						);
+
 						diag.source = Constants.edgeDisplayName;
+
 						diags.push(diag);
 					}
 				}
@@ -143,7 +145,9 @@ export class ConfigDiagnosticProvider {
 					"Invalid Dockerfile path",
 					vscode.DiagnosticSeverity.Error,
 				);
+
 				diag.source = Constants.edgeDisplayName;
+
 				diags.push(diag);
 			}
 		}

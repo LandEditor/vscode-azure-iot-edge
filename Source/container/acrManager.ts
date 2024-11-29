@@ -22,6 +22,7 @@ import { AcrRegistryQuickPickItem } from "./models/acrRegistryQuickPickItem";
 
 export class AcrManager {
 	private readonly azureAccount: AzureAccount;
+
 	private acrRefreshToken: string;
 
 	constructor() {
@@ -95,7 +96,9 @@ export class AcrManager {
 							resourceGroup,
 							registryName,
 						);
+
 					username = creds.username;
+
 					password = creds.passwords[0].value;
 
 					break;
@@ -185,6 +188,7 @@ export class AcrManager {
 		try {
 			const { aadAccessToken, aadRefreshToken } =
 				await Utility.acquireAadToken(session);
+
 			this.acrRefreshToken = await this.acquireAcrRefreshToken(
 				registryUrl,
 				session.tenantId,
@@ -211,6 +215,7 @@ export class AcrManager {
 				const error: any = new Error(
 					"There is no repository in the registry.",
 				);
+
 				error.statusCode = 404;
 
 				throw error;
@@ -222,6 +227,7 @@ export class AcrManager {
 					description: `${registryUrl}/${repo}`,
 				});
 			});
+
 			repoItems.sort((a, b) => a.label.localeCompare(b.label));
 
 			return repoItems;
@@ -315,12 +321,14 @@ export class AcrManager {
 			const tagItems: vscode.QuickPickItem[] = [];
 
 			const tags = tagsResponse.data.tags;
+
 			tags.map((tag) => {
 				tagItems.push({
 					label: tag,
 					description: `${registryUrl}/${repo}:${tag}`,
 				});
 			});
+
 			tagItems.sort((a, b) => a.label.localeCompare(b.label));
 
 			return tagItems;

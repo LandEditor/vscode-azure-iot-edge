@@ -65,7 +65,9 @@ export class EdgeManager {
 		const targetGitIgnore = path.join(slnPath, Constants.gitIgnore);
 
 		await fse.mkdirs(slnPath);
+
 		await fse.copy(sourceGitIgnore, targetGitIgnore);
+
 		await fse.mkdirs(targetModulePath);
 
 		const templateFile = path.join(slnPath, Constants.deploymentTemplate);
@@ -81,15 +83,19 @@ export class EdgeManager {
 		);
 
 		const versionMap = Versions.getRunTimeVersionMap();
+
 		templateContent = Utility.expandVersions(templateContent, versionMap);
+
 		await fse.writeFile(templateFile, templateContent, {
 			encoding: "utf8",
 		});
+
 		await fse.writeFile(debugTemplateFile, templateContent, {
 			encoding: "utf8",
 		});
 
 		await this.updateRuntimeVersionInDeploymentTemplate();
+
 		await this.addModule(templateFile, outputChannel, true);
 	}
 
@@ -240,12 +246,14 @@ export class EdgeManager {
 					string,
 					string
 				>();
+
 				moduleJsonMapObj.set(
 					Constants.repositoryPlaceholder,
 					repositoryName,
 				);
 
 				const copyPromises: Array<Promise<void>> = [];
+
 				srcFiles.forEach((srcFile) => {
 					if (srcFile === Constants.moduleManifest) {
 						copyPromises.push(
@@ -307,6 +315,7 @@ export class EdgeManager {
 			Constants.versionDefaultEdgeRuntime,
 			edgeVersionPick,
 		);
+
 		outputChannel.appendLine(
 			`Default Azure IoT Edge Runtime is ${edgeVersionPick} now.`,
 		);
@@ -332,6 +341,7 @@ export class EdgeManager {
 		const defaultKeys: string[] = [];
 
 		const platformMap: Map<string, any> = new Map();
+
 		platforms.forEach((value: Platform) => {
 			const displayName: string = value.getDisplayName();
 
@@ -340,6 +350,7 @@ export class EdgeManager {
 			} else {
 				keyWithAlias.push(displayName);
 			}
+
 			platformMap.set(displayName, value);
 		});
 
@@ -360,6 +371,7 @@ export class EdgeManager {
 				Constants.defPlatformConfig,
 				platformMap.get(defaultPlatform),
 			);
+
 			outputChannel.appendLine(
 				`Default platform is ${defaultPlatform} now.`,
 			);
@@ -386,6 +398,7 @@ export class EdgeManager {
 					false,
 				);
 			}
+
 			return;
 		}
 
@@ -399,6 +412,7 @@ export class EdgeManager {
 
 		if (template === Constants.MARKETPLACE_MODULE) {
 			const marketplace = Marketplace.getInstance(this.context);
+
 			await marketplace.openMarketplacePage(
 				templateFile,
 				isNewSolution,
@@ -407,6 +421,7 @@ export class EdgeManager {
 
 			return;
 		}
+
 		const targetModulePath = path.join(slnPath, Constants.moduleFolder);
 
 		const moduleName: string = Utility.getValidModuleName(
@@ -448,6 +463,7 @@ export class EdgeManager {
 		);
 
 		const targetModulePath = path.join(slnPath, Constants.moduleFolder);
+
 		await fse.ensureDir(targetModulePath);
 
 		const envFilePath = path.join(slnPath, Constants.envFile);
@@ -456,6 +472,7 @@ export class EdgeManager {
 
 		if (template === Constants.LANGUAGE_JAVA) {
 			const grpId = await this.inputJavaModuleGrpId();
+
 			extraProps.set(Constants.groupId, grpId);
 		}
 
@@ -481,6 +498,7 @@ export class EdgeManager {
 				slnPath,
 				Constants.vscodeFolder,
 			);
+
 			await fse.ensureDir(targetVscodeFolder);
 
 			const targetLaunchJson: string = path.join(
@@ -492,9 +510,11 @@ export class EdgeManager {
 				const text = await fse.readFile(targetLaunchJson, "utf8");
 
 				const launchJson = JSON.parse(stripJsonComments(text));
+
 				launchJson.configurations.push(
 					...debugGenerated.configurations,
 				);
+
 				await fse.writeFile(
 					targetLaunchJson,
 					JSON.stringify(launchJson, null, 2),
@@ -551,7 +571,9 @@ export class EdgeManager {
 					isTempsensorNeeded,
 					true,
 				);
+
 				debugTemplateEnv.usernameEnv = envs.usernameEnv;
+
 				debugTemplateEnv.passwordEnv = envs.passwordEnv;
 			}
 		}
@@ -568,13 +590,16 @@ export class EdgeManager {
 			const deploymentTemlateMessage = debugExist
 				? `${Constants.deploymentTemplate}, ${Constants.deploymentDebugTemplate}`
 				: templateName;
+
 			vscode.window.showInformationMessage(
 				`${moduleCreationMessage} ${deploymentTemlateMessage} ${launchUpdated}`,
 			);
 		}
+
 		const address = await Utility.getRegistryAddress(
 			moduleInfo.repositoryName,
 		);
+
 		await this.writeRegistryCredEnv(
 			address,
 			envFilePath,
@@ -586,6 +611,7 @@ export class EdgeManager {
 
 		if (isNewSolution) {
 			await this.generateDevContainerDirectory(template, slnPath);
+
 			await vscode.commands.executeCommand(
 				"vscode.openFolder",
 				vscode.Uri.file(slnPath),
@@ -599,6 +625,7 @@ export class EdgeManager {
 		moduleName: string,
 	) {
 		const saManager = StreamAnalyticsManager.getInstance();
+
 		await saManager.checkAndUpdateASAJob(templateFile, moduleName);
 	}
 
@@ -752,6 +779,7 @@ export class EdgeManager {
 			default:
 				break;
 		}
+
 		const debugImageName = `\${${Utility.getDefaultModuleKey(Constants.subModuleKeyPrefixTemplate(moduleName), true)}}`;
 
 		return { debugImageName, debugCreateOptions };
@@ -765,7 +793,9 @@ export class EdgeManager {
 		slnPath: string,
 	): Promise<any> {
 		const mapObj: Map<string, string> = new Map<string, string>();
+
 		mapObj.set(Constants.moduleNamePlaceholder, moduleName);
+
 		mapObj.set(Constants.moduleFolderPlaceholder, moduleName);
 		// copy launch.json
 		let launchFile: string;
@@ -775,6 +805,7 @@ export class EdgeManager {
 		switch (language) {
 			case Constants.LANGUAGE_CSHARP:
 				launchFile = Constants.launchCSharp;
+
 				mapObj.set(Constants.appFolder, "/app");
 
 				const csprojPath: string = path.join(
@@ -792,6 +823,7 @@ export class EdgeManager {
 				const targetFramework: string = csprojStr
 					.match(/<TargetFramework>(.+?)<\/TargetFramework>/)[1]
 					.trim();
+
 				mapObj.set(
 					Constants.csharpModuleTargetFrameworkPlaceHolder,
 					targetFramework,
@@ -801,7 +833,9 @@ export class EdgeManager {
 
 			case Constants.CSHARP_FUNCTION:
 				launchFile = Constants.launchCSharp;
+
 				mapObj.set(Constants.appFolder, "/app");
+
 				isFunction = true;
 
 				break;
@@ -813,12 +847,14 @@ export class EdgeManager {
 
 			case Constants.LANGUAGE_C:
 				launchFile = Constants.launchC;
+
 				mapObj.set(Constants.appFolder, "/app");
 
 				break;
 
 			case Constants.LANGUAGE_JAVA:
 				launchFile = Constants.launchJava;
+
 				mapObj.set(
 					Constants.groupIDPlaceholder,
 					extraProps.get(Constants.groupId),
@@ -828,6 +864,7 @@ export class EdgeManager {
 
 			case Constants.LANGUAGE_PYTHON:
 				launchFile = Constants.launchPython;
+
 				mapObj.set(Constants.appFolder, "/app");
 
 				break;
@@ -850,6 +887,7 @@ export class EdgeManager {
 					(config) => config.request !== "launch",
 				);
 			}
+
 			return debugConfig;
 		} else {
 			return undefined;
@@ -887,6 +925,7 @@ export class EdgeManager {
 				"edgeAgent",
 				versionMap,
 			);
+
 			Versions.updateSystemModuleImageVersion(
 				templateJson,
 				"edgeHub",
@@ -898,6 +937,7 @@ export class EdgeManager {
 				"edgeAgent",
 				versionSchemaMap,
 			);
+
 			Versions.updateSystemModuleSchemaVersion(
 				templateJson,
 				"edgeHub",
@@ -944,6 +984,7 @@ export class EdgeManager {
 
 		if (registries === undefined) {
 			registries = {};
+
 			runtimeSettings.registryCredentials = registries;
 		}
 
@@ -984,6 +1025,7 @@ export class EdgeManager {
 			},
 			env: environmentVariables,
 		};
+
 		modules[moduleInfo.moduleName] = newModuleSection;
 
 		if (moduleInfo.routes && moduleInfo.routes.length > 0) {
@@ -992,6 +1034,7 @@ export class EdgeManager {
 			}
 		} else {
 			const newModuleToUpstream = `${moduleInfo.moduleName}ToIoTHub`;
+
 			routes[newModuleToUpstream] =
 				`FROM /messages/modules/${moduleInfo.moduleName}/outputs/* INTO $upstream`;
 		}
@@ -1007,12 +1050,15 @@ export class EdgeManager {
 					createOptions: {},
 				},
 			};
+
 			modules.SimulatedTemperatureSensor = tempSensor;
 
 			const tempSensorToModule = `sensorTo${moduleInfo.moduleName}`;
+
 			routes[tempSensorToModule] =
 				`FROM /messages/modules/SimulatedTemperatureSensor/outputs/temperatureOutput INTO BrokeredEndpoint(\"/modules/${moduleInfo.moduleName}/inputs/input1\")`;
 		}
+
 		await fse.writeFile(
 			templateFile,
 			JSON.stringify(templateJson, null, 2),
@@ -1062,6 +1108,7 @@ export class EdgeManager {
 							csversion != null
 								? `new -i Microsoft.Azure.IoT.Edge.Module::${csversion}`
 								: "new -i Microsoft.Azure.IoT.Edge.Module";
+
 						await Executor.executeCMD(
 							outputChannel,
 							"dotnet",
@@ -1069,6 +1116,7 @@ export class EdgeManager {
 							installCmd,
 						);
 					}
+
 					await Executor.executeCMD(
 						outputChannel,
 						"dotnet",
@@ -1083,6 +1131,7 @@ export class EdgeManager {
 						"https://aka.ms/edge-csharp-module-prerequisites",
 					);
 				}
+
 			case Constants.CSHARP_FUNCTION:
 				try {
 					if (Versions.installCSFunctionTemplate()) {
@@ -1093,6 +1142,7 @@ export class EdgeManager {
 							csfuncversion != null
 								? `new -i Microsoft.Azure.IoT.Edge.Function::${csfuncversion}`
 								: "new -i Microsoft.Azure.IoT.Edge.Function";
+
 						await Executor.executeCMD(
 							outputChannel,
 							"dotnet",
@@ -1100,6 +1150,7 @@ export class EdgeManager {
 							installCmd,
 						);
 					}
+
 					await Executor.executeCMD(
 						outputChannel,
 						"dotnet",
@@ -1114,6 +1165,7 @@ export class EdgeManager {
 						"https://aka.ms/edge-csharp-functions-prerequisites",
 					);
 				}
+
 			case Constants.LANGUAGE_PYTHON:
 				try {
 					await new Promise<void>((resolve, reject) => {
@@ -1144,15 +1196,18 @@ export class EdgeManager {
 														moduleContentDirName,
 														repositoryName,
 													);
+
 													await fse.move(
 														moduleContentDir,
 														path.join(parent, name),
 													);
+
 													resolve();
 												} catch (error) {
 													reject(error);
 												}
 											}
+
 											cleanupCallback();
 										},
 									);
@@ -1168,6 +1223,7 @@ export class EdgeManager {
 						"https://aka.ms/edge-python-module-prerequisites",
 					);
 				}
+
 			case Constants.LANGUAGE_NODE:
 				try {
 					outputChannel.appendLine(
@@ -1192,6 +1248,7 @@ export class EdgeManager {
 								{ cwd: `${parent}`, shell: true },
 								`i -g generator-azure-iot-edge-module${nodeVersionConfig}`,
 							);
+
 							await Executor.executeCMD(
 								outputChannel,
 								"yo",
@@ -1214,6 +1271,7 @@ export class EdgeManager {
 							`azure-iot-edge-module -n "${name}" -r ${repositoryName}`,
 						);
 					}
+
 					break;
 				} catch (error) {
 					throw new LearnMoreError(
@@ -1221,6 +1279,7 @@ export class EdgeManager {
 						"https://aka.ms/edge-nodejs-module-prerequisites",
 					);
 				}
+
 			case Constants.LANGUAGE_C:
 				try {
 					await new Promise<void>((resolve, reject) => {
@@ -1236,6 +1295,7 @@ export class EdgeManager {
 							},
 						);
 					});
+
 					await this.updateRepositoryName(
 						parent,
 						name,
@@ -1249,6 +1309,7 @@ export class EdgeManager {
 						"https://aka.ms/edge-c-module-prerequisites",
 					);
 				}
+
 			case Constants.LANGUAGE_JAVA:
 				try {
 					const groupId = extraProps.get(Constants.groupId);
@@ -1261,6 +1322,7 @@ export class EdgeManager {
 						javaversion != null
 							? `-DarchetypeVersion=${javaversion}`
 							: "";
+
 					await Executor.executeCMD(
 						outputChannel,
 						"mvn",
@@ -1284,6 +1346,7 @@ export class EdgeManager {
 						"https://aka.ms/edge-java-module-prerequisites",
 					);
 				}
+
 			default:
 				const thirdPartyModuleTemplate =
 					this.get3rdPartyModuleTemplateByName(template);
@@ -1304,6 +1367,7 @@ export class EdgeManager {
 							),
 							repositoryName,
 						);
+
 					await Executor.executeCMD(
 						outputChannel,
 						command,
@@ -1313,8 +1377,10 @@ export class EdgeManager {
 				} else {
 					projCreated = false;
 				}
+
 				break;
 		}
+
 		return projCreated;
 	}
 
@@ -1326,7 +1392,9 @@ export class EdgeManager {
 		const moduleFile = path.join(parent, name, Constants.moduleManifest);
 
 		const moduleJson = await fse.readJson(moduleFile);
+
 		moduleJson.image.repository = repositoryName;
+
 		await fse.writeFile(moduleFile, JSON.stringify(moduleJson, null, 2), {
 			encoding: "utf8",
 		});
@@ -1393,7 +1461,9 @@ export class EdgeManager {
 
 		if (template === Constants.ACR_MODULE) {
 			const acrManager = new AcrManager();
+
 			debugImageName = imageName = await acrManager.selectAcrImage();
+
 			repositoryName = Utility.getRepositoryNameFromImageName(imageName);
 		} else if (template === Constants.EXISTING_MODULE) {
 			debugImageName = imageName = await Utility.showInputBox(
@@ -1401,26 +1471,36 @@ export class EdgeManager {
 				Constants.imagePrompt,
 				Utility.validateRepositoryUrl,
 			);
+
 			repositoryName = Utility.getRepositoryNameFromImageName(imageName);
 		} else if (template === Constants.MACHINE_LEARNING) {
 			const amlManager = new AmlManager();
+
 			debugImageName = imageName = await amlManager.selectAmlImage();
+
 			repositoryName = Utility.getRepositoryNameFromImageName(imageName);
 		} else if (template === Constants.EVENT_GRID) {
 			debugImageName = imageName = Constants.EVENT_GRID_IMAGE;
+
 			repositoryName = Utility.getRepositoryNameFromImageName(imageName);
+
 			debugCreateOptions = createOptions =
 				Constants.EVENT_GRID_CREATE_OPTIONS;
 		} else if (template === Constants.STREAM_ANALYTICS) {
 			const saManager = StreamAnalyticsManager.getInstance();
 
 			const JobInfo: any = await saManager.getJobInfo();
+
 			debugImageName = imageName = JobInfo.settings.image;
+
 			moduleTwin = JobInfo.twin.content;
+
 			env = JobInfo.env;
+
 			debugCreateOptions = createOptions = JobInfo.settings.createOptions
 				? JobInfo.settings.createOptions
 				: {};
+
 			repositoryName = Utility.getRepositoryNameFromImageName(imageName);
 		} else if (thirdPartyModuleTemplate) {
 			if (
@@ -1431,19 +1511,25 @@ export class EdgeManager {
 			) {
 				repositoryName = await this.inputRepository(module);
 			}
+
 			imageName = `\${${Utility.getDefaultModuleKey(moduleKeyPrefix, false)}}`;
+
 			debugImageName = `\${${Utility.getDefaultModuleKey(moduleKeyPrefix, true)}}`;
 		} else {
 			repositoryName = await this.inputRepository(module);
+
 			imageName = `\${${Utility.getDefaultModuleKey(moduleKeyPrefix, false)}}`;
 
 			const debugSettings = await this.generateDebugCreateOptions(
 				module,
 				template,
 			);
+
 			debugImageName = debugSettings.debugImageName;
+
 			debugCreateOptions = debugSettings.debugCreateOptions;
 		}
+
 		return new ModuleInfo(
 			module,
 			repositoryName,
@@ -1463,7 +1549,9 @@ export class EdgeManager {
 		envFile: string,
 	): Promise<{
 		registries: string;
+
 		usernameEnv: string;
+
 		passwordEnv: string;
 	}> {
 		let usernameEnv;
@@ -1479,13 +1567,16 @@ export class EdgeManager {
 		) {
 			return { registries, usernameEnv, passwordEnv };
 		}
+
 		await Utility.loadEnv(envFile);
 
 		const { exists, keySet } = this.checkAddressExist(address, registries);
 
 		if (!exists) {
 			const addressKey = Utility.getAddressKey(address, keySet);
+
 			usernameEnv = `CONTAINER_REGISTRY_USERNAME_${addressKey}`;
+
 			passwordEnv = `CONTAINER_REGISTRY_PASSWORD_${addressKey}`;
 
 			const newRegistry = `{
@@ -1497,8 +1588,10 @@ export class EdgeManager {
 			if (!registries) {
 				registries = {};
 			}
+
 			registries[addressKey] = JSON.parse(newRegistry);
 		}
+
 		return { registries, usernameEnv, passwordEnv };
 	}
 
@@ -1546,8 +1639,11 @@ export class EdgeManager {
 		if (debugUsernameEnv && debugUsernameEnv !== usernameEnv) {
 			envContent = `\n${envContent}${debugUsernameEnv}=\n${debugPasswordEnv}=\n`;
 		}
+
 		await fse.ensureFile(envFile);
+
 		await fse.appendFile(envFile, envContent, { encoding: "utf8" });
+
 		this.askEditEnv(envFile);
 	}
 
@@ -1569,14 +1665,18 @@ export class EdgeManager {
 			// tslint:disable-next-line:no-console
 			console.error(err);
 		}
+
 		if (cred && cred.username !== undefined) {
 			let envContent = `\n${usernameEnv}=${cred.username}\n${passwordEnv}=${cred.password}\n`;
 
 			if (debugUsernameEnv && debugUsernameEnv !== usernameEnv) {
 				envContent = `\n${envContent}${debugUsernameEnv}=${cred.username}\n${debugPasswordEnv}=${cred.password}\n`;
 			}
+
 			await fse.ensureFile(envFile);
+
 			await fse.appendFile(envFile, envContent, { encoding: "utf8" });
+
 			vscode.window.showInformationMessage(Constants.acrEnvSet);
 		} else {
 			await this.populateStaticEnv(
@@ -1599,6 +1699,7 @@ export class EdgeManager {
 
 		if (option === yesOption) {
 			await fse.ensureFile(envFile);
+
 			await vscode.window.showTextDocument(vscode.Uri.file(envFile));
 		}
 	}
@@ -1630,6 +1731,7 @@ export class EdgeManager {
 				}
 			}
 		}
+
 		return { exists, keySet };
 	}
 
@@ -1694,6 +1796,7 @@ export class EdgeManager {
 				description: Constants.EMPTY_SLN_DESCRIPTION,
 			});
 		}
+
 		const templates = this.get3rdPartyModuleTemplates();
 
 		if (templates) {
@@ -1706,9 +1809,11 @@ export class EdgeManager {
 				}
 			});
 		}
+
 		if (label === undefined) {
 			label = Constants.selectTemplate;
 		}
+
 		const templatePick = await vscode.window.showQuickPick(templatePicks, {
 			placeHolder: label,
 			ignoreFocusOut: true,
@@ -1717,6 +1822,7 @@ export class EdgeManager {
 		if (!templatePick) {
 			throw new UserCancelledError();
 		}
+
 		TelemetryClient.sendEvent(
 			`${Constants.addModuleEvent}.selectModuleTemplate`,
 			{
@@ -1819,6 +1925,7 @@ export class EdgeManager {
 
 		if (containerSource.length > 0) {
 			await fse.copy(containerSource, slnPath, { overwrite: true });
+
 			await fse.copy(
 				sourceLibrayScriptsPath,
 				path.join(
@@ -1860,6 +1967,7 @@ export class EdgeManager {
 		if (label === undefined) {
 			label = Constants.selectDevContainer;
 		}
+
 		const templatePick = await vscode.window.showQuickPick(templatePicks, {
 			placeHolder: label,
 			ignoreFocusOut: true,
@@ -1868,6 +1976,7 @@ export class EdgeManager {
 		if (!templatePick) {
 			throw new UserCancelledError();
 		}
+
 		TelemetryClient.sendEvent(
 			`${Constants.selectDevContainerEvent}.selectDevContainer`,
 			{

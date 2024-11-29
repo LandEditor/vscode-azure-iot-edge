@@ -37,6 +37,7 @@ export class Gallery {
 					Constants.galleryIndexHtmlName,
 				),
 			);
+
 			this.panel.webview.html = await this.getWebViewContent(srcPath);
 
 			// Handle messages from the webview
@@ -52,6 +53,7 @@ export class Gallery {
 									message.platform,
 								);
 							}
+
 							break;
 
 						case "openLink":
@@ -60,11 +62,13 @@ export class Gallery {
 									Constants.openSampleUrlEvent,
 									{ Url: message.url },
 								);
+
 								await vscode.commands.executeCommand(
 									"vscode.open",
 									vscode.Uri.parse(message.url),
 								);
 							}
+
 							break;
 					}
 				},
@@ -103,9 +107,11 @@ export class Gallery {
 			const samplePath: string = path.join(parentPath, sampleName);
 
 			channel.show();
+
 			channel.appendLine(
 				`Downloading sample project to ${samplePath}...`,
 			);
+
 			await this.downloadSamplePackage(url, samplePath);
 
 			const defaultPlatformKey = Utility.getVscodeSettingKey(
@@ -128,6 +134,7 @@ export class Gallery {
 				if (!vscodeSettingJson[defaultPlatformKey].platform) {
 					vscodeSettingJson[defaultPlatformKey].platform = platform;
 				}
+
 				if (!vscodeSettingJson[defaultPlatformKey].alias) {
 					vscodeSettingJson[defaultPlatformKey].alias = null;
 				}
@@ -146,9 +153,11 @@ export class Gallery {
 			channel.appendLine(
 				`Sample project downloaded successfully and will be opened now.`,
 			);
+
 			TelemetryClient.sendEvent(Constants.openSampleEvent, {
 				Result: "Success",
 			});
+
 			await vscode.commands.executeCommand(
 				"vscode.openFolder",
 				vscode.Uri.file(samplePath),
@@ -171,6 +180,7 @@ export class Gallery {
 		const extensionVersion = vscode.extensions.getExtension(
 			Constants.ExtensionId,
 		).packageJSON.version;
+
 		html = html.replace("{{version}}", extensionVersion);
 
 		html = html.replace(

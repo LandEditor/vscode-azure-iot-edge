@@ -31,18 +31,23 @@ export class StreamAnalyticsManager {
 		if (!StreamAnalyticsManager.instance) {
 			StreamAnalyticsManager.instance = new StreamAnalyticsManager();
 		}
+
 		return StreamAnalyticsManager.instance;
 	}
 
 	private static instance: StreamAnalyticsManager;
+
 	private readonly azureAccount: AzureAccount;
+
 	private readonly MaximumRetryCount: number = 30;
+
 	private asaUpdateStatus: ASAUpdateStatus;
 
 	private constructor() {
 		this.azureAccount = vscode.extensions.getExtension<AzureAccount>(
 			"ms-vscode.azure-account",
 		)!.exports;
+
 		this.asaUpdateStatus = ASAUpdateStatus.Idle;
 	}
 
@@ -91,6 +96,7 @@ export class StreamAnalyticsManager {
 					templateFile,
 					moduleName,
 				);
+
 				this.asaUpdateStatus = ASAUpdateStatus.Idle;
 
 				if (isUpdateAvailable) {
@@ -103,10 +109,12 @@ export class StreamAnalyticsManager {
 
 					if (option === yesOption) {
 						this.asaUpdateStatus = ASAUpdateStatus.Updating;
+
 						await this.updateASAJobInfoModuleTwin(
 							templateFile,
 							moduleName,
 						);
+
 						this.asaUpdateStatus = ASAUpdateStatus.Idle;
 					}
 				} else {
@@ -196,7 +204,9 @@ export class StreamAnalyticsManager {
 		const moduleTwin = jobInfo.twin.content;
 
 		const templateJson = await fse.readJson(templateFile);
+
 		templateJson.modulesContent[moduleName] = moduleTwin;
+
 		await fse.writeFile(
 			templateFile,
 			JSON.stringify(templateJson, null, 2),
@@ -262,6 +272,7 @@ export class StreamAnalyticsManager {
 			if (!(error instanceof UserCancelledError)) {
 				error.message = `Parse Stream Analytics jobs info failed: ${error.message}`;
 			}
+
 			throw error;
 		}
 	}

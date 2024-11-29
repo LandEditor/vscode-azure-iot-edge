@@ -10,6 +10,7 @@ export class Platform {
 		if (!defaultPlatform) {
 			return new Platform("amd64", null);
 		}
+
 		const platform = defaultPlatform.platform
 			? defaultPlatform.platform
 			: "amd64";
@@ -43,14 +44,17 @@ export class Platform {
 				}
 			}
 		}
+
 		return platforms;
 	}
 
 	public readonly platform: string;
+
 	public readonly alias: string;
 
 	constructor(platform: string, alias: string) {
 		this.platform = platform ? platform : "amd64";
+
 		this.alias = alias;
 	}
 

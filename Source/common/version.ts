@@ -6,10 +6,12 @@ type ImageJson = "${string}:${string}";
 export class Versions {
 	public static getRunTimeVersionMap(): Map<string, string> {
 		const verMap: Map<string, string> = new Map();
+
 		verMap.set(
 			Constants.edgeAgentVerPlaceHolder,
 			Versions.edgeAgentVersion(),
 		);
+
 		verMap.set(Constants.edgeHubVerPlaceHolder, Versions.edgeHubVersion());
 
 		return verMap;
@@ -26,10 +28,12 @@ export class Versions {
 		]);
 
 		const verMap: Map<string, string> = new Map();
+
 		verMap.set(
 			Constants.edgeAgentSchemaVerPlaceHolder,
 			edgeAgentSchemaVerMap.get(Versions.edgeAgentVersion()),
 		);
+
 		verMap.set(
 			Constants.edgeHubSchemaVerPlaceHolder,
 			edgeHubSchemaVerMap.get(Versions.edgeHubVersion()),
@@ -100,6 +104,7 @@ export class Versions {
 			const sysModuleImage =
 				templateJson.modulesContent.$edgeAgent["properties.desired"]
 					.systemModules[moduleName].settings.image;
+
 			templateJson.modulesContent.$edgeAgent[
 				"properties.desired"
 			].systemModules[moduleName].settings.image =
@@ -209,6 +214,7 @@ export class Versions {
 		if (value === undefined || value === null) {
 			return defaultVal;
 		}
+
 		return value;
 	}
 }

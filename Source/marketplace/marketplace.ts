@@ -18,13 +18,18 @@ export class Marketplace {
 		if (!Marketplace.instance) {
 			Marketplace.instance = new Marketplace(context);
 		}
+
 		return Marketplace.instance;
 	}
 
 	private static instance: Marketplace;
+
 	private panel: vscode.WebviewPanel;
+
 	private localServer: LocalServer;
+
 	private templateFile: string;
+
 	private isNewSolution: boolean;
 
 	private constructor(private context: vscode.ExtensionContext) {
@@ -40,6 +45,7 @@ export class Marketplace {
 
 		if (!this.panel) {
 			this.localServer.startServer();
+
 			this.panel = vscode.window.createWebviewPanel(
 				Constants.marketplacePanelViewType,
 				Constants.marketplacePanelViewTitle,
@@ -57,6 +63,7 @@ export class Marketplace {
 				),
 				"utf8",
 			);
+
 			html = html
 				.replace(
 					/{{root}}/g,
@@ -67,10 +74,12 @@ export class Marketplace {
 						.toString(),
 				)
 				.replace(/{{endpoint}}/g, this.localServer.getServerUri());
+
 			this.panel.webview.html = html;
 
 			this.panel.onDidDispose(() => {
 				this.panel = undefined;
+
 				this.localServer.stopServer();
 			});
 		} else {
@@ -82,6 +91,7 @@ export class Marketplace {
 				TelemetryClient.sendEvent("addMarketplaceModule", {
 					moduleId: message.id,
 				});
+
 				this.panel.dispose();
 
 				const repositoryName = Utility.getRepositoryNameFromImageName(
@@ -100,6 +110,7 @@ export class Marketplace {
 					message.environmentVariables,
 					true,
 				);
+
 				await vscode.commands.executeCommand(
 					"azure-iot-edge.internal.addModule",
 					this.templateFile,
@@ -119,7 +130,9 @@ export class Marketplace {
 		modules: string[],
 	) {
 		this.localServer.modules = modules;
+
 		this.templateFile = templateFile;
+
 		this.isNewSolution = isNewSolution;
 	}
 }

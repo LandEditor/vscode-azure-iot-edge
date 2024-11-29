@@ -15,6 +15,7 @@ export class RetryPolicy {
 		while (true) {
 			try {
 				retries++;
+
 				await func();
 
 				break;
@@ -23,10 +24,12 @@ export class RetryPolicy {
 					outputChannel.appendLine(
 						`Task failed with error: ${err.message}, wait ${retryInterval} milliseconds and retry (${retries})...`,
 					);
+
 					await this.sleep(retryInterval);
 
 					continue;
 				}
+
 				throw err;
 			}
 		}

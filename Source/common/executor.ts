@@ -24,7 +24,9 @@ export class Executor {
 		if (this.terminals[terminal] === undefined) {
 			this.terminals[terminal] = Executor.createTerminal(terminal);
 		}
+
 		this.terminals[terminal].show();
+
 		this.terminals[terminal].sendText(command);
 	}
 
@@ -35,8 +37,10 @@ export class Executor {
 
 		if (envVars) {
 			const processEnvs = JSON.parse(JSON.stringify(process.env));
+
 			options.env = Executor.mergeEnvs(envVars, processEnvs);
 		}
+
 		return execSync(command, options);
 	}
 
@@ -56,6 +60,7 @@ export class Executor {
 				reject: (e: Error) => void,
 			): void => {
 				Executor.show(outputPane);
+
 				Executor.appendLine(
 					`Executing ${command} ${args.join(" ")}`,
 					outputPane,
@@ -71,24 +76,34 @@ export class Executor {
 					options = options || {};
 
 					let processEnvs = JSON.parse(JSON.stringify(process.env));
+
 					processEnvs = Executor.mergeEnvs(envVars, processEnvs);
+
 					options.env = Executor.mergeEnvs(options.env, processEnvs);
 				}
 
 				const p: ChildProcess = spawn(command, args, options);
+
 				p.stdout.on("data", (data: string | Buffer): void => {
 					const dataStr = data.toString();
+
 					stdOutput = stdOutput.concat(dataStr);
+
 					Executor.append(dataStr, outputPane);
 				});
+
 				p.stderr.on("data", (data: string | Buffer) => {
 					const dataStr = data.toString();
+
 					stderr = stderr.concat(dataStr);
+
 					Executor.append(dataStr, outputPane);
 				});
+
 				p.on("error", (err: Error) => {
 					reject(new Error(`${err.toString()}. Detail: ${stderr}`));
 				});
+
 				p.on("exit", (code: number, signal: string) => {
 					if (code !== 0) {
 						reject(new CommandError(stderr, code));
@@ -134,6 +149,7 @@ export class Executor {
 		if (envVars) {
 			options.env = envVars;
 		}
+
 		return vscode.window.createTerminal(options);
 	}
 
@@ -147,6 +163,7 @@ export class Executor {
 		for (const key of Object.keys(overrideEnv)) {
 			envs[key] = overrideEnv[key];
 		}
+
 		return envs;
 	}
 

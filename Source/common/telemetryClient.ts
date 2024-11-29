@@ -22,6 +22,7 @@ export class TelemetryClient {
 		properties?: { [key: string]: string },
 	): void {
 		this.stampInternalProperty(properties);
+
 		this._client.sendTelemetryEvent(eventName, properties);
 	}
 
@@ -32,6 +33,7 @@ export class TelemetryClient {
 		this.stampInternalProperty(properties);
 
 		const errorProperties = Object.values(Constants.errorProperties);
+
 		this._client.sendTelemetryErrorEvent(
 			eventName,
 			properties,

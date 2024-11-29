@@ -10,6 +10,7 @@ export class ASAModuleUpdateCodeLensProvider
 	implements vscode.CodeLensProvider
 {
 	private templateFilePath: string;
+
 	private ASAModuleTwinPathRoot: string = "/modulesContent/";
 
 	public async provideCodeLenses(
@@ -17,6 +18,7 @@ export class ASAModuleUpdateCodeLensProvider
 		token: vscode.CancellationToken,
 	): Promise<vscode.CodeLens[]> {
 		const deploymentJsonString = document.getText();
+
 		this.templateFilePath = document.uri.fsPath;
 
 		return Promise.resolve(this.generateCodeLens(deploymentJsonString));
@@ -51,6 +53,7 @@ export class ASAModuleUpdateCodeLensProvider
 				command: "azure-iot-edge.internal.checkUpdateForASAModule",
 				arguments: [this.templateFilePath, name],
 			};
+
 			codeLensArr.push(new vscode.CodeLens(range, cmd));
 		}
 

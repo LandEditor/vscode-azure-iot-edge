@@ -32,11 +32,16 @@ export class ConfigCompletionItemProvider
 			const moduleCompletionItem = new vscode.CompletionItem(
 				Constants.moduleSnippetLabel,
 			);
+
 			moduleCompletionItem.filterText = `\"${Constants.moduleSnippetLabel}\"`;
+
 			moduleCompletionItem.kind = vscode.CompletionItemKind.Snippet;
+
 			moduleCompletionItem.detail = Constants.moduleSnippetDetail;
+
 			moduleCompletionItem.range =
 				document.getWordRangeAtPosition(position);
+
 			moduleCompletionItem.insertText = new vscode.SnippetString(
 				[
 					'"${1:' + Constants.moduleNameDft + '}": {',
@@ -87,6 +92,7 @@ export class ConfigCompletionItemProvider
 			)
 		) {
 			const moduleToImageMap: Map<string, string> = new Map();
+
 			await Utility.setSlnModulesMap(
 				document.uri.fsPath,
 				moduleToImageMap,
@@ -119,11 +125,16 @@ export class ConfigCompletionItemProvider
 
 			const routeCompletionItem: vscode.CompletionItem =
 				new vscode.CompletionItem(Constants.routeSnippetLabel);
+
 			routeCompletionItem.filterText = `\"${Constants.routeSnippetLabel}\"`;
+
 			routeCompletionItem.kind = vscode.CompletionItemKind.Snippet;
+
 			routeCompletionItem.detail = Constants.routeSnippetDetail;
+
 			routeCompletionItem.range =
 				document.getWordRangeAtPosition(position);
+
 			routeCompletionItem.insertText = new vscode.SnippetString(
 				this.getRouteSnippetString(moduleIds),
 			);
@@ -163,9 +174,13 @@ export class ConfigCompletionItemProvider
 
 			const completionItem: vscode.CompletionItem =
 				new vscode.CompletionItem(label);
+
 			completionItem.range = overwriteRange;
+
 			completionItem.insertText = label + separator;
+
 			completionItem.kind = vscode.CompletionItemKind.Value;
+
 			completionItem.sortText = value;
 
 			completionItems.push(completionItem);
@@ -201,6 +216,7 @@ export class ConfigCompletionItemProvider
 		} else {
 			// when the cursor is not placed in a node, overwrite the word to the postion with the completion text
 			const currentWord: string = this.getCurrentWord(document, position);
+
 			overwriteRange = new vscode.Range(
 				document.positionAt(offset - currentWord.length),
 				position,
@@ -221,6 +237,7 @@ export class ConfigCompletionItemProvider
 		while (i >= 0 && ' \t\n\r\v":{[,'.indexOf(text.charAt(i)) === -1) {
 			i--;
 		}
+
 		return text.substring(i + 1, position.character);
 	}
 
@@ -246,6 +263,7 @@ export class ConfigCompletionItemProvider
 			document.getText(),
 			true,
 		);
+
 		scanner.setPosition(offset);
 
 		const token: parser.SyntaxKind = scanner.scan();
@@ -274,21 +292,26 @@ export class ConfigCompletionItemProvider
 
 		if (moduleIds.length === 0) {
 			sources.push(`/messages/modules/{moduleId}/*`);
+
 			sources.push(`/messages/modules/{moduleId}/outputs/*`);
+
 			sources.push(`/messages/modules/{moduleId}/outputs/{output}`);
 		} else {
 			for (const moduleId of moduleIds) {
 				sources.push(`/messages/modules/${moduleId}/*`);
 			}
+
 			for (const moduleId of moduleIds) {
 				sources.push(`/messages/modules/${moduleId}/outputs/*`);
 			}
+
 			for (const moduleId of moduleIds) {
 				sources.push(`/messages/modules/${moduleId}/outputs/{output}`);
 			}
 		}
 
 		snippet.push(sources.join(",") + "|}");
+
 		snippet.push("WHERE ${3:<condition>} INTO");
 
 		const sinks: string[] = ["${4|$upstream"];

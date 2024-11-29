@@ -10,7 +10,9 @@ import { AzureSubscription } from "../../typings/azure-account.api";
 
 export class AcrRegistryQuickPickItem implements vscode.QuickPickItem {
 	public readonly label: string;
+
 	public readonly description: string;
+
 	public readonly detail?: string;
 
 	constructor(
@@ -18,6 +20,7 @@ export class AcrRegistryQuickPickItem implements vscode.QuickPickItem {
 		public readonly azureSubscription: AzureSubscription,
 	) {
 		this.label = registry.loginServer || "";
+
 		this.description = azureSubscription.subscription.displayName;
 	}
 }
