@@ -499,9 +499,9 @@
 		}
 	},
 	"dependencies": {
-		"axios": "1.7.8",
+		"axios": "1.7.9",
 		"body-parser": "1.20.3",
-		"dotenv": "16.4.6",
+		"dotenv": "16.4.7",
 		"download-git-repo": "3.0.2",
 		"fs-extra": "11.2.0",
 		"is-port-reachable": "4.0.0",
