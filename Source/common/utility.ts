@@ -841,9 +841,7 @@ export class Utility {
 
 		for (
 			let list = await first;
-
 			list !== undefined;
-
 			list = list.nextLink ? await listNext(list.nextLink) : undefined
 		) {
 			all.push(...list);
